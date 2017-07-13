@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.40629.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorldNews", "WorldNews\WorldNews.csproj", "{7EB12A12-B672-40DC-B084-4F732A2C23FE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorldNews.Logic", "WorldNews.Logic\WorldNews.Logic.csproj", "{72C77BD6-B051-425B-95C7-04B692AB2B3E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorldNews.Data", "WorldNews.Data\WorldNews.Data.csproj", "{376BF84C-F66A-4747-9F6C-9B1CA05F2BF4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorldNews.Core", "WorldNews.Core\WorldNews.Core.csproj", "{5F264BE0-15B0-4B79-9992-BE4745BD42E9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7EB12A12-B672-40DC-B084-4F732A2C23FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7EB12A12-B672-40DC-B084-4F732A2C23FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7EB12A12-B672-40DC-B084-4F732A2C23FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7EB12A12-B672-40DC-B084-4F732A2C23FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72C77BD6-B051-425B-95C7-04B692AB2B3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72C77BD6-B051-425B-95C7-04B692AB2B3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72C77BD6-B051-425B-95C7-04B692AB2B3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72C77BD6-B051-425B-95C7-04B692AB2B3E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{376BF84C-F66A-4747-9F6C-9B1CA05F2BF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{376BF84C-F66A-4747-9F6C-9B1CA05F2BF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{376BF84C-F66A-4747-9F6C-9B1CA05F2BF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{376BF84C-F66A-4747-9F6C-9B1CA05F2BF4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F264BE0-15B0-4B79-9992-BE4745BD42E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F264BE0-15B0-4B79-9992-BE4745BD42E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F264BE0-15B0-4B79-9992-BE4745BD42E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F264BE0-15B0-4B79-9992-BE4745BD42E9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
