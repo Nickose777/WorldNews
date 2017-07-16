@@ -15,5 +15,7 @@ namespace WorldNews.Logic.Contracts
         ServiceMessage RegisterUser(UserRegisterDTO userDTO);
 
         ServiceMessage LogIn(string login, string password);
+
+        void LogOff();
     }
 }

@@ -1,0 +1,35 @@
+﻿@using Microsoft.AspNet.Identity
+@if (User.Identity.IsAuthenticated)
+{
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { @class = "navbar-right", id = "logoff" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                @if (User.IsInRole(WorldNews.Logic.Infrastructure.Roles.AdminRole))
+                {
+                    <a href="#">@Html.Raw("Hello, admin!")</a>
+                }
+                else if (User.IsInRole(WorldNews.Logic.Infrastructure.Roles.ModeratorRole))
+                {
+                    <a href="#">@Html.Raw("Hello, moderator!")</a>
+                }
+                else
+                {
+                    <a href="#">@Html.Raw("Hello " + User.Identity.GetUserName() + "!")</a>
+                }
+            </li>
+            <li>
+                <a href="javascript:document.getElementById('logoff').submit()">Log off</a>
+            </li>
+        </ul>
+    }
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li>@Html.ActionLink("Register", "Register", "Account")</li>
+        <li>@Html.ActionLink("Log in", "Login", "Account")</li>
+    </ul>
+}

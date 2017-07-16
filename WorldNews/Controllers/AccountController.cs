@@ -47,7 +47,7 @@ namespace WorldNews.Controllers
             }
             else
             {
-                return Content("You are logged in!");
+                return RedirectToAction("Index", "Home");
             }
         }
 
@@ -85,7 +85,7 @@ namespace WorldNews.Controllers
             }
             else
             {
-                return Content("You are logged in!");
+                return RedirectToAction("Index", "Home");
             }
         }
 
@@ -101,7 +101,7 @@ namespace WorldNews.Controllers
             ServiceMessage serviceMessage = service.LogIn(model.Login, model.Password);
             if (serviceMessage.Succeeded)
             {
-                return Content("Logged in!");
+                return RedirectToAction("Index", "Home");
             }
             else
             {
@@ -109,6 +109,13 @@ namespace WorldNews.Controllers
             }
 
             return View();
+        }
+
+        public ActionResult LogOff()
+        {
+            service.LogOff();
+
+            return RedirectToAction("Login");
         }
 
         private void AddModelErrors(IEnumerable<string> errors)

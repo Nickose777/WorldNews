@@ -119,6 +119,11 @@ namespace WorldNews.Logic.Services
             };
         }
 
+        public void LogOff()
+        {
+            signInManager.AuthenticationManager.SignOut();
+        }
+
         public void Dispose()
         {
             unitOfWork.Dispose();

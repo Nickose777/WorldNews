@@ -10,7 +10,7 @@ namespace WorldNews.Controllers
     {
         public ActionResult Index()
         {
-            return RedirectToAction("Register", "Account");
+            return View();
         }
     }
 }
