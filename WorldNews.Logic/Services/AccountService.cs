@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 using System;
@@ -104,6 +105,17 @@ namespace WorldNews.Logic.Services
             {
                 Succeeded = succeeded,
                 Errors = errors
+            };
+        }
+
+        public ServiceMessage LogIn(string login, string password)
+        {
+            SignInStatus status = signInManager.PasswordSignIn(login, password, true, false);
+
+            return new ServiceMessage
+            {
+                Succeeded = status == SignInStatus.Success,
+                Errors = status != SignInStatus.Success ? new List<string>() { "Invalid login or password" } : null
             };
         }
 

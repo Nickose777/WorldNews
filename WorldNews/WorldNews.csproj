@@ -184,6 +184,7 @@
     </Compile>
     <Compile Include="App_Start\AutoMapperConfiguration.cs" />
     <Compile Include="Mappings\RegisterProfile.cs" />
+    <Compile Include="Models\LoginViewModel.cs" />
     <Compile Include="Models\RegisterViewModel.cs" />
     <Compile Include="NinjectModules\OwinModule.cs" />
     <Compile Include="NinjectModules\ServiceModule.cs" />
@@ -238,6 +239,7 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

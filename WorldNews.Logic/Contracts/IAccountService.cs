@@ -13,5 +13,7 @@ namespace WorldNews.Logic.Contracts
         ServiceMessage InitializeRoles();
 
         ServiceMessage RegisterUser(UserRegisterDTO userDTO);
+
+        ServiceMessage LogIn(string login, string password);
     }
 }

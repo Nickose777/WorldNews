@@ -41,7 +41,14 @@ namespace WorldNews.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
-            return View();
+            if (!User.Identity.IsAuthenticated)
+            {
+                return View();
+            }
+            else
+            {
+                return Content("You are logged in!");
+            }
         }
 
         [HttpPost]
@@ -58,7 +65,7 @@ namespace WorldNews.Controllers
 
             if (serviceMessage.Succeeded)
             {
-                return Content("Registered!");
+                return RedirectToAction("Login");
             }
             else
             {
@@ -66,6 +73,42 @@ namespace WorldNews.Controllers
             }
 
             return View(model);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult Login()
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return View();
+            }
+            else
+            {
+                return Content("You are logged in!");
+            }
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public ActionResult Login(LoginViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            ServiceMessage serviceMessage = service.LogIn(model.Login, model.Password);
+            if (serviceMessage.Succeeded)
+            {
+                return Content("Logged in!");
+            }
+            else
+            {
+                AddModelErrors(serviceMessage.Errors);
+            }
+
+            return View();
         }
 
         private void AddModelErrors(IEnumerable<string> errors)
