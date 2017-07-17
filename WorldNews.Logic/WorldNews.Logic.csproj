@@ -90,9 +90,11 @@
   <ItemGroup>
     <Compile Include="Contracts\IEncryptor.cs" />
     <Compile Include="Contracts\Services\IAccountService.cs" />
+    <Compile Include="Contracts\Services\IArticleService.cs" />
     <Compile Include="Contracts\Services\ICategoryService.cs" />
     <Compile Include="Contracts\Services\IModeratorService.cs" />
     <Compile Include="Contracts\Services\IProfileService.cs" />
+    <Compile Include="DTO\Article\ArticleCreateDTO.cs" />
     <Compile Include="DTO\Category\CategoryCreateDTO.cs" />
     <Compile Include="DTO\Profile\ModeratorListDTO.cs" />
     <Compile Include="DTO\Profile\ProfileBaseDTO.cs" />
@@ -112,6 +114,7 @@
     <Compile Include="NinjectModules\LogicModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AccountService.cs" />
+    <Compile Include="Services\ArticleService.cs" />
     <Compile Include="Services\CategoryService.cs" />
     <Compile Include="Services\ModeratorService.cs" />
     <Compile Include="Services\ProfileService.cs" />

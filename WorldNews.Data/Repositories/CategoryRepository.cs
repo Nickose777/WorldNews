@@ -14,5 +14,10 @@ namespace WorldNews.Data.Repositories
         {
             return context.Categories.Any(category => category.Name == name);
         }
+
+        public CategoryEntity GetByName(string categoryName)
+        {
+            return context.Categories.SingleOrDefault(category => category.Name == categoryName);
+        }
     }
 }

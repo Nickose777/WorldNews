@@ -49,8 +49,6 @@ namespace WorldNews.Controllers
                 AddModelErrors(serviceMessage.Errors);
                 return View(model);
             }
-
-            return View();
         }
     }
 }
