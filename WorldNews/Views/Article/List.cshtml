@@ -1,0 +1,27 @@
+﻿@model IEnumerable<WorldNews.Models.Article.ArticleListViewModel>
+
+@{
+    ViewBag.Title = "List";
+}
+
+<ul>
+    @foreach (var item in Model)
+    {
+        <li>
+            <div class="media">
+                <div class="media-body">
+                    <a href="@Url.Action("Details", "Article", new { id = item.Id })">
+                        <div class="text-center">
+                            <img class="media-object img-responsive img-thumbnail" src="@Url.Content(item.PhotoLink)" alt="Photo">
+                        </div>
+                    </a>
+                    <a href="@Url.Action("Details", "Article", new { id = item.Id })">
+                        <h3 class="media-heading h3">@item.Header</h3>
+                    </a>
+                    <p class="h4">@Html.DisplayFor(model => item.Description)</p>
+                    <p>@Html.DisplayFor(model => item.DateCreated)</p>
+                </div>
+            </div>
+        </li>
+    }
+</ul>

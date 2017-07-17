@@ -198,6 +198,7 @@
     <Compile Include="Mappings\CategoryProfile.cs" />
     <Compile Include="Mappings\RegisterProfile.cs" />
     <Compile Include="Models\Article\ArticleCreateViewModel.cs" />
+    <Compile Include="Models\Article\ArticleListViewModel.cs" />
     <Compile Include="Models\Category\CategoryCreateViewModel.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
     <Compile Include="Models\ModeratorRegisterViewModel.cs" />
@@ -269,6 +270,7 @@
     <Content Include="Views\Moderator\List.cshtml" />
     <Content Include="Views\Category\Create.cshtml" />
     <Content Include="Views\Article\Create.cshtml" />
+    <Content Include="Views\Article\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

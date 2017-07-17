@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using WorldNews.Core.Entities;
 using WorldNews.Data.Contracts;
 using WorldNews.Logic.Contracts;
@@ -73,6 +74,41 @@ namespace WorldNews.Logic.Services
             {
                 Errors = errors,
                 Succeeded = succeeded
+            };
+        }
+
+        public DataServiceMessage<IEnumerable<ArticleListDTO>> GetAll()
+        {
+            List<string> errors = new List<string>();
+            bool succeeded = true;
+            IEnumerable<ArticleListDTO> data = null;
+
+            try
+            {
+                IEnumerable<ArticleEntity> articleEntities = unitOfWork.Articles.GetAll();
+                data = articleEntities.Select(articleEntity =>
+                    new ArticleListDTO
+                    {
+                        Id = encryptor.Encrypt(articleEntity.Id.ToString()),
+                        DateCreated = articleEntity.DateCreated,
+                        Description = articleEntity.ShortDescription,
+                        Header = articleEntity.Header,
+                        PhotoLink = articleEntity.PhotoLink
+                    })
+                    .OrderByDescending(article => article.DateCreated)
+                    .ToList();
+            }
+            catch (Exception ex)
+            {
+                succeeded = false;
+                ExceptionMessageBuilder.FillErrors(ex, errors);
+            }
+
+            return new DataServiceMessage<IEnumerable<ArticleListDTO>>
+            {
+                Errors = errors,
+                Succeeded = succeeded,
+                Data = data
             };
         }
 

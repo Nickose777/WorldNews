@@ -8,6 +8,7 @@ using WorldNews.Attributes;
 using WorldNews.Logic.Contracts.Services;
 using WorldNews.Logic.DTO.Article;
 using WorldNews.Logic.Infrastructure;
+using WorldNews.Mappings;
 using WorldNews.Models.Article;
 
 namespace WorldNews.Controllers
@@ -73,6 +74,17 @@ namespace WorldNews.Controllers
             }
         }
 
+        public ActionResult List()
+        {
+            var model = GetArticles();
+            return View(model);
+        }
+
+        public ActionResult Details(string id)
+        {
+            return View();
+        }
+
         private IEnumerable<SelectListItem> GetAllCategories()
         {
             IEnumerable<SelectListItem> categories;
@@ -92,6 +104,23 @@ namespace WorldNews.Controllers
             }
 
             return categories;
+        }
+
+        private IEnumerable<ArticleListViewModel> GetArticles()
+        {
+            IEnumerable<ArticleListViewModel> articles;
+
+            DataServiceMessage<IEnumerable<ArticleListDTO>> serviceMessage = articleService.GetAll();
+            if (serviceMessage.Succeeded)
+            {
+                articles = AutoMapperExtensions.Map<ArticleListDTO, ArticleListViewModel>(serviceMessage.Data);
+            }
+            else
+            {
+                articles = new List<ArticleListViewModel>();
+            }
+
+            return articles;
         }
     }
 }
