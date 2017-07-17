@@ -2,7 +2,7 @@
 using WorldNews.Logic.DTO.Profile;
 using WorldNews.Logic.Infrastructure;
 
-namespace WorldNews.Logic.Contracts
+namespace WorldNews.Logic.Contracts.Services
 {
     public interface IProfileService : IDisposable
     {

@@ -88,8 +88,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Contracts\IAccountService.cs" />
-    <Compile Include="Contracts\IProfileService.cs" />
+    <Compile Include="Contracts\IEncryptor.cs" />
+    <Compile Include="Contracts\Services\IAccountService.cs" />
+    <Compile Include="Contracts\Services\IModeratorService.cs" />
+    <Compile Include="Contracts\Services\IProfileService.cs" />
+    <Compile Include="DTO\Profile\ModeratorListDTO.cs" />
     <Compile Include="DTO\Profile\ProfileBaseDTO.cs" />
     <Compile Include="DTO\Registration\ModeratorRegisterDTO.cs" />
     <Compile Include="DTO\Registration\RegisterBaseDTO.cs" />
@@ -100,12 +103,14 @@
     <Compile Include="Identity\UserManager.cs" />
     <Compile Include="Identity\UserStore.cs" />
     <Compile Include="Infrastructure\DataServiceMessage.cs" />
+    <Compile Include="Infrastructure\Encryptor.cs" />
     <Compile Include="Infrastructure\ExceptionMessagBuilder.cs" />
     <Compile Include="Infrastructure\Roles.cs" />
     <Compile Include="Infrastructure\ServiceMessage.cs" />
     <Compile Include="NinjectModules\LogicModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AccountService.cs" />
+    <Compile Include="Services\ModeratorService.cs" />
     <Compile Include="Services\ProfileService.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using WorldNews.Core.Entities;
 using WorldNews.Data.Contracts;
-using WorldNews.Logic.Contracts;
+using WorldNews.Logic.Contracts.Services;
 using WorldNews.Logic.DTO.Registration;
 using WorldNews.Logic.Identity;
 using WorldNews.Logic.Infrastructure;

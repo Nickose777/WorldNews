@@ -1,17 +1,14 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using WorldNews.Logic.Contracts;
+using WorldNews.Attributes;
+using WorldNews.Logic.Contracts.Services;
 using WorldNews.Logic.DTO.Profile;
 using WorldNews.Logic.Infrastructure;
 using WorldNews.Models;
 
 namespace WorldNews.Controllers
 {
-    [Authorize(Roles = Roles.AdminRole)]
+    [AdminAuthorize]
     public class AdminController : ControllerBase
     {
         private readonly IProfileService service;

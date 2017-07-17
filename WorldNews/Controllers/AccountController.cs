@@ -5,7 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using WorldNews.Attributes;
-using WorldNews.Logic.Contracts;
+using WorldNews.Logic.Contracts.Services;
 using WorldNews.Logic.DTO.Registration;
 using WorldNews.Logic.Infrastructure;
 using WorldNews.Models;
@@ -92,7 +92,8 @@ namespace WorldNews.Controllers
             }
 
             string fileName = System.IO.Path.GetFileName(model.Photo.FileName);
-            string path = System.IO.Path.Combine(Server.MapPath("~/Images/Uploads"), fileName);
+            string serverPath = Server.MapPath("~/Images/Uploads");
+            string path = System.IO.Path.Combine(serverPath, fileName);
             model.Photo.SaveAs(path);
 
             ModeratorRegisterDTO moderatorDTO = Mapper.Map<ModeratorRegisterViewModel, ModeratorRegisterDTO>(model);

@@ -183,6 +183,7 @@
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\ControllerBase.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ModeratorController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -190,10 +191,12 @@
     <Compile Include="Helpers\RoleHelper.cs" />
     <Compile Include="Helpers\RouteHelper.cs" />
     <Compile Include="Mappings\AccountProfile.cs" />
+    <Compile Include="Mappings\AutoMapperExtensions.cs" />
     <Compile Include="Mappings\RegisterProfile.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
     <Compile Include="Models\ModeratorRegisterViewModel.cs" />
     <Compile Include="Models\ProfileViewModel.cs" />
+    <Compile Include="Models\Profile\ModeratorListViewModel.cs" />
     <Compile Include="Models\RegisterViewModel.cs" />
     <Compile Include="NinjectModules\OwinModule.cs" />
     <Compile Include="NinjectModules\ServiceModule.cs" />
@@ -257,6 +260,7 @@
     <Content Include="Views\Shared\Logout.cshtml" />
     <Content Include="Views\Shared\Sidebar.cshtml" />
     <Content Include="Views\Account\RegisterModerator.cshtml" />
+    <Content Include="Views\Moderator\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

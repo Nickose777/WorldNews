@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using WorldNews.Core.Entities;
 using WorldNews.Data.Contracts;
-using WorldNews.Logic.Contracts;
+using WorldNews.Logic.Contracts.Services;
 using WorldNews.Logic.DTO.Profile;
 using WorldNews.Logic.Infrastructure;
 
