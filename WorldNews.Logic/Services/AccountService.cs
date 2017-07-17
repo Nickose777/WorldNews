@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using System;
@@ -64,34 +63,52 @@ namespace WorldNews.Logic.Services
             {
                 try
                 {
-                    succeeded = ValidateCredentials(userDTO.Login, userDTO.Email, errors);
+                    succeeded = Register(userDTO, errors);
                     if (succeeded)
                     {
-                        ApplicationUser applicationUser = new ApplicationUser
+                        UserEntity userEntity = new UserEntity
                         {
-                            UserName = userDTO.Login,
-                            Email = userDTO.Email,
-                            FirstName = userDTO.FirstName,
-                            LastName = userDTO.LastName
+                            Id = userManager.FindByName(userDTO.Login).Id
                         };
-                        string password = userDTO.Password;
-                        IdentityResult identityResult = userManager.Create(applicationUser, password);
 
-                        if (identityResult.Succeeded)
-                        {
-                            UserEntity userEntity = new UserEntity
-                            {
-                                Id = applicationUser.Id
-                            };
+                        unitOfWork.Users.Add(userEntity);
+                        userManager.AddToRole(userEntity.Id, Roles.UserRole);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    succeeded = false;
+                    ExceptionMessageBuilder.FillErrors(ex, errors);
+                }
+            }
 
-                            unitOfWork.Users.Add(userEntity);
-                            userManager.AddToRole(applicationUser.Id, Roles.UserRole);
-                        }
-                        else
+            return new ServiceMessage
+            {
+                Succeeded = succeeded,
+                Errors = errors
+            };
+        }
+
+        public ServiceMessage RegisterModerator(ModeratorRegisterDTO moderatorDTO)
+        {
+            List<string> errors = new List<string>();
+            bool succeeded = Validate(moderatorDTO, errors);
+
+            if (succeeded)
+            {
+                try
+                {
+                    succeeded = Register(moderatorDTO, errors);
+                    if (succeeded)
+                    {
+                        ModeratorEntity moderatorEntity = new ModeratorEntity
                         {
-                            errors.AddRange(identityResult.Errors);
-                            succeeded = false;
-                        }
+                            Id = userManager.FindByName(moderatorDTO.Login).Id,
+                            PhotoLink = moderatorDTO.PhotoLink
+                        };
+
+                        unitOfWork.Moderators.Add(moderatorEntity);
+                        userManager.AddToRole(moderatorEntity.Id, Roles.ModeratorRole);
                     }
                 }
                 catch (Exception ex)
@@ -127,6 +144,31 @@ namespace WorldNews.Logic.Services
         public void Dispose()
         {
             unitOfWork.Dispose();
+        }
+
+        private bool Register(RegisterBaseDTO registerBaseDTO, List<string> errors)
+        {
+            bool succeeded = ValidateCredentials(registerBaseDTO, errors);
+            if (succeeded)
+            {
+                ApplicationUser applicationUser = new ApplicationUser
+                {
+                    UserName = registerBaseDTO.Login,
+                    Email = registerBaseDTO.Email,
+                    FirstName = registerBaseDTO.FirstName,
+                    LastName = registerBaseDTO.LastName
+                };
+                string password = registerBaseDTO.Password;
+                IdentityResult identityResult = userManager.Create(applicationUser, password);
+
+                if (!identityResult.Succeeded)
+                {
+                    errors.AddRange(identityResult.Errors);
+                    succeeded = false;
+                }
+            }
+
+            return succeeded;
         }
 
         #region Initialization
@@ -195,16 +237,17 @@ namespace WorldNews.Logic.Services
         {
             bool isValid = ValidateRegisterBase(userDTO, errors);
 
-            if (String.IsNullOrEmpty(userDTO.FirstName))
-            {
-                isValid = false;
-                errors.Add("First name cannot be empty");
-            }
+            return isValid;
+        }
 
-            if (String.IsNullOrEmpty(userDTO.LastName))
+        private bool Validate(ModeratorRegisterDTO moderatorDTO, ICollection<string> errors)
+        {
+            bool isValid = ValidateRegisterBase(moderatorDTO, errors);
+
+            if (String.IsNullOrEmpty(moderatorDTO.PhotoLink))
             {
                 isValid = false;
-                errors.Add("Last name cannot be empty");
+                errors.Add("Photo link name cannot be empty");
             }
 
             return isValid;
@@ -232,20 +275,32 @@ namespace WorldNews.Logic.Services
                 errors.Add("Password cannot be empty");
             }
 
+            if (String.IsNullOrEmpty(registerBaseDTO.FirstName))
+            {
+                isValid = false;
+                errors.Add("First name cannot be empty");
+            }
+
+            if (String.IsNullOrEmpty(registerBaseDTO.LastName))
+            {
+                isValid = false;
+                errors.Add("Last name cannot be empty");
+            }
+
             return isValid;
         }
 
-        private bool ValidateCredentials(string login, string email, ICollection<string> errors)
+        private bool ValidateCredentials(RegisterBaseDTO registerBaseDTO, ICollection<string> errors)
         {
             bool isValid = true;
 
-            if (unitOfWork.Users.EmailExists(email))
+            if (unitOfWork.Users.EmailExists(registerBaseDTO.Email))
             {
                 isValid = false;
                 errors.Add("Such E-Mail is already registered");
             }
 
-            if (unitOfWork.Users.LoginExists(login))
+            if (unitOfWork.Users.LoginExists(registerBaseDTO.Login))
             {
                 isValid = false;
                 errors.Add("Such login is already taken");

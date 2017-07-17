@@ -10,6 +10,9 @@ namespace WorldNews.Mappings
         {
             this.CreateMap<RegisterViewModel, UserRegisterDTO>()
                 .ForSourceMember(src => src.ConfirmPassword, opt => opt.Ignore());
+            this.CreateMap<ModeratorRegisterViewModel, ModeratorRegisterDTO>()
+                .ForSourceMember(src => src.ConfirmPassword, opt => opt.Ignore())
+                .ForSourceMember(src => src.Photo, opt => opt.Ignore());
         }
     }
 }

@@ -1,0 +1,14 @@
+﻿@using WorldNews.Helpers;
+@using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { @class = "navbar-right", id = "logoff" }))
+{
+    @Html.AntiForgeryToken()
+
+    <ul class="nav navbar-nav navbar-right">
+        <li>
+            @Html.RenderGreeting(User)
+        </li>
+        <li>
+            <a href="javascript:document.getElementById('logoff').submit()">Log off</a>
+        </li>
+    </ul>
+}

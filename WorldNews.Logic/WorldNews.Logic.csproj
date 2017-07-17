@@ -91,6 +91,7 @@
     <Compile Include="Contracts\IAccountService.cs" />
     <Compile Include="Contracts\IProfileService.cs" />
     <Compile Include="DTO\Profile\ProfileBaseDTO.cs" />
+    <Compile Include="DTO\Registration\ModeratorRegisterDTO.cs" />
     <Compile Include="DTO\Registration\RegisterBaseDTO.cs" />
     <Compile Include="DTO\Registration\UserRegisterDTO.cs" />
     <Compile Include="Identity\RoleManager.cs" />

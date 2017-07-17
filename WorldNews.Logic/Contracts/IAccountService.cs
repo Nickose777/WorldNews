@@ -10,6 +10,8 @@ namespace WorldNews.Logic.Contracts
 
         ServiceMessage RegisterUser(UserRegisterDTO userDTO);
 
+        ServiceMessage RegisterModerator(ModeratorRegisterDTO moderatorDTO);
+
         ServiceMessage LogIn(string login, string password);
 
         void LogOff();

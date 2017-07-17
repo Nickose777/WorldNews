@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using WorldNews.Attributes;
 using WorldNews.Logic.Contracts;
 using WorldNews.Logic.DTO.Registration;
 using WorldNews.Logic.Infrastructure;
@@ -11,7 +12,6 @@ using WorldNews.Models;
 
 namespace WorldNews.Controllers
 {
-    [Authorize]
     public class AccountController : ControllerBase
     {
         private readonly IAccountService service;
@@ -28,7 +28,7 @@ namespace WorldNews.Controllers
             ServiceMessage serviceMessage = service.InitializeRoles();
             if (serviceMessage.Succeeded)
             {
-                return RedirectToAction("Register");
+                return RedirectToAction("RegisterUser");
             }
             else
             {
@@ -39,7 +39,7 @@ namespace WorldNews.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public ActionResult Register()
+        public ActionResult RegisterUser()
         {
             if (!User.Identity.IsAuthenticated)
             {
@@ -53,7 +53,7 @@ namespace WorldNews.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public ActionResult Register(RegisterViewModel model)
+        public ActionResult RegisterUser(RegisterViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -62,6 +62,43 @@ namespace WorldNews.Controllers
 
             UserRegisterDTO userDTO = Mapper.Map<RegisterViewModel, UserRegisterDTO>(model);
             ServiceMessage serviceMessage = service.RegisterUser(userDTO);
+
+            if (serviceMessage.Succeeded)
+            {
+                return RedirectToAction("Login");
+            }
+            else
+            {
+                AddModelErrors(serviceMessage.Errors);
+            }
+
+            return View(model);
+        }
+
+        [HttpGet]
+        [AdminAuthorize]
+        public ActionResult RegisterModerator()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [AdminAuthorize]
+        public ActionResult RegisterModerator(ModeratorRegisterViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            string fileName = System.IO.Path.GetFileName(model.Photo.FileName);
+            string path = System.IO.Path.Combine(Server.MapPath("~/Images/Uploads"), fileName);
+            model.Photo.SaveAs(path);
+
+            ModeratorRegisterDTO moderatorDTO = Mapper.Map<ModeratorRegisterViewModel, ModeratorRegisterDTO>(model);
+            moderatorDTO.PhotoLink = path;
+
+            ServiceMessage serviceMessage = service.RegisterModerator(moderatorDTO);
 
             if (serviceMessage.Succeeded)
             {
@@ -111,6 +148,7 @@ namespace WorldNews.Controllers
             return View();
         }
 
+        [Authorize]
         public ActionResult LogOff()
         {
             service.LogOff();
