@@ -178,13 +178,17 @@
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\ControllerBase.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="App_Start\AutoMapperConfiguration.cs" />
+    <Compile Include="Mappings\AccountProfile.cs" />
     <Compile Include="Mappings\RegisterProfile.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
+    <Compile Include="Models\ProfileViewModel.cs" />
     <Compile Include="Models\RegisterViewModel.cs" />
     <Compile Include="NinjectModules\OwinModule.cs" />
     <Compile Include="NinjectModules\ServiceModule.cs" />
@@ -242,6 +246,7 @@
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Shared\LoginPartial.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Admin\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

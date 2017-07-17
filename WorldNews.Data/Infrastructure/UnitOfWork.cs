@@ -12,6 +12,7 @@ namespace WorldNews.Data.Infrastructure
         private ICategoryRepository categories;
         private ICommentRepository comments;
         private IModeratorRepository moderators;
+        private IProfileRepository profiles;
         private IUserRepository users;
 
         public WorldNewsDbContext Context { get; private set; }
@@ -41,6 +42,11 @@ namespace WorldNews.Data.Infrastructure
             get { return moderators ?? (moderators = new ModeratorRepository(Context)); }
         }
 
+        public IProfileRepository Profiles
+        {
+            get { return profiles ?? (profiles = new ProfileRepository(Context)); }
+        }
+
         public IUserRepository Users
         {
             get { return users ?? (users = new UserRepository(Context)); }
@@ -49,6 +55,11 @@ namespace WorldNews.Data.Infrastructure
         public UnitOfWork(WorldNewsDbContext context)
         {
             this.Context = context;
+        }
+
+        public void Commit()
+        {
+            Context.SaveChanges();
         }
 
         public void Dispose()

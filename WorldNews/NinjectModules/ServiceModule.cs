@@ -9,6 +9,7 @@ namespace WorldNews.NinjectModules
         public override void Load()
         {
             this.Bind<IAccountService>().To<AccountService>();
+            this.Bind<IProfileService>().To<ProfileService>();
         }
     }
 }

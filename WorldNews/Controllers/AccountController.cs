@@ -12,7 +12,7 @@ using WorldNews.Models;
 namespace WorldNews.Controllers
 {
     [Authorize]
-    public class AccountController : Controller
+    public class AccountController : ControllerBase
     {
         private readonly IAccountService service;
 
@@ -116,14 +116,6 @@ namespace WorldNews.Controllers
             service.LogOff();
 
             return RedirectToAction("Login");
-        }
-
-        private void AddModelErrors(IEnumerable<string> errors)
-        {
-            foreach (string error in errors)
-            {
-                ModelState.AddModelError("", error);
-            }
         }
     }
 }

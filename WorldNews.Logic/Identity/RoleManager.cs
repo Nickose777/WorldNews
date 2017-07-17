@@ -8,7 +8,7 @@ using WorldNews.Core.Entities;
 
 namespace WorldNews.Logic.Identity
 {
-    class RoleManager : RoleManager<ApplicationRole>
+    class RoleManager : RoleManager<ApplicationRole, string>
     {
         public RoleManager(IRoleStore<ApplicationRole, string> store)
             : base(store) { }

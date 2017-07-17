@@ -18,6 +18,10 @@ namespace WorldNews.Data.Contracts
 
         IModeratorRepository Moderators { get; }
 
+        IProfileRepository Profiles { get; }
+
         IUserRepository Users { get; }
+
+        void Commit();
     }
 }

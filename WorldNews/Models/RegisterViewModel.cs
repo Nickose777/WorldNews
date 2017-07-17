@@ -10,7 +10,7 @@ namespace WorldNews.Models
         [Required]
         [EmailAddress]
         [Display(Name = "E-Mail")]
-        public string EMail { get; set; }
+        public string Email { get; set; }
 
         [Required]
         [Display(Name = "First name")]

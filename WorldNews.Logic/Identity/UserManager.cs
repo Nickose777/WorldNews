@@ -8,9 +8,9 @@ using WorldNews.Core.Entities;
 
 namespace WorldNews.Logic.Identity
 {
-    class UserManager : UserManager<ApplicationUser>
+    class UserManager : UserManager<ApplicationUser, string>
     {
-        public UserManager(IUserStore<ApplicationUser> store)
+        public UserManager(IUserStore<ApplicationUser, string> store)
             : base(store)
         {
             this.PasswordValidator = new PasswordValidator

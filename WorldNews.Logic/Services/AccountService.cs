@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using System;
 using System.Collections.Generic;
@@ -23,8 +23,8 @@ namespace WorldNews.Logic.Services
         public AccountService(IUnitOfWork unitOfWork, IAuthenticationManager authenticationManager)
         {
             this.unitOfWork = unitOfWork;
-            this.userManager = new UserManager(new UserStore<ApplicationUser>(unitOfWork.Context));
-            this.roleManager = new RoleManager(new RoleStore<ApplicationRole>(unitOfWork.Context));
+            this.userManager = new UserManager(new UserStore(unitOfWork.Context));
+            this.roleManager = new RoleManager(new RoleStore(unitOfWork.Context));
             this.signInManager = new SignInManager(userManager, authenticationManager);
         }
 
@@ -64,13 +64,13 @@ namespace WorldNews.Logic.Services
             {
                 try
                 {
-                    succeeded = ValidateCredentials(userDTO.Login, userDTO.EMail, errors);
+                    succeeded = ValidateCredentials(userDTO.Login, userDTO.Email, errors);
                     if (succeeded)
                     {
                         ApplicationUser applicationUser = new ApplicationUser
                         {
                             UserName = userDTO.Login,
-                            Email = userDTO.EMail,
+                            Email = userDTO.Email,
                             FirstName = userDTO.FirstName,
                             LastName = userDTO.LastName
                         };
@@ -176,7 +176,7 @@ namespace WorldNews.Logic.Services
                 }
             }
 
-            if (succeeded && !userManager.IsInRole(admin.Id, role))
+            if (succeeded && !unitOfWork.Profiles.IsInRole(admin.Id, role))
             {
                 IdentityResult identityResult = userManager.AddToRole(admin.Id, role);
                 if (!identityResult.Succeeded)
@@ -220,7 +220,7 @@ namespace WorldNews.Logic.Services
                 errors.Add("Login cannot be empty");
             }
 
-            if (String.IsNullOrEmpty(registerBaseDTO.EMail))
+            if (String.IsNullOrEmpty(registerBaseDTO.Email))
             {
                 isValid = false;
                 errors.Add("E-Mail cannot be empty");

@@ -5,7 +5,7 @@ using WorldNews.Core.Entities;
 
 namespace WorldNews.Core
 {
-    public class WorldNewsDbContext : IdentityDbContext<ApplicationUser>
+    public class WorldNewsDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, string, IdentityUserLogin, IdentityUserRole, IdentityUserClaim>
     {
         public DbSet<ArticleEntity> Articles { get; set; }
 

@@ -10,6 +10,7 @@ namespace WorldNews
             Mapper.Initialize(config =>
             {
                 config.AddProfile<RegisterProfile>();
+                config.AddProfile<AccountProfile>();
             });
         }
     }
