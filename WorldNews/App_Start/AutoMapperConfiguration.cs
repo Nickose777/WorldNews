@@ -11,6 +11,7 @@ namespace WorldNews
             {
                 config.AddProfile<RegisterProfile>();
                 config.AddProfile<AccountProfile>();
+                config.AddProfile<CategoryProfile>();
             });
         }
     }

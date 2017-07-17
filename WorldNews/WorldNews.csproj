@@ -181,6 +181,7 @@
     <Compile Include="Attributes\ModeratorAuthorizeAttribute.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\ControllerBase.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ModeratorController.cs" />
@@ -192,7 +193,9 @@
     <Compile Include="Helpers\RouteHelper.cs" />
     <Compile Include="Mappings\AccountProfile.cs" />
     <Compile Include="Mappings\AutoMapperExtensions.cs" />
+    <Compile Include="Mappings\CategoryProfile.cs" />
     <Compile Include="Mappings\RegisterProfile.cs" />
+    <Compile Include="Models\Category\CategoryCreateViewModel.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
     <Compile Include="Models\ModeratorRegisterViewModel.cs" />
     <Compile Include="Models\ProfileViewModel.cs" />
@@ -261,6 +264,7 @@
     <Content Include="Views\Shared\Sidebar.cshtml" />
     <Content Include="Views\Account\RegisterModerator.cshtml" />
     <Content Include="Views\Moderator\List.cshtml" />
+    <Content Include="Views\Category\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
