@@ -1,15 +1,11 @@
-﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using WorldNews.Attributes;
 using WorldNews.Logic.Contracts.Services;
 using WorldNews.Logic.DTO.Profile;
 using WorldNews.Logic.Infrastructure;
-using WorldNews.Models.Profile;
 using WorldNews.Mappings;
+using WorldNews.Models.Profile;
 
 namespace WorldNews.Controllers
 {
@@ -17,7 +13,8 @@ namespace WorldNews.Controllers
     {
         private readonly IModeratorService service;
 
-        public ModeratorController(IModeratorService service)
+        public ModeratorController(IModeratorService service, ICategoryService categoryService)
+            : base(categoryService)
         {
             this.service = service;
         }

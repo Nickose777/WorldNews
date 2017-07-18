@@ -13,7 +13,8 @@ namespace WorldNews.Controllers
     {
         private readonly IProfileService service;
 
-        public AdminController(IProfileService service)
+        public AdminController(IProfileService service, ICategoryService categoryService)
+            : base(categoryService)
         {
             this.service = service;
         }

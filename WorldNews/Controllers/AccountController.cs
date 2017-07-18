@@ -16,7 +16,8 @@ namespace WorldNews.Controllers
     {
         private readonly IAccountService service;
 
-        public AccountController(IAccountService service)
+        public AccountController(IAccountService service, ICategoryService categoryService)
+            : base(categoryService)
         {
             this.service = service;
         }
@@ -47,7 +48,7 @@ namespace WorldNews.Controllers
             }
             else
             {
-                return RedirectToAction("Article", "List");
+                return RedirectToAction("List", "Article");
             }
         }
 
@@ -123,7 +124,7 @@ namespace WorldNews.Controllers
             }
             else
             {
-                return RedirectToAction("Article", "List");
+                return RedirectToAction("List", "Article");
             }
         }
 
@@ -139,7 +140,7 @@ namespace WorldNews.Controllers
             ServiceMessage serviceMessage = service.LogIn(model.Login, model.Password);
             if (serviceMessage.Succeeded)
             {
-                return RedirectToAction("Article", "List");
+                return RedirectToAction("List", "Article");
             }
             else
             {

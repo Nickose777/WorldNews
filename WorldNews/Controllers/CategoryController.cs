@@ -17,6 +17,7 @@ namespace WorldNews.Controllers
         private readonly ICategoryService service;
 
         public CategoryController(ICategoryService service)
+            : base(service)
         {
             this.service = service;
         }

@@ -19,6 +19,7 @@ namespace WorldNews.Controllers
         private readonly ICategoryService categoryService;
 
         public ArticleController(IArticleService articleService, ICategoryService categoryService)
+            : base(categoryService)
         {
             this.articleService = articleService;
             this.categoryService = categoryService;
@@ -33,7 +34,7 @@ namespace WorldNews.Controllers
             {
                 ArticleCreateViewModel model = new ArticleCreateViewModel
                 {
-                    Categories = GetAllCategories()
+                    Categories = GetSelectListItems()
                 };
 
                 return View(model);
@@ -50,7 +51,7 @@ namespace WorldNews.Controllers
         {
             if (!ModelState.IsValid)
             {
-                model.Categories = GetAllCategories();
+                model.Categories = GetSelectListItems();
                 return View(model);
             }
 
@@ -80,6 +81,12 @@ namespace WorldNews.Controllers
             return View(model);
         }
 
+        public ActionResult ListByCategory(string categoryName)
+        {
+            var model = GetArticles(categoryName);
+            return View("List", model);
+        }
+
         public ActionResult Details(string id)
         {
             id = HttpUtility.UrlDecode(id);
@@ -95,32 +102,23 @@ namespace WorldNews.Controllers
             }
         }
 
-        private IEnumerable<SelectListItem> GetAllCategories()
+        private IEnumerable<SelectListItem> GetSelectListItems()
         {
-            IEnumerable<SelectListItem> categories;
-            DataServiceMessage<IEnumerable<string>> serviceMessage = categoryService.GetAllNames();
-            if (serviceMessage.Succeeded)
-            {
-                categories = serviceMessage.Data.Select(category =>
-                    new SelectListItem
-                    {
-                        Value = category,
-                        Text = category
-                    });
-            }
-            else
-            {
-                categories = new List<SelectListItem>();
-            }
-
-            return categories;
+            return GetAllCategories().Select(category =>
+                new SelectListItem
+                {
+                    Value = category,
+                    Text = category
+                });
         }
 
-        private IEnumerable<ArticleListViewModel> GetArticles()
+        private IEnumerable<ArticleListViewModel> GetArticles(string categoryName = null)
         {
             IEnumerable<ArticleListViewModel> articles;
 
-            DataServiceMessage<IEnumerable<ArticleListDTO>> serviceMessage = articleService.GetAll();
+            DataServiceMessage<IEnumerable<ArticleListDTO>> serviceMessage = categoryName == null ?
+                articleService.GetAll() :
+                articleService.GetAllByCategory(categoryName);
             if (serviceMessage.Succeeded)
             {
                 articles = AutoMapperExtensions.Map<ArticleListDTO, ArticleListViewModel>(serviceMessage.Data);

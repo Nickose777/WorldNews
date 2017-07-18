@@ -16,6 +16,13 @@
                 <div class="navbar-header">
                     @Html.ActionLink("World News", "List", "Article", new { area = "" }, new { @class = "navbar-brand" })
                 </div>
+                <ul class="nav navbar-nav navbar-left">
+                    @foreach (string categoryName in ViewBag.Categories)
+                    {
+                        <li>@Html.ActionLink(categoryName, "ListByCategory", "Article", new { @categoryName = categoryName }, null)</li>
+                    }
+                </ul>
+
                 @{Html.RenderPartial("LoginPartial");}
             </div>
         </div>
@@ -34,13 +41,5 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
-
-    @*<script>
-        $(document).ready(function () {
-            $("#sidebarCollapse").on("click", function () {
-                $("#sidebar").toggleClass("active");
-            });
-        });
-    </script>*@
 </body>
 </html>

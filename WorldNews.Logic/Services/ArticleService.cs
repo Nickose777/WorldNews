@@ -128,7 +128,17 @@ namespace WorldNews.Logic.Services
             };
         }
 
+        public DataServiceMessage<IEnumerable<ArticleListDTO>> GetAllByCategory(string categoryName)
+        {
+            return GetAll(true, categoryName);
+        }
+
         public DataServiceMessage<IEnumerable<ArticleListDTO>> GetAll()
+        {
+            return GetAll(false, null);
+        }
+
+        private DataServiceMessage<IEnumerable<ArticleListDTO>> GetAll(bool filter, string categoryName)
         {
             List<string> errors = new List<string>();
             bool succeeded = true;
@@ -136,7 +146,9 @@ namespace WorldNews.Logic.Services
 
             try
             {
-                IEnumerable<ArticleEntity> articleEntities = unitOfWork.Articles.GetAll();
+                IEnumerable<ArticleEntity> articleEntities = filter ?
+                    unitOfWork.Articles.GetAll(categoryEntity => categoryEntity.Category.Name == categoryName) :
+                    unitOfWork.Articles.GetAll();
                 data = articleEntities.Select(articleEntity =>
                     new ArticleListDTO
                     {
