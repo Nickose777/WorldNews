@@ -47,7 +47,7 @@ namespace WorldNews.Controllers
             }
             else
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Article", "List");
             }
         }
 
@@ -123,7 +123,7 @@ namespace WorldNews.Controllers
             }
             else
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Article", "List");
             }
         }
 
@@ -139,7 +139,7 @@ namespace WorldNews.Controllers
             ServiceMessage serviceMessage = service.LogIn(model.Login, model.Password);
             if (serviceMessage.Succeeded)
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Article", "List");
             }
             else
             {

@@ -82,7 +82,17 @@ namespace WorldNews.Controllers
 
         public ActionResult Details(string id)
         {
-            return View();
+            id = HttpUtility.UrlDecode(id);
+            DataServiceMessage<ArticleDetailsDTO> serviceMessage = articleService.Get(id);
+            if (serviceMessage.Succeeded)
+            {
+                ArticleDetailsViewModel model = Mapper.Map<ArticleDetailsDTO, ArticleDetailsViewModel>(serviceMessage.Data);
+                return View(model);
+            }
+            else
+            {
+                return HttpNotFound(String.Join(Environment.NewLine, serviceMessage.Errors));
+            }
         }
 
         private IEnumerable<SelectListItem> GetAllCategories()

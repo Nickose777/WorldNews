@@ -9,6 +9,8 @@ namespace WorldNews.Logic.Contracts.Services
     {
         ServiceMessage Create(ArticleCreateDTO articleDTO);
 
+        DataServiceMessage<ArticleDetailsDTO> Get(string id);
+
         DataServiceMessage<IEnumerable<ArticleListDTO>> GetAll();
     }
 }

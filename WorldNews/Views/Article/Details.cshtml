@@ -1,0 +1,25 @@
+﻿@using WorldNews.Helpers
+@model WorldNews.Models.Article.ArticleDetailsViewModel
+
+@{
+    ViewBag.Title = "Details";
+}
+<div class="row">
+    <div class="col-md-6">
+        <div>
+            <p class="h5">@Html.DisplayFor(model => model.CategoryName)</p>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="pull-right">
+            <p class="h5">@Html.DisplayFor(model => model.DateCreated)</p>
+        </div>
+    </div>
+</div>
+<div>
+    <h3 class="h3">@Html.DisplayFor(model => model.Header)</h3>
+</div>
+<div>
+    <img src="@Url.Content(Model.PhotoLink)" alt="Image" />
+    <p>@Html.TextToHtml(Model.Text)</p>
+</div>

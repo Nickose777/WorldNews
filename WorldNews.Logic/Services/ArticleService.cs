@@ -77,6 +77,57 @@ namespace WorldNews.Logic.Services
             };
         }
 
+        public DataServiceMessage<ArticleDetailsDTO> Get(string encryptedId)
+        {
+            string decryptedId = encryptor.Decrypt(encryptedId);
+            int id;
+
+            List<string> errors = new List<string>();
+            bool succeeded = Int32.TryParse(decryptedId, out id);
+            ArticleDetailsDTO data = null;
+
+            if (succeeded)
+            {
+                try
+                {
+                    ArticleEntity articleEntity = unitOfWork.Articles.Get(id);
+                    if (articleEntity != null)
+                    {
+                        data = new ArticleDetailsDTO
+                        {
+                            Id = encryptedId,
+                            CategoryName = articleEntity.Category.Name,
+                            DateCreated = articleEntity.DateCreated,
+                            Header = articleEntity.Header,
+                            PhotoLink = articleEntity.PhotoLink,
+                            Text = articleEntity.Text
+                        };
+                    }
+                    else
+                    {
+                        succeeded = false;
+                        errors.Add("Article was not found");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    succeeded = false;
+                    ExceptionMessageBuilder.FillErrors(ex, errors);
+                }
+            }
+            else
+            {
+                errors.Add("Article was not found");
+            }
+
+            return new DataServiceMessage<ArticleDetailsDTO>
+            {
+                Errors = errors,
+                Succeeded = succeeded,
+                Data = data
+            };
+        }
+
         public DataServiceMessage<IEnumerable<ArticleListDTO>> GetAll()
         {
             List<string> errors = new List<string>();

@@ -95,6 +95,7 @@
     <Compile Include="Contracts\Services\IModeratorService.cs" />
     <Compile Include="Contracts\Services\IProfileService.cs" />
     <Compile Include="DTO\Article\ArticleCreateDTO.cs" />
+    <Compile Include="DTO\Article\ArticleDetailsDTO.cs" />
     <Compile Include="DTO\Article\ArticleListDTO.cs" />
     <Compile Include="DTO\Category\CategoryCreateDTO.cs" />
     <Compile Include="DTO\Profile\ModeratorListDTO.cs" />
