@@ -3,39 +3,20 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>World News</title>
     @Styles.Render("~/Content/css")
     @Styles.Render("~/Content/Sidebar/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-    <div class="wrapper">
-        @*TODO Remove this part*@
-        <div class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header">
-                    @Html.ActionLink("World News", "List", "Article", new { area = "" }, new { @class = "navbar-brand" })
-                </div>
-                <ul class="nav navbar-nav navbar-left">
-                    @foreach (string categoryName in ViewBag.Categories)
-                    {
-                        <li>@Html.ActionLink(categoryName, "ListByCategory", "Article", new { @categoryName = categoryName }, null)</li>
-                    }
-                </ul>
+    @{Html.RenderPartial("Navigation");}
 
-                @{Html.RenderPartial("LoginPartial");}
-            </div>
-        </div>
-        @*TODO Remove this part*@
-
-        @Html.Partial("Sidebar")
-        <div class="container body-content">
-            @RenderBody()
-            <hr />
-            <footer>
-                <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-            </footer>
-        </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+        </footer>
     </div>
 
     @Scripts.Render("~/bundles/jquery")

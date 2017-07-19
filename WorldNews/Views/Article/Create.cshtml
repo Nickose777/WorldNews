@@ -1,9 +1,5 @@
 ﻿@model WorldNews.Models.Article.ArticleCreateViewModel
 
-@{
-    ViewBag.Title = "Create";
-}
-
 @using (Html.BeginForm("Create", "Article", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()

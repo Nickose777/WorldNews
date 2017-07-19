@@ -39,11 +39,7 @@ namespace WorldNews.Helpers
                 name = user.Identity.Name;
             }
 
-            TagBuilder builer = new TagBuilder("a");
-            builer.Attributes.Add("href", "#");
-            builer.SetInnerText(String.Format("Hello, {0}!", name));
-
-            return MvcHtmlString.Create(builer.ToString(TagRenderMode.Normal));
+            return MvcHtmlString.Create(String.Format("Hello, {0}!", name));
         }
     }
 }

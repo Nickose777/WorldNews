@@ -1,9 +1,5 @@
 ﻿@model WorldNews.Models.ModeratorRegisterViewModel
 
-@{
-    ViewBag.Title = "Register";
-}
-
 @using (Html.BeginForm("RegisterModerator", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()

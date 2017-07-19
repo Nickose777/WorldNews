@@ -1,0 +1,16 @@
+﻿<nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse">
+    @Html.ActionLink("World News", "List", "Article", null, new { @class = "navbar-brand" })
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            @foreach (string categoryName in ViewBag.Categories)
+            {
+                <li class="nav-item">
+                    @Html.ActionLink(categoryName, "ListByCategory", "Article", new { @categoryName = categoryName }, new { @class = "nav-link" })
+                </li>
+            }
+        </ul>
+        <ul class="nav navbar-nav navbar-toggler-right">
+            @{Html.RenderPartial("LoginPartial");}
+        </ul>
+    </div>
+</nav>
