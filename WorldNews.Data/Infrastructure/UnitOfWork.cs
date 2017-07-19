@@ -7,6 +7,7 @@ namespace WorldNews.Data.Infrastructure
 {
     public class UnitOfWork : IUnitOfWork
     {
+        private IApplicationUserRepository applicationUsers;
         private IArticleRepository articles;
         private IBanReasonRepository bans;
         private ICategoryRepository categories;
@@ -16,6 +17,11 @@ namespace WorldNews.Data.Infrastructure
         private IUserRepository users;
 
         public WorldNewsDbContext Context { get; private set; }
+
+        public IApplicationUserRepository ApplicationUsers
+        {
+            get { return applicationUsers ?? (applicationUsers = new ApplicationUserRepository(Context)); }
+        }
 
         public IArticleRepository Articles
         {

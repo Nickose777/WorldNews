@@ -127,12 +127,34 @@ namespace WorldNews.Logic.Services
 
         public ServiceMessage LogIn(string login, string password)
         {
+            List<string> errors = new List<string>();
+            bool succeeded = true;
+
             SignInStatus status = signInManager.PasswordSignIn(login, password, true, false);
+            switch (status)
+            {
+                case SignInStatus.Failure:
+                    succeeded = false;
+                    errors.Add("Invalid login or password");
+                    break;
+                case SignInStatus.LockedOut:
+                    succeeded = false;
+                    errors.Add("Your account is blocked");
+                    break;
+                case SignInStatus.RequiresVerification:
+                    succeeded = false;
+                    errors.Add("Your account required verification");
+                    break;
+                case SignInStatus.Success:
+                    break;
+                default:
+                    break;
+            }
 
             return new ServiceMessage
             {
-                Succeeded = status == SignInStatus.Success,
-                Errors = status != SignInStatus.Success ? new List<string>() { "Invalid login or password" } : null
+                Succeeded = succeeded,
+                Errors = errors
             };
         }
 
@@ -211,7 +233,11 @@ namespace WorldNews.Logic.Services
                 };
 
                 IdentityResult identityResult = userManager.Create(admin, password);
-                if (!identityResult.Succeeded)
+                if (identityResult.Succeeded)
+                {
+                    userManager.SetLockoutEnabled(admin.Id, false);
+                }
+                else
                 {
                     succeeded = false;
                     errors.AddRange(identityResult.Errors);

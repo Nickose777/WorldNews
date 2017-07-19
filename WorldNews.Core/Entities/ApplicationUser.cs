@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.Identity.EntityFramework;
+using System.Collections.Generic;
 
 namespace WorldNews.Core.Entities
 {
@@ -11,5 +12,7 @@ namespace WorldNews.Core.Entities
         public virtual UserEntity User { get; set; }
 
         public virtual ModeratorEntity Moderator { get; set; }
+
+        public virtual ICollection<CommentEntity> Comments { get; set; }
     }
 }

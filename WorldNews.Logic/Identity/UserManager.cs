@@ -20,6 +20,8 @@ namespace WorldNews.Logic.Identity
                 RequireLowercase = true,
                 RequireUppercase = true
             };
+
+            this.UserLockoutEnabledByDefault = true;
         }
     }
 }

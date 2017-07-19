@@ -8,6 +8,8 @@ namespace WorldNews.Data.Contracts
     {
         WorldNewsDbContext Context { get; }
 
+        IApplicationUserRepository ApplicationUsers { get; }
+
         IArticleRepository Articles { get; }
 
         IBanReasonRepository Bans { get; }

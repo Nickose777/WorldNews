@@ -13,6 +13,7 @@ namespace WorldNews.NinjectModules
             this.Bind<IModeratorService>().To<ModeratorService>();
             this.Bind<ICategoryService>().To<CategoryService>();
             this.Bind<IArticleService>().To<ArticleService>();
+            this.Bind<ICommentService>().To<CommentService>();
         }
     }
 }

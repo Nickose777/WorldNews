@@ -13,6 +13,7 @@ namespace WorldNews
                 config.AddProfile<AccountProfile>();
                 config.AddProfile<CategoryProfile>();
                 config.AddProfile<ArticleProfile>();
+                config.AddProfile<CommentProfile>();
             });
         }
     }

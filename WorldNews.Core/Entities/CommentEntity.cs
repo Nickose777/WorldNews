@@ -14,7 +14,7 @@ namespace WorldNews.Core.Entities
 
         public string AuthorId { get; set; }
 
-        public virtual UserEntity Author { get; set; }
+        public virtual ApplicationUser Author { get; set; }
 
         public int ArticleId { get; set; }
 
