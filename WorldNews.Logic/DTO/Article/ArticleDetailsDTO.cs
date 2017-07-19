@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using WorldNews.Logic.DTO.Comment;
 
 namespace WorldNews.Logic.DTO.Article
 {
@@ -15,5 +17,7 @@ namespace WorldNews.Logic.DTO.Article
         public string PhotoLink { get; set; }
 
         public string Text { get; set; }
+
+        public List<CommentListDTO> Comments { get; set; }
     }
 }

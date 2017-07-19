@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using WorldNews.Models.Comment;
 
 namespace WorldNews.Models.Article
 {
@@ -17,5 +19,7 @@ namespace WorldNews.Models.Article
         public string PhotoLink { get; set; }
 
         public string Text { get; set; }
+
+        public IEnumerable<CommentListViewModel> Comments { get; set; }
     }
 }

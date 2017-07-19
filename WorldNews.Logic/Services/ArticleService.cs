@@ -6,6 +6,7 @@ using WorldNews.Data.Contracts;
 using WorldNews.Logic.Contracts;
 using WorldNews.Logic.Contracts.Services;
 using WorldNews.Logic.DTO.Article;
+using WorldNews.Logic.DTO.Comment;
 using WorldNews.Logic.Infrastructure;
 
 namespace WorldNews.Logic.Services
@@ -100,7 +101,32 @@ namespace WorldNews.Logic.Services
                             DateCreated = articleEntity.DateCreated,
                             Header = articleEntity.Header,
                             PhotoLink = articleEntity.PhotoLink,
-                            Text = articleEntity.Text
+                            Text = articleEntity.Text,
+                            Comments = articleEntity.Comments.Select(commentEntity =>
+                                {
+                                    ApplicationUser author = commentEntity.Author;
+                                    string fullName = String.Format("{0} {1}", author.FirstName, author.LastName);
+                                    if (author.Moderator != null)
+                                    {
+                                        fullName += " - [Moderator]";
+                                    }
+                                    else if (author.User == null)
+                                    {
+                                        fullName += " - [Admin]";
+                                    }
+
+                                    CommentListDTO commentDTO = new CommentListDTO
+                                    {
+                                        Id = encryptor.Encrypt(commentEntity.Id.ToString()),
+                                        DateCreated = commentEntity.DateCreated,
+                                        Content = commentEntity.Text,
+                                        AuthorDisplayFullName = fullName
+                                    };
+
+                                    return commentDTO;
+                                })
+                                .OrderByDescending(commentEntity => commentEntity.DateCreated)
+                                .ToList()
                         };
                     }
                     else

@@ -23,3 +23,7 @@
     <img src="@Url.Content(Model.PhotoLink)" alt="Image" />
     <p>@Html.TextToHtml(Model.Text)</p>
 </div>
+
+<hr />
+
+@{Html.RenderPartial("~/Views/Comment/List.cshtml", Model.Comments);}
