@@ -1,4 +1,4 @@
-﻿namespace WorldNews.Logic.DTO.ReasonOfBan
+﻿namespace WorldNews.Logic.DTO.BanReason
 {
     public class BanReasonCreateDTO
     {

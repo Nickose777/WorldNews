@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using WorldNews.Logic.DTO.ReasonOfBan;
+using WorldNews.Logic.DTO.BanReason;
 using WorldNews.Models.BanReason;
 
 namespace WorldNews.Mappings
@@ -9,6 +9,7 @@ namespace WorldNews.Mappings
         public BanReasonProfile()
         {
             this.CreateMap<BanReasonCreateViewModel, BanReasonCreateDTO>();
+            this.CreateMap<BanReasonListDTO, BanReasonListViewModel>();
         }
     }
 }

@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using WorldNews.Core.Entities;
 using WorldNews.Data.Contracts;
 using WorldNews.Logic.Contracts;
 using WorldNews.Logic.Contracts.Services;
-using WorldNews.Logic.DTO.ReasonOfBan;
+using WorldNews.Logic.DTO.BanReason;
 using WorldNews.Logic.Infrastructure;
 
 namespace WorldNews.Logic.Services
@@ -56,6 +57,39 @@ namespace WorldNews.Logic.Services
 
             return new ServiceMessage
             {
+                Errors = errors,
+                Succeeded = succeeded
+            };
+        }
+
+        public DataServiceMessage<IEnumerable<BanReasonListDTO>> GetAll()
+        {
+            List<string> errors = new List<string>();
+            bool succeeded = true;
+            IEnumerable<BanReasonListDTO> data = null;
+
+            try
+            {
+                IEnumerable<BanReasonEntity> banReasonEntities = unitOfWork.Bans.GetAll();
+                data = banReasonEntities.Select(banReasonEntity =>
+                    new BanReasonListDTO
+                    {
+                        Id = encryptor.Encrypt(banReasonEntity.Id.ToString()),
+                        Name = banReasonEntity.Name,
+                        IsEnabled = banReasonEntity.IsEnabled
+                    })
+                    .OrderBy(ban => ban.Name)
+                    .ToList();
+            }
+            catch (Exception ex)
+            {
+                succeeded = false;
+                ExceptionMessageBuilder.FillErrors(ex, errors);
+            }
+
+            return new DataServiceMessage<IEnumerable<BanReasonListDTO>>
+            {
+                Data = data,
                 Errors = errors,
                 Succeeded = succeeded
             };

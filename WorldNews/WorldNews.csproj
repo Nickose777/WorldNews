@@ -205,6 +205,7 @@
     <Compile Include="Models\Article\ArticleDetailsViewModel.cs" />
     <Compile Include="Models\Article\ArticleListViewModel.cs" />
     <Compile Include="Models\BanReason\BanReasonCreateViewModel.cs" />
+    <Compile Include="Models\BanReason\BanReasonListViewModel.cs" />
     <Compile Include="Models\Category\CategoryCreateViewModel.cs" />
     <Compile Include="Models\Category\CategoryEditViewModel.cs" />
     <Compile Include="Models\Category\CategoryListViewModel.cs" />
@@ -296,6 +297,7 @@
     <Content Include="Views\Category\List.cshtml" />
     <Content Include="Views\Category\Edit.cshtml" />
     <Content Include="Views\BanReason\Create.cshtml" />
+    <Content Include="Views\BanReason\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
