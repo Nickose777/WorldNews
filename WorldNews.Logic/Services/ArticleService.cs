@@ -167,7 +167,7 @@ namespace WorldNews.Logic.Services
 
         public DataServiceMessage<IEnumerable<ArticleListDTO>> GetAllEnabled()
         {
-            return GetAll(articleEntity => !articleEntity.Category.IsDisabled);
+            return GetAll(articleEntity => articleEntity.Category.IsEnabled);
         }
 
         private DataServiceMessage<IEnumerable<ArticleListDTO>> GetAll(Expression<Func<ArticleEntity, bool>> expression)

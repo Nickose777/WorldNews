@@ -87,6 +87,10 @@
     <Compile Include="Migrations\201707191422485_MaxLength of article.Designer.cs">
       <DependentUpon>201707191422485_MaxLength of article.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201707191823213_BanReasonEnable.cs" />
+    <Compile Include="Migrations\201707191823213_BanReasonEnable.Designer.cs">
+      <DependentUpon>201707191823213_BanReasonEnable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WorldNewsDbContext.cs" />
@@ -103,6 +107,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201707191422485_MaxLength of article.resx">
       <DependentUpon>201707191422485_MaxLength of article.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707191823213_BanReasonEnable.resx">
+      <DependentUpon>201707191823213_BanReasonEnable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

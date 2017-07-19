@@ -7,9 +7,9 @@
 <ul class="list-group">
     @foreach (var category in Model)
     {
-        string className = category.IsDisabled
-        ? "list-group-item-danger"
-        : "list-group-item-success";
+        string className = category.IsEnabled
+            ? "list-group-item-success"
+            : "list-group-item-danger";
         
         <li class="list-group-item justify-content-between @className">
             @Html.ActionLink(category.Name, "Edit", new { id = Url.Encode(category.Id) })

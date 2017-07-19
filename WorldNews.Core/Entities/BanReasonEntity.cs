@@ -8,6 +8,8 @@ namespace WorldNews.Core.Entities
 
         public string Name { get; set; }
 
+        public bool IsEnabled { get; set; }
+
         public virtual ICollection<CommentEntity> Comments { get; set; }
     }
 }

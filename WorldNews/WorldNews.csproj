@@ -182,6 +182,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\ArticleController.cs" />
+    <Compile Include="Controllers\BanReasonController.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\CommentController.cs" />
     <Compile Include="Controllers\ControllerBase.cs" />
@@ -196,12 +197,14 @@
     <Compile Include="Mappings\AccountProfile.cs" />
     <Compile Include="Mappings\ArticleProfile.cs" />
     <Compile Include="Mappings\AutoMapperExtensions.cs" />
+    <Compile Include="Mappings\BanReasonProfile.cs" />
     <Compile Include="Mappings\CategoryProfile.cs" />
     <Compile Include="Mappings\CommentProfile.cs" />
     <Compile Include="Mappings\RegisterProfile.cs" />
     <Compile Include="Models\Article\ArticleCreateViewModel.cs" />
     <Compile Include="Models\Article\ArticleDetailsViewModel.cs" />
     <Compile Include="Models\Article\ArticleListViewModel.cs" />
+    <Compile Include="Models\BanReason\BanReasonCreateViewModel.cs" />
     <Compile Include="Models\Category\CategoryCreateViewModel.cs" />
     <Compile Include="Models\Category\CategoryEditViewModel.cs" />
     <Compile Include="Models\Category\CategoryListViewModel.cs" />
@@ -292,6 +295,7 @@
     <Content Include="Views\Shared\Navigation.cshtml" />
     <Content Include="Views\Category\List.cshtml" />
     <Content Include="Views\Category\Edit.cshtml" />
+    <Content Include="Views\BanReason\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

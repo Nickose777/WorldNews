@@ -13,7 +13,7 @@ namespace WorldNews.Models.Category
         public string Name { get; set; }
 
         [Required]
-        [Display(Name = "Is disabled")]
-        public bool IsDisabled { get; set; }
+        [Display(Name = "Display category")]
+        public bool IsEnabled { get; set; }
     }
 }

@@ -14,6 +14,7 @@ namespace WorldNews.NinjectModules
             this.Bind<ICategoryService>().To<CategoryService>();
             this.Bind<IArticleService>().To<ArticleService>();
             this.Bind<ICommentService>().To<CommentService>();
+            this.Bind<IBanReasonService>().To<BanReasonService>();
         }
     }
 }

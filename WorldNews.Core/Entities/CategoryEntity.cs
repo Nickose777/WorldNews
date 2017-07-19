@@ -8,7 +8,7 @@ namespace WorldNews.Core.Entities
 
         public string Name { get; set; }
 
-        public bool IsDisabled { get; set; }
+        public bool IsEnabled { get; set; }
 
         public virtual ICollection<ArticleEntity> Articles { get; set; }
     }

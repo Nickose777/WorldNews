@@ -36,7 +36,8 @@ namespace WorldNews.Logic.Services
                     {
                         CategoryEntity categoryEntity = new CategoryEntity
                         {
-                            Name = categoryDTO.Name
+                            Name = categoryDTO.Name,
+                            IsEnabled = true
                         };
 
                         unitOfWork.Categories.Add(categoryEntity);
@@ -80,7 +81,7 @@ namespace WorldNews.Logic.Services
                         if (categoryEntity != null)
                         {
                             categoryEntity.Name = categoryDTO.Name;
-                            categoryEntity.IsDisabled = categoryDTO.IsDisabled;
+                            categoryEntity.IsEnabled = categoryDTO.IsEnabled;
 
                             unitOfWork.Commit();
                         }
@@ -128,7 +129,7 @@ namespace WorldNews.Logic.Services
                     {
                         Id = categoryId,
                         Name = categoryEntity.Name,
-                        IsDisabled = categoryEntity.IsDisabled
+                        IsEnabled = categoryEntity.IsEnabled
                     };
                 }
                 catch (Exception ex)
@@ -153,7 +154,7 @@ namespace WorldNews.Logic.Services
 
         public DataServiceMessage<IEnumerable<string>> GetEnabledNames()
         {
-            return GetAllNames(categoryEntity => !categoryEntity.IsDisabled);
+            return GetAllNames(categoryEntity => categoryEntity.IsEnabled);
         }
 
         public DataServiceMessage<IEnumerable<string>> GetAllNames()
@@ -176,7 +177,7 @@ namespace WorldNews.Logic.Services
                         Id = encryptor.Encrypt(categoryEntity.Id.ToString()),
                         Name = categoryEntity.Name,
                         NewsCount = categoryEntity.Articles.Count,
-                        IsDisabled = categoryEntity.IsDisabled
+                        IsEnabled = categoryEntity.IsEnabled
                     })
                     .OrderBy(category => category.Name)
                     .ToList();

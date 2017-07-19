@@ -14,6 +14,7 @@ namespace WorldNews
                 config.AddProfile<CategoryProfile>();
                 config.AddProfile<ArticleProfile>();
                 config.AddProfile<CommentProfile>();
+                config.AddProfile<BanReasonProfile>();
             });
         }
     }

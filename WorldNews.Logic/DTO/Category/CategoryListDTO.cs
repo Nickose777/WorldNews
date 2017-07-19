@@ -8,6 +8,6 @@
 
         public int NewsCount { get; set; }
 
-        public bool IsDisabled { get; set; }
+        public bool IsEnabled { get; set; }
     }
 }
