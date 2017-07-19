@@ -9,6 +9,10 @@ namespace WorldNews.Logic.Contracts.Services
     {
         ServiceMessage Create(BanReasonCreateDTO banReasonDTO);
 
+        ServiceMessage Edit(BanReasonEditDTO banReasonDTO);
+
+        DataServiceMessage<BanReasonEditDTO> Get(string id);
+
         DataServiceMessage<IEnumerable<BanReasonListDTO>> GetAll();
     }
 }

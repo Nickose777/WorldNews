@@ -14,5 +14,11 @@ namespace WorldNews.Data.Repositories
         {
             return context.BanReasons.Any(ban => ban.Name == name);
         }
+
+
+        public BanReasonEntity Get(string name)
+        {
+            return context.BanReasons.SingleOrDefault(ban => ban.Name == name);
+        }
     }
 }

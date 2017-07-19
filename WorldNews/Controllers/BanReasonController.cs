@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using System.Collections.Generic;
+using System.Web;
 using System.Web.Mvc;
 using WorldNews.Attributes;
 using WorldNews.Logic.Contracts.Services;
@@ -40,7 +41,7 @@ namespace WorldNews.Controllers
             ServiceMessage serviceMessage = service.Create(banReasonDTO);
             if (serviceMessage.Succeeded)
             {
-                return RedirectToAction("Create");
+                return RedirectToAction("List");
             }
             else
             {
@@ -55,6 +56,46 @@ namespace WorldNews.Controllers
             IEnumerable<BanReasonListViewModel> model = GetAllBanReasons();
 
             return View(model);
+        }
+
+        [HttpGet]
+        [AdminAuthorize]
+        public ActionResult Edit(string id)
+        {
+            id = HttpUtility.UrlDecode(id);
+            DataServiceMessage<BanReasonEditDTO> serviceMessage = service.Get(id);
+            if (serviceMessage.Succeeded)
+            {
+                BanReasonEditViewModel model = Mapper.Map<BanReasonEditDTO, BanReasonEditViewModel>(serviceMessage.Data);
+                return View(model);
+            }
+            else
+            {
+                return RedirectToAction("List");
+            }
+        }
+
+        [HttpPost]
+        [AdminAuthorize]
+        public ActionResult Edit(BanReasonEditViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            model.Id = HttpUtility.UrlDecode(model.Id);
+            BanReasonEditDTO banReasonDTO = Mapper.Map<BanReasonEditViewModel, BanReasonEditDTO>(model);
+            ServiceMessage serviceMessage = service.Edit(banReasonDTO);
+            if (serviceMessage.Succeeded)
+            {
+                return RedirectToAction("List");
+            }
+            else
+            {
+                AddModelErrors(serviceMessage.Errors);
+                return View(model);
+            }
         }
 
         private IEnumerable<BanReasonListViewModel> GetAllBanReasons()

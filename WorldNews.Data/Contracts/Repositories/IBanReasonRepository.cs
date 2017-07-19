@@ -5,5 +5,7 @@ namespace WorldNews.Data.Contracts.Repositories
     public interface IBanReasonRepository : IRepository<BanReasonEntity>
     {
         bool Exists(string name);
+
+        BanReasonEntity Get(string name);
     }
 }

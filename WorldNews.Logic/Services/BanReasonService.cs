@@ -62,6 +62,95 @@ namespace WorldNews.Logic.Services
             };
         }
 
+        public ServiceMessage Edit(BanReasonEditDTO banReasonDTO)
+        {
+            int id;
+            string decryptedId = encryptor.Decrypt(banReasonDTO.Id);
+
+            List<string> errors = new List<string>();
+            bool succeeded = true;
+
+            if (Int32.TryParse(decryptedId, out id))
+            {
+                if (succeeded = Validate(banReasonDTO.Name, errors))
+                {
+                    try
+                    {
+                        BanReasonEntity banReasonEntity = unitOfWork.Bans.Get(id);
+                        if (banReasonEntity != null)
+                        {
+                            banReasonEntity.Name = banReasonDTO.Name;
+                            banReasonEntity.IsEnabled = banReasonDTO.IsEnabled;
+
+                            unitOfWork.Commit();
+                        }
+                        else
+                        {
+                            succeeded = false;
+                            errors.Add("Such ban reason was not found");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        succeeded = false;
+                        ExceptionMessageBuilder.FillErrors(ex, errors);
+                    }
+                }
+            }
+            else
+            {
+                succeeded = false;
+                errors.Add("Such ban reason was not found");
+            }
+
+            return new ServiceMessage
+            {
+                Errors = errors,
+                Succeeded = succeeded
+            };
+        }
+
+        public DataServiceMessage<BanReasonEditDTO> Get(string banId)
+        {
+            int id;
+            string decryptedId = encryptor.Decrypt(banId);
+
+            List<string> errors = new List<string>();
+            bool succeeded = true;
+            BanReasonEditDTO data = null;
+
+            if (Int32.TryParse(decryptedId, out id))
+            {
+                try
+                {
+                    BanReasonEntity banReasonEntity = unitOfWork.Bans.Get(id);
+                    data = new BanReasonEditDTO
+                    {
+                        Id = banId,
+                        IsEnabled = banReasonEntity.IsEnabled,
+                        Name = banReasonEntity.Name
+                    };
+                }
+                catch (Exception ex)
+                {
+                    succeeded = false;
+                    ExceptionMessageBuilder.FillErrors(ex, errors);
+                }
+            }
+            else
+            {
+                succeeded = false;
+                errors.Add("Such ban reason was not found");
+            }
+
+            return new DataServiceMessage<BanReasonEditDTO>
+            {
+                Data = data,
+                Errors = errors,
+                Succeeded = succeeded
+            };
+        }
+
         public DataServiceMessage<IEnumerable<BanReasonListDTO>> GetAll()
         {
             List<string> errors = new List<string>();

@@ -10,6 +10,7 @@ namespace WorldNews.Mappings
         {
             this.CreateMap<BanReasonCreateViewModel, BanReasonCreateDTO>();
             this.CreateMap<BanReasonListDTO, BanReasonListViewModel>();
+            this.CreateMap<BanReasonEditViewModel, BanReasonEditDTO>().ReverseMap();
         }
     }
 }
