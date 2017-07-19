@@ -88,6 +88,40 @@ namespace WorldNews.Logic.Services
             };
         }
 
+        public DataServiceMessage<IEnumerable<CategoryListDTO>> GetAll()
+        {
+            List<string> errors = new List<string>();
+            bool succeeded = true;
+            IEnumerable<CategoryListDTO> data = null;
+
+            try
+            {
+                IEnumerable<CategoryEntity> categoryEntities = unitOfWork.Categories.GetAll();
+                data = categoryEntities.Select(categoryEntity =>
+                    new CategoryListDTO
+                    {
+                        Id = encryptor.Encrypt(categoryEntity.Id.ToString()),
+                        Name = categoryEntity.Name,
+                        NewsCount = categoryEntity.Articles.Count,
+                        IsDisabled = categoryEntity.IsDisabled
+                    })
+                    .OrderBy(category => category.Name)
+                    .ToList();
+            }
+            catch (Exception ex)
+            {
+                ExceptionMessageBuilder.FillErrors(ex, errors);
+                succeeded = false;
+            }
+
+            return new DataServiceMessage<IEnumerable<CategoryListDTO>>
+            {
+                Errors = errors,
+                Succeeded = succeeded,
+                Data = data
+            };
+        }
+
         public void Dispose()
         {
             unitOfWork.Dispose();

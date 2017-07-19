@@ -104,7 +104,7 @@ namespace WorldNews.Controllers
 
         private IEnumerable<SelectListItem> GetSelectListItems()
         {
-            return GetAllCategories().Select(category =>
+            return GetAllCategoryNames().Select(category =>
                 new SelectListItem
                 {
                     Value = category,

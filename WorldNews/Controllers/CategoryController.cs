@@ -8,6 +8,7 @@ using WorldNews.Attributes;
 using WorldNews.Logic.Contracts.Services;
 using WorldNews.Logic.DTO.Category;
 using WorldNews.Logic.Infrastructure;
+using WorldNews.Mappings;
 using WorldNews.Models.Category;
 
 namespace WorldNews.Controllers
@@ -43,13 +44,24 @@ namespace WorldNews.Controllers
 
             if (serviceMessage.Succeeded)
             {
-                return Content("Created!");
+                return RedirectToAction("List");
             }
             else
             {
                 AddModelErrors(serviceMessage.Errors);
                 return View(model);
             }
+        }
+
+        [ModeratorAuthorize]
+        public ActionResult List()
+        {
+            DataServiceMessage<IEnumerable<CategoryListDTO>> serviceMessage = service.GetAll();
+            IEnumerable<CategoryListViewModel> model = serviceMessage.Succeeded 
+                ? AutoMapperExtensions.Map<CategoryListDTO, CategoryListViewModel>(serviceMessage.Data) 
+                : new List<CategoryListViewModel>();
+
+            return View(model);
         }
     }
 }

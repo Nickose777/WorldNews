@@ -10,5 +10,7 @@ namespace WorldNews.Logic.Contracts.Services
         ServiceMessage Create(CategoryCreateDTO categoryDTO);
 
         DataServiceMessage<IEnumerable<string>> GetAllNames();
+
+        DataServiceMessage<IEnumerable<CategoryListDTO>> GetAll();
     }
 }

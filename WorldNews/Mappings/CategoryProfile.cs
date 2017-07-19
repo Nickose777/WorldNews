@@ -9,6 +9,7 @@ namespace WorldNews.Mappings
         public CategoryProfile()
         {
             this.CreateMap<CategoryCreateViewModel, CategoryCreateDTO>();
+            this.CreateMap<CategoryListDTO, CategoryListViewModel>();
         }
     }
 }
