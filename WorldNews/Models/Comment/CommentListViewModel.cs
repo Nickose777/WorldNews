@@ -11,7 +11,7 @@ namespace WorldNews.Models.Comment
 
         public string AuthorDisplayFullName { get; set; }
 
-        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}")]
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy HH:mm:ss}")]
         public DateTime DateCreated { get; set; }
     }
 }
