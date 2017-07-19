@@ -32,9 +32,10 @@ namespace WorldNews.Controllers
             DataServiceMessage<IEnumerable<string>> serviceMessage = categoryService.GetAllNames();
             if (serviceMessage.Succeeded)
             {
+                var categoryNames = GetAllCategoryNames();
                 ArticleCreateViewModel model = new ArticleCreateViewModel
                 {
-                    Categories = GetSelectListItems()
+                    Categories = ConvertToSelectListItems(categoryNames)
                 };
 
                 return View(model);
@@ -51,14 +52,14 @@ namespace WorldNews.Controllers
         {
             if (!ModelState.IsValid)
             {
-                model.Categories = GetSelectListItems();
+                var categoryNames = GetAllCategoryNames();
+                model.Categories = ConvertToSelectListItems(categoryNames);
                 return View(model);
             }
 
-            string fileName = System.IO.Path.GetFileName(model.Photo.FileName);
+            string fileName = String.Format("{0}_{1}{2}", model.CategoryName, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss"), System.IO.Path.GetExtension(model.Photo.FileName));
             string serverPath = Server.MapPath("~/Images/Uploads");
             string path = System.IO.Path.Combine(serverPath, fileName);
-            model.Photo.SaveAs(path);
 
             ArticleCreateDTO articleDTO = Mapper.Map<ArticleCreateViewModel, ArticleCreateDTO>(model);
             articleDTO.PhotoLink = path;
@@ -66,7 +67,8 @@ namespace WorldNews.Controllers
             ServiceMessage serviceMessage = articleService.Create(articleDTO);
             if (serviceMessage.Succeeded)
             {
-                return Content("Article created!");
+                model.Photo.SaveAs(path);
+                return RedirectToAction("List");
             }
             else
             {
@@ -102,13 +104,30 @@ namespace WorldNews.Controllers
             }
         }
 
-        private IEnumerable<SelectListItem> GetSelectListItems()
+        private IEnumerable<string> GetAllCategoryNames()
         {
-            return GetAllCategoryNames().Select(category =>
+            IEnumerable<string> categoryNames;
+
+            DataServiceMessage<IEnumerable<string>> serviceMessage = categoryService.GetAllNames();
+            if (serviceMessage.Succeeded)
+            {
+                categoryNames = serviceMessage.Data;
+            }
+            else
+            {
+                categoryNames = new List<string>();
+            }
+
+            return categoryNames;
+        }
+
+        private IEnumerable<SelectListItem> ConvertToSelectListItems(IEnumerable<string> categoryNames)
+        {
+            return categoryNames.Select(categoryName =>
                 new SelectListItem
                 {
-                    Value = category,
-                    Text = category
+                    Value = categoryName,
+                    Text = categoryName
                 });
         }
 
@@ -116,9 +135,9 @@ namespace WorldNews.Controllers
         {
             IEnumerable<ArticleListViewModel> articles;
 
-            DataServiceMessage<IEnumerable<ArticleListDTO>> serviceMessage = categoryName == null ?
-                articleService.GetAll() :
-                articleService.GetAllByCategory(categoryName);
+            DataServiceMessage<IEnumerable<ArticleListDTO>> serviceMessage = categoryName == null
+                ? articleService.GetAllEnabled()
+                : articleService.GetAllByCategory(categoryName);
             if (serviceMessage.Succeeded)
             {
                 articles = AutoMapperExtensions.Map<ArticleListDTO, ArticleListViewModel>(serviceMessage.Data);

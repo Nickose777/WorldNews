@@ -99,6 +99,7 @@
     <Compile Include="DTO\Article\ArticleDetailsDTO.cs" />
     <Compile Include="DTO\Article\ArticleListDTO.cs" />
     <Compile Include="DTO\Category\CategoryCreateDTO.cs" />
+    <Compile Include="DTO\Category\CategoryEditDTO.cs" />
     <Compile Include="DTO\Category\CategoryListDTO.cs" />
     <Compile Include="DTO\Comment\CommentCreateDTO.cs" />
     <Compile Include="DTO\Comment\CommentListDTO.cs" />

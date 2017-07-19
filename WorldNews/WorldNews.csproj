@@ -203,6 +203,7 @@
     <Compile Include="Models\Article\ArticleDetailsViewModel.cs" />
     <Compile Include="Models\Article\ArticleListViewModel.cs" />
     <Compile Include="Models\Category\CategoryCreateViewModel.cs" />
+    <Compile Include="Models\Category\CategoryEditViewModel.cs" />
     <Compile Include="Models\Category\CategoryListViewModel.cs" />
     <Compile Include="Models\Comment\CommentCreateViewModel.cs" />
     <Compile Include="Models\Comment\CommentListViewModel.cs" />
@@ -290,6 +291,7 @@
     <Content Include="Views\Comment\List.cshtml" />
     <Content Include="Views\Shared\Navigation.cshtml" />
     <Content Include="Views\Category\List.cshtml" />
+    <Content Include="Views\Category\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

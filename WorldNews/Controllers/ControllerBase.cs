@@ -24,14 +24,14 @@ namespace WorldNews.Controllers
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            ViewBag.Categories = GetAllCategoryNames();
+            ViewBag.Categories = GetEnabledCategoryNames();
 
             base.OnActionExecuting(filterContext);
         }
 
-        protected IEnumerable<string> GetAllCategoryNames()
+        protected IEnumerable<string> GetEnabledCategoryNames()
         {
-            DataServiceMessage<IEnumerable<string>> serviceMessage = service.GetAllNames();
+            DataServiceMessage<IEnumerable<string>> serviceMessage = service.GetEnabledNames();
 
             return serviceMessage.Succeeded ?
                 serviceMessage.Data :

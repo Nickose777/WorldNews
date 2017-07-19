@@ -11,10 +11,10 @@ namespace WorldNews.Core.Configurations
 
             this.Property(article => article.Header)
                 .IsRequired()
-                .HasMaxLength(100);
+                .HasMaxLength(200);
             this.Property(article => article.ShortDescription)
                 .IsRequired()
-                .HasMaxLength(200);
+                .HasMaxLength(400);
             this.Property(article => article.PhotoLink)
                 .IsRequired()
                 .HasMaxLength(200);

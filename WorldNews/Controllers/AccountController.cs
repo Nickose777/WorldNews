@@ -92,10 +92,9 @@ namespace WorldNews.Controllers
                 return View(model);
             }
 
-            string fileName = System.IO.Path.GetFileName(model.Photo.FileName);
+            string fileName = String.Format("{0}{2}", model.Login, System.IO.Path.GetExtension(model.Photo.FileName));
             string serverPath = Server.MapPath("~/Images/Uploads");
             string path = System.IO.Path.Combine(serverPath, fileName);
-            model.Photo.SaveAs(path);
 
             ModeratorRegisterDTO moderatorDTO = Mapper.Map<ModeratorRegisterViewModel, ModeratorRegisterDTO>(model);
             moderatorDTO.PhotoLink = path;
@@ -104,6 +103,7 @@ namespace WorldNews.Controllers
 
             if (serviceMessage.Succeeded)
             {
+                model.Photo.SaveAs(path);
                 return RedirectToAction("Login");
             }
             else

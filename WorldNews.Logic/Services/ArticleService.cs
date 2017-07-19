@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using WorldNews.Core.Entities;
 using WorldNews.Data.Contracts;
 using WorldNews.Logic.Contracts;
@@ -156,15 +157,20 @@ namespace WorldNews.Logic.Services
 
         public DataServiceMessage<IEnumerable<ArticleListDTO>> GetAllByCategory(string categoryName)
         {
-            return GetAll(true, categoryName);
+            return GetAll(articleEntity => articleEntity.Category.Name == categoryName);
         }
 
         public DataServiceMessage<IEnumerable<ArticleListDTO>> GetAll()
         {
-            return GetAll(false, null);
+            return GetAll(articleEntity => true);
         }
 
-        private DataServiceMessage<IEnumerable<ArticleListDTO>> GetAll(bool filter, string categoryName)
+        public DataServiceMessage<IEnumerable<ArticleListDTO>> GetAllEnabled()
+        {
+            return GetAll(articleEntity => !articleEntity.Category.IsDisabled);
+        }
+
+        private DataServiceMessage<IEnumerable<ArticleListDTO>> GetAll(Expression<Func<ArticleEntity, bool>> expression)
         {
             List<string> errors = new List<string>();
             bool succeeded = true;
@@ -172,9 +178,7 @@ namespace WorldNews.Logic.Services
 
             try
             {
-                IEnumerable<ArticleEntity> articleEntities = filter ?
-                    unitOfWork.Articles.GetAll(categoryEntity => categoryEntity.Category.Name == categoryName) :
-                    unitOfWork.Articles.GetAll();
+                IEnumerable<ArticleEntity> articleEntities = unitOfWork.Articles.GetAll(expression);
                 data = articleEntities.Select(articleEntity =>
                     new ArticleListDTO
                     {

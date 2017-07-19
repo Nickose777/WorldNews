@@ -13,6 +13,8 @@ namespace WorldNews.Logic.Contracts.Services
 
         DataServiceMessage<IEnumerable<ArticleListDTO>> GetAllByCategory(string categoryName);
 
+        DataServiceMessage<IEnumerable<ArticleListDTO>> GetAllEnabled();
+
         DataServiceMessage<IEnumerable<ArticleListDTO>> GetAll();
     }
 }

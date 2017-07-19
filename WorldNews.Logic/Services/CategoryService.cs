@@ -7,6 +7,7 @@ using WorldNews.Logic.Contracts;
 using WorldNews.Logic.Contracts.Services;
 using WorldNews.Logic.DTO.Category;
 using WorldNews.Logic.Infrastructure;
+using System.Linq.Expressions;
 
 namespace WorldNews.Logic.Services
 {
@@ -24,7 +25,7 @@ namespace WorldNews.Logic.Services
         public ServiceMessage Create(CategoryCreateDTO categoryDTO)
         {
             List<string> errors = new List<string>();
-            bool succeeded = Validate(categoryDTO, errors);
+            bool succeeded = Validate(categoryDTO.Name, errors);
 
             if (succeeded)
             {
@@ -61,31 +62,103 @@ namespace WorldNews.Logic.Services
             };
         }
 
-        public DataServiceMessage<IEnumerable<string>> GetAllNames()
+        public ServiceMessage Edit(CategoryEditDTO categoryDTO)
         {
+            int id;
+            string decryptedId = encryptor.Decrypt(categoryDTO.Id);
+
             List<string> errors = new List<string>();
             bool succeeded = true;
-            IEnumerable<string> data = null;
 
-            try
+            if (Int32.TryParse(decryptedId, out id))
             {
-                IEnumerable<CategoryEntity> categoryEntities = unitOfWork.Categories.GetAll();
-                data = categoryEntities.Select(category => category.Name)
-                    .OrderBy(category => category)
-                    .ToList();
+                if (succeeded = Validate(categoryDTO.Name, errors))
+                {
+                    try
+                    {
+                        CategoryEntity categoryEntity = unitOfWork.Categories.Get(id);
+                        if (categoryEntity != null)
+                        {
+                            categoryEntity.Name = categoryDTO.Name;
+                            categoryEntity.IsDisabled = categoryDTO.IsDisabled;
+
+                            unitOfWork.Commit();
+                        }
+                        else
+                        {
+                            succeeded = false;
+                            errors.Add("Such category was not found");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        ExceptionMessageBuilder.FillErrors(ex, errors);
+                        succeeded = false;
+                    }
+                }
             }
-            catch (Exception ex)
+            else
             {
-                ExceptionMessageBuilder.FillErrors(ex, errors);
                 succeeded = false;
+                errors.Add("Such category was not found");
             }
 
-            return new DataServiceMessage<IEnumerable<string>>
+            return new ServiceMessage
+            {
+                Errors = errors,
+                Succeeded = succeeded
+            };
+        }
+
+        public DataServiceMessage<CategoryEditDTO> Get(string categoryId)
+        {
+            int id;
+            string decryptedId = encryptor.Decrypt(categoryId);
+
+            List<string> errors = new List<string>();
+            bool succeeded = true;
+            CategoryEditDTO data = null;
+
+            if (Int32.TryParse(decryptedId, out id))
+            {
+                try
+                {
+                    CategoryEntity categoryEntity = unitOfWork.Categories.Get(id);
+                    data = new CategoryEditDTO
+                    {
+                        Id = categoryId,
+                        Name = categoryEntity.Name,
+                        IsDisabled = categoryEntity.IsDisabled
+                    };
+                }
+                catch (Exception ex)
+                {
+                    ExceptionMessageBuilder.FillErrors(ex, errors);
+                    succeeded = false;
+                }
+            }
+            else
+            {
+                succeeded = false;
+                errors.Add("Such category was not found");
+            }
+
+            return new DataServiceMessage<CategoryEditDTO>
             {
                 Errors = errors,
                 Succeeded = succeeded,
                 Data = data
             };
+        }
+
+        public DataServiceMessage<IEnumerable<string>> GetEnabledNames()
+        {
+            return GetAllNames(categoryEntity => !categoryEntity.IsDisabled);
+        }
+
+        public DataServiceMessage<IEnumerable<string>> GetAllNames()
+        {
+            return GetAllNames(categoryEntity => true);
         }
 
         public DataServiceMessage<IEnumerable<CategoryListDTO>> GetAll()
@@ -122,16 +195,43 @@ namespace WorldNews.Logic.Services
             };
         }
 
+        private DataServiceMessage<IEnumerable<string>> GetAllNames(Expression<Func<CategoryEntity, bool>> expression)
+        {
+            List<string> errors = new List<string>();
+            bool succeeded = true;
+            IEnumerable<string> data = null;
+
+            try
+            {
+                IEnumerable<CategoryEntity> categoryEntities = unitOfWork.Categories.GetAll(expression);
+                data = categoryEntities.Select(categoryEntity => categoryEntity.Name)
+                    .OrderBy(categoryName => categoryName)
+                    .ToList();
+            }
+            catch (Exception ex)
+            {
+                ExceptionMessageBuilder.FillErrors(ex, errors);
+                succeeded = false;
+            }
+
+            return new DataServiceMessage<IEnumerable<string>>
+            {
+                Errors = errors,
+                Succeeded = succeeded,
+                Data = data
+            };
+        }
+
         public void Dispose()
         {
             unitOfWork.Dispose();
         }
 
-        private bool Validate(CategoryCreateDTO categoryDTO, List<string> errors)
+        private bool Validate(string categoryName, ICollection<string> errors)
         {
             bool isValid = true;
 
-            if (String.IsNullOrEmpty(categoryDTO.Name))
+            if (String.IsNullOrEmpty(categoryName))
             {
                 isValid = false;
                 errors.Add("Name cannot be empty");

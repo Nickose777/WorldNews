@@ -10,6 +10,7 @@ namespace WorldNews.Mappings
         {
             this.CreateMap<CategoryCreateViewModel, CategoryCreateDTO>();
             this.CreateMap<CategoryListDTO, CategoryListViewModel>();
+            this.CreateMap<CategoryEditDTO, CategoryEditViewModel>().ReverseMap();
         }
     }
 }
