@@ -2,20 +2,17 @@
 using System.Collections.Generic;
 using WorldNews.Core.Entities;
 using WorldNews.Data.Contracts;
+using WorldNews.Logic.Contracts;
 using WorldNews.Logic.Contracts.Services;
 using WorldNews.Logic.DTO.Profile;
 using WorldNews.Logic.Infrastructure;
 
 namespace WorldNews.Logic.Services
 {
-    public class ProfileService : IProfileService
+    public class ProfileService : ServiceBase, IProfileService
     {
-        private readonly IUnitOfWork unitOfWork;
-
-        public ProfileService(IUnitOfWork unitOfWork)
-        {
-            this.unitOfWork = unitOfWork;
-        }
+        public ProfileService(IUnitOfWork unitOfWork, IEncryptor encryptor)
+            : base(unitOfWork, encryptor) { }
 
         public DataServiceMessage<ProfileBaseDTO> GetAdminProfile(string login)
         {
@@ -108,11 +105,6 @@ namespace WorldNews.Logic.Services
                 Succeeded = succeeded,
                 Errors = errors
             };
-        }
-
-        public void Dispose()
-        {
-            unitOfWork.Dispose();
         }
 
         #region Validation

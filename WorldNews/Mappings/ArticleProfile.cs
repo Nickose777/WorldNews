@@ -16,6 +16,7 @@ namespace WorldNews.Mappings
                 .ForMember(dest => dest.PhotoLink, opt => opt.MapFrom(src => System.IO.Path.Combine("~/Images/Uploads", System.IO.Path.GetFileName(src.PhotoLink))));
             this.CreateMap<ArticleDetailsDTO, ArticleDetailsViewModel>()
                 .ForMember(dest => dest.PhotoLink, opt => opt.MapFrom(src => System.IO.Path.Combine("~/Images/Uploads", System.IO.Path.GetFileName(src.PhotoLink))));
+            this.CreateMap<ArticleAuthorListDTO, ArticleAuthorListViewModel>();
         }
     }
 }

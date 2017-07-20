@@ -16,5 +16,7 @@ namespace WorldNews.Logic.Contracts.Services
         DataServiceMessage<IEnumerable<ArticleListDTO>> GetAllEnabled();
 
         DataServiceMessage<IEnumerable<ArticleListDTO>> GetAll();
+
+        DataServiceMessage<IEnumerable<ArticleAuthorListDTO>> GetAllWithAuthors();
     }
 }

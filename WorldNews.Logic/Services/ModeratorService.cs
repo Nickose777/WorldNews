@@ -10,16 +10,10 @@ using WorldNews.Logic.Infrastructure;
 
 namespace WorldNews.Logic.Services
 {
-    public class ModeratorService : IModeratorService
+    public class ModeratorService : ServiceBase, IModeratorService
     {
-        private readonly IUnitOfWork unitOfWork;
-        private readonly IEncryptor encryptor;
-
         public ModeratorService(IUnitOfWork unitOfWork, IEncryptor encryptor)
-        {
-            this.unitOfWork = unitOfWork;
-            this.encryptor = encryptor;
-        }
+            : base(unitOfWork, encryptor) { }
 
         public DataServiceMessage<IEnumerable<ModeratorListDTO>> GetAll()
         {
@@ -56,11 +50,6 @@ namespace WorldNews.Logic.Services
                 Errors = errors,
                 Data = data
             };
-        }
-
-        public void Dispose()
-        {
-            unitOfWork.Dispose();
         }
     }
 }

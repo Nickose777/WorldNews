@@ -85,8 +85,15 @@ namespace WorldNews.Controllers
 
         public ActionResult ListByCategory(string categoryName)
         {
-            var model = GetArticles(categoryName);
+            IEnumerable<ArticleListViewModel> model = GetArticles(categoryName);
             return View("List", model);
+        }
+
+        [AdminAuthorize]
+        public ActionResult ListAuthors()
+        {
+            IEnumerable<ArticleAuthorListViewModel> model = GetArticlesWithAuthors();
+            return View(model);
         }
 
         public ActionResult Details(string id)
@@ -106,19 +113,11 @@ namespace WorldNews.Controllers
 
         private IEnumerable<string> GetAllCategoryNames()
         {
-            IEnumerable<string> categoryNames;
-
             DataServiceMessage<IEnumerable<string>> serviceMessage = categoryService.GetAllNames();
-            if (serviceMessage.Succeeded)
-            {
-                categoryNames = serviceMessage.Data;
-            }
-            else
-            {
-                categoryNames = new List<string>();
-            }
 
-            return categoryNames;
+            return serviceMessage.Succeeded
+                ? serviceMessage.Data
+                : new List<string>();
         }
 
         private IEnumerable<SelectListItem> ConvertToSelectListItems(IEnumerable<string> categoryNames)
@@ -133,21 +132,22 @@ namespace WorldNews.Controllers
 
         private IEnumerable<ArticleListViewModel> GetArticles(string categoryName = null)
         {
-            IEnumerable<ArticleListViewModel> articles;
-
             DataServiceMessage<IEnumerable<ArticleListDTO>> serviceMessage = categoryName == null
                 ? articleService.GetAllEnabled()
                 : articleService.GetAllByCategory(categoryName);
-            if (serviceMessage.Succeeded)
-            {
-                articles = AutoMapperExtensions.Map<ArticleListDTO, ArticleListViewModel>(serviceMessage.Data);
-            }
-            else
-            {
-                articles = new List<ArticleListViewModel>();
-            }
 
-            return articles;
+            return serviceMessage.Succeeded
+                ? AutoMapperExtensions.Map<ArticleListDTO, ArticleListViewModel>(serviceMessage.Data)
+                : new List<ArticleListViewModel>();
+        }
+
+        private IEnumerable<ArticleAuthorListViewModel> GetArticlesWithAuthors()
+        {
+            DataServiceMessage<IEnumerable<ArticleAuthorListDTO>> serviceMessage = articleService.GetAllWithAuthors();
+
+            return serviceMessage.Succeeded
+                ? AutoMapperExtensions.Map<ArticleAuthorListDTO, ArticleAuthorListViewModel>(serviceMessage.Data)
+                : new List<ArticleAuthorListViewModel>();
         }
     }
 }

@@ -96,6 +96,7 @@
     <Compile Include="Contracts\Services\ICommentService.cs" />
     <Compile Include="Contracts\Services\IModeratorService.cs" />
     <Compile Include="Contracts\Services\IProfileService.cs" />
+    <Compile Include="DTO\Article\ArticleAuthorListDTO.cs" />
     <Compile Include="DTO\Article\ArticleCreateDTO.cs" />
     <Compile Include="DTO\Article\ArticleDetailsDTO.cs" />
     <Compile Include="DTO\Article\ArticleListDTO.cs" />
@@ -132,6 +133,7 @@
     <Compile Include="Services\CommentService.cs" />
     <Compile Include="Services\ModeratorService.cs" />
     <Compile Include="Services\ProfileService.cs" />
+    <Compile Include="Services\ServiceBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WorldNews.Core\WorldNews.Core.csproj">

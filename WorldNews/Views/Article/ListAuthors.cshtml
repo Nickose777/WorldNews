@@ -1,0 +1,49 @@
+﻿@model IEnumerable<WorldNews.Models.Article.ArticleAuthorListViewModel>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Header)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AuthorFullName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AuthorLogin)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateCreated)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateLastModified)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CommentsCount)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Header)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AuthorFullName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AuthorLogin)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateCreated)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateLastModified)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CommentsCount)
+        </td>
+    </tr>
+}
+
+</table>

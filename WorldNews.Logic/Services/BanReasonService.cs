@@ -11,16 +11,10 @@ using WorldNews.Logic.Infrastructure;
 
 namespace WorldNews.Logic.Services
 {
-    public class BanReasonService : IBanReasonService
+    public class BanReasonService : ServiceBase, IBanReasonService
     {
-        private readonly IUnitOfWork unitOfWork;
-        private readonly IEncryptor encryptor;
-
         public BanReasonService(IUnitOfWork unitOfWork, IEncryptor encryptor)
-        {
-            this.unitOfWork = unitOfWork;
-            this.encryptor = encryptor;
-        }
+            : base(unitOfWork, encryptor) { }
 
         public ServiceMessage Create(BanReasonCreateDTO banReasonDTO)
         {
@@ -193,11 +187,6 @@ namespace WorldNews.Logic.Services
                 Errors = errors,
                 Succeeded = succeeded
             };
-        }
-
-        public void Dispose()
-        {
-            unitOfWork.Dispose();
         }
 
         private bool Validate(string name, ICollection<string> errors)

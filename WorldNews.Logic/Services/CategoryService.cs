@@ -1,26 +1,20 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using WorldNews.Core.Entities;
 using WorldNews.Data.Contracts;
 using WorldNews.Logic.Contracts;
 using WorldNews.Logic.Contracts.Services;
 using WorldNews.Logic.DTO.Category;
 using WorldNews.Logic.Infrastructure;
-using System.Linq.Expressions;
 
 namespace WorldNews.Logic.Services
 {
-    public class CategoryService : ICategoryService
+    public class CategoryService : ServiceBase, ICategoryService
     {
-        private readonly IUnitOfWork unitOfWork;
-        private readonly IEncryptor encryptor;
-
         public CategoryService(IUnitOfWork unitOfWork, IEncryptor encryptor)
-        {
-            this.unitOfWork = unitOfWork;
-            this.encryptor = encryptor;
-        }
+            : base(unitOfWork, encryptor) { }
 
         public ServiceMessage Create(CategoryCreateDTO categoryDTO)
         {
@@ -221,11 +215,6 @@ namespace WorldNews.Logic.Services
                 Succeeded = succeeded,
                 Data = data
             };
-        }
-
-        public void Dispose()
-        {
-            unitOfWork.Dispose();
         }
 
         private bool Validate(string categoryName, ICollection<string> errors)

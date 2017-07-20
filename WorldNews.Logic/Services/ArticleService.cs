@@ -12,16 +12,10 @@ using WorldNews.Logic.Infrastructure;
 
 namespace WorldNews.Logic.Services
 {
-    public class ArticleService : IArticleService
+    public class ArticleService : ServiceBase, IArticleService
     {
-        private readonly IUnitOfWork unitOfWork;
-        private readonly IEncryptor encryptor;
-
         public ArticleService(IUnitOfWork unitOfWork, IEncryptor encryptor)
-        {
-            this.unitOfWork = unitOfWork;
-            this.encryptor = encryptor;
-        }
+            : base(unitOfWork, encryptor) { }
 
         public ServiceMessage Create(ArticleCreateDTO articleDTO)
         {
@@ -174,6 +168,43 @@ namespace WorldNews.Logic.Services
             return GetAll(articleEntity => articleEntity.Category.IsEnabled);
         }
 
+        public DataServiceMessage<IEnumerable<ArticleAuthorListDTO>> GetAllWithAuthors()
+        {
+            List<string> errors = new List<string>();
+            bool succeeded = true;
+            IEnumerable<ArticleAuthorListDTO> data = null;
+
+            try
+            {
+                IEnumerable<ArticleEntity> articleEntities = unitOfWork.Articles.GetAll();
+                data = articleEntities.Select(articleEntity =>
+                    new ArticleAuthorListDTO
+                    {
+                        Id = encryptor.Encrypt(articleEntity.Id.ToString()),
+                        DateCreated = articleEntity.DateCreated,
+                        DateLastModified = articleEntity.DateLastModified,
+                        Header = articleEntity.Header,
+                        AuthorFullName = articleEntity.Author.User.FirstName + " " + articleEntity.Author.User.LastName,
+                        AuthorLogin = articleEntity.Author.User.UserName,
+                        CommentsCount = articleEntity.Comments.Count
+                    })
+                    .OrderByDescending(article => article.DateCreated)
+                    .ToList();
+            }
+            catch (Exception ex)
+            {
+                succeeded = false;
+                ExceptionMessageBuilder.FillErrors(ex, errors);
+            }
+
+            return new DataServiceMessage<IEnumerable<ArticleAuthorListDTO>>
+            {
+                Errors = errors,
+                Succeeded = succeeded,
+                Data = data
+            };
+        }
+
         private DataServiceMessage<IEnumerable<ArticleListDTO>> GetAll(Expression<Func<ArticleEntity, bool>> expression)
         {
             List<string> errors = new List<string>();
@@ -207,11 +238,6 @@ namespace WorldNews.Logic.Services
                 Succeeded = succeeded,
                 Data = data
             };
-        }
-
-        public void Dispose()
-        {
-            unitOfWork.Dispose();
         }
 
         private bool Validate(ArticleCreateDTO articleDTO, List<string> errors)

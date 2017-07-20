@@ -202,6 +202,7 @@
     <Compile Include="Mappings\CategoryProfile.cs" />
     <Compile Include="Mappings\CommentProfile.cs" />
     <Compile Include="Mappings\RegisterProfile.cs" />
+    <Compile Include="Models\Article\ArticleAuthorListViewModel.cs" />
     <Compile Include="Models\Article\ArticleCreateViewModel.cs" />
     <Compile Include="Models\Article\ArticleDetailsViewModel.cs" />
     <Compile Include="Models\Article\ArticleListViewModel.cs" />
@@ -306,6 +307,7 @@
     <Content Include="Views\Comment\BanPartial.cshtml" />
     <Content Include="Views\Comment\ListWithBanOption.cshtml" />
     <Content Include="Views\Comment\ListWithoutBanOption.cshtml" />
+    <Content Include="Views\Article\ListAuthors.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

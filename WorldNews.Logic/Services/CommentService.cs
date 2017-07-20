@@ -9,16 +9,10 @@ using WorldNews.Logic.Infrastructure;
 
 namespace WorldNews.Logic.Services
 {
-    public class CommentService : ICommentService
+    public class CommentService : ServiceBase, ICommentService
     {
-        private readonly IUnitOfWork unitOfWork;
-        private readonly IEncryptor encryptor;
-
         public CommentService(IUnitOfWork unitOfWork, IEncryptor encryptor)
-        {
-            this.unitOfWork = unitOfWork;
-            this.encryptor = encryptor;
-        }
+            : base(unitOfWork, encryptor) { }
 
         public ServiceMessage Create(CommentCreateDTO commentDTO)
         {
@@ -152,11 +146,6 @@ namespace WorldNews.Logic.Services
                 Errors = errors,
                 Succeeded = succeeded
             };
-        }
-
-        public void Dispose()
-        {
-            unitOfWork.Dispose();
         }
 
         private bool Validate(CommentCreateDTO commentDTO, ICollection<string> errors)
