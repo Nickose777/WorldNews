@@ -77,16 +77,10 @@ namespace WorldNews.Controllers
             }
         }
 
-        public ActionResult List()
+        public ActionResult List(string categoryName)
         {
-            var model = GetArticles();
+            var model = GetArticles(categoryName);
             return View(model);
-        }
-
-        public ActionResult ListByCategory(string categoryName)
-        {
-            IEnumerable<ArticleListViewModel> model = GetArticles(categoryName);
-            return View("List", model);
         }
 
         [AdminAuthorize]

@@ -5,7 +5,7 @@
             @foreach (string categoryName in ViewBag.Categories)
             {
                 <li class="nav-item">
-                    @Html.ActionLink(categoryName, "ListByCategory", "Article", new { @categoryName = categoryName }, new { @class = "nav-link" })
+                    @Html.ActionLink(categoryName, "List", "Article", new { @categoryName = categoryName }, new { @class = "nav-link" })
                 </li>
             }
         </ul>
