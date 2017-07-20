@@ -17,14 +17,14 @@ namespace WorldNews.Core.Configurations
                 .WithMany(user => user.Comments)
                 .HasForeignKey(comment => comment.AuthorId);
             this.HasRequired(comment => comment.Article)
-                .WithMany(user => user.Comments)
+                .WithMany(article => article.Comments)
                 .HasForeignKey(comment => comment.ArticleId);
 
             this.HasOptional(comment => comment.ModeratorWhoBanned)
-                .WithMany(user => user.BannedComments)
+                .WithMany(moderator => moderator.BannedComments)
                 .HasForeignKey(comment => comment.ModeratorWhoBannedId);
             this.HasOptional(comment => comment.BanReason)
-                .WithMany(user => user.Comments)
+                .WithMany(banReason => banReason.Comments)
                 .HasForeignKey(comment => comment.BanReasonId);
         }
     }

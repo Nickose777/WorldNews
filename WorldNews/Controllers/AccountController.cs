@@ -116,10 +116,11 @@ namespace WorldNews.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public ActionResult Login()
+        public ActionResult Login(string returnUrl)
         {
             if (!User.Identity.IsAuthenticated)
             {
+                ViewBag.ReturnUrl = returnUrl;
                 return View();
             }
             else
@@ -130,7 +131,7 @@ namespace WorldNews.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public ActionResult Login(LoginViewModel model)
+        public ActionResult Login(LoginViewModel model, string returnUrl)
         {
             if (!ModelState.IsValid)
             {
@@ -140,14 +141,13 @@ namespace WorldNews.Controllers
             ServiceMessage serviceMessage = service.LogIn(model.Login, model.Password);
             if (serviceMessage.Succeeded)
             {
-                return RedirectToAction("List", "Article");
+                return RedirectToLocal(returnUrl);
             }
             else
             {
                 AddModelErrors(serviceMessage.Errors);
+                return View();
             }
-
-            return View();
         }
 
         [Authorize]
@@ -156,6 +156,11 @@ namespace WorldNews.Controllers
             service.LogOff();
 
             return RedirectToAction("Login");
+        }
+
+        private ActionResult RedirectToLocal(string returnUrl)
+        {
+            return Url.IsLocalUrl(returnUrl) ? Redirect(returnUrl) as ActionResult : RedirectToAction("List", "Article");
         }
     }
 }

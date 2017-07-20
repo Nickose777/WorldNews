@@ -1,6 +1,6 @@
 ﻿@model WorldNews.Models.LoginViewModel
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post)) 
 {
     @Html.AntiForgeryToken()
     
