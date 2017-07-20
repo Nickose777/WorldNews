@@ -1,7 +1,5 @@
 ﻿@model IEnumerable<WorldNews.Models.Profile.ModeratorListViewModel>
 
-<h2>List</h2>
-
 <table class="table">
     <tr>
         <th>
@@ -22,26 +20,36 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            <a href="@Url.Action("Details", new { login = item.Login })">
-                <img src="@Url.Content(item.PhotoLink)" alt="Photo" height="150" width="200" />
-            </a>
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FirstName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LastName)
-        </td>
-        <td>
-            @Html.ActionLink(item.Login, "Details", new { login = item.Login })
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Email)
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <a href="@Url.Action("Details", new { login = item.Login })">
+                    <img src="@Url.Content(item.PhotoLink)" alt="Photo" height="150" width="200" />
+                </a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                <div class="dropdown">
+                    <a class="btn btn-secondary dropdown-toggle" href="#" id="@item.Login" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        @Html.DisplayFor(model => item.Login)
+                    </a>
+
+                    <div class="dropdown-menu" aria-labelledby="@item.Login">
+                        @Html.ActionLink("Details", "Details", new { login = item.Login }, new { @class = "dropdown-item" })
+                        @Html.ActionLink("Edit", "Edit", new { login = item.Login }, new { @class = "dropdown-item" })
+                    </div>
+                </div>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+        </tr>
+    }
 
 </table>

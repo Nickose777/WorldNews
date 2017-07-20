@@ -16,7 +16,82 @@ namespace WorldNews.Logic.Services
         public ModeratorService(IUnitOfWork unitOfWork, IEncryptor encryptor)
             : base(unitOfWork, encryptor) { }
 
-        public DataServiceMessage<ModeratorDetailsDTO> Get(string login)
+        public ServiceMessage Edit(ModeratorEditDTO moderatorDTO)
+        {
+            List<string> errors = new List<string>();
+            bool succeeded = Validate(moderatorDTO, errors);
+
+            try
+            {
+                ModeratorEntity moderatorEntity = unitOfWork.Moderators.GetByLogin(moderatorDTO.Login);
+                if (moderatorEntity != null)
+                {
+                    ApplicationUser applicationUser = moderatorEntity.User;
+                    applicationUser.FirstName = moderatorDTO.FirstName;
+                    applicationUser.LastName = moderatorDTO.LastName;
+
+                    unitOfWork.Commit();
+                }
+                else
+                {
+                    succeeded = false;
+                    errors.Add("Moderator with such login was not found");
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionMessageBuilder.FillErrors(ex, errors);
+                succeeded = false;
+            }
+
+            return new ServiceMessage
+            {
+                Succeeded = succeeded,
+                Errors = errors
+            };
+        }
+
+        public DataServiceMessage<ModeratorEditDTO> Get(string login)
+        {
+            List<string> errors = new List<string>();
+            bool succeeded = true;
+            ModeratorEditDTO data = null;
+
+            try
+            {
+                ModeratorEntity moderatorEntity = unitOfWork.Moderators.GetByLogin(login);
+                if (moderatorEntity != null)
+                {
+                    data = new ModeratorEditDTO
+                    {
+                        Email = moderatorEntity.User.Email,
+                        FirstName = moderatorEntity.User.FirstName,
+                        LastName = moderatorEntity.User.LastName,
+                        Login = login,
+                        PhotoLink = moderatorEntity.PhotoLink
+                    };
+                }
+                else
+                {
+                    succeeded = false;
+                    errors.Add("Moderator with such login was not found");
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionMessageBuilder.FillErrors(ex, errors);
+                succeeded = false;
+            }
+
+            return new DataServiceMessage<ModeratorEditDTO>
+            {
+                Succeeded = succeeded,
+                Errors = errors,
+                Data = data
+            };
+        }
+
+        public DataServiceMessage<ModeratorDetailsDTO> GetDetails(string login)
         {
             List<string> errors = new List<string>();
             bool succeeded = true;
@@ -29,7 +104,6 @@ namespace WorldNews.Logic.Services
                 {
                     data = new ModeratorDetailsDTO
                     {
-                        Id = encryptor.Encrypt(moderatorEntity.Id),
                         Email = moderatorEntity.User.Email,
                         FirstName = moderatorEntity.User.FirstName,
                         LastName = moderatorEntity.User.LastName,
@@ -80,7 +154,6 @@ namespace WorldNews.Logic.Services
                 data = moderatorEntities.Select(moderatorEntity =>
                     new ModeratorListDTO
                     {
-                        Id = encryptor.Encrypt(moderatorEntity.Id),
                         FirstName = moderatorEntity.User.FirstName,
                         LastName = moderatorEntity.User.LastName,
                         Email = moderatorEntity.User.Email,
@@ -103,6 +176,43 @@ namespace WorldNews.Logic.Services
                 Errors = errors,
                 Data = data
             };
+        }
+
+        private bool Validate(ModeratorEditDTO moderatorDTO, ICollection<string> errors)
+        {
+            bool isValid = true;
+
+            if (String.IsNullOrEmpty(moderatorDTO.FirstName))
+            {
+                isValid = false;
+                errors.Add("First name cannot be empty");
+            }
+
+            if (String.IsNullOrEmpty(moderatorDTO.LastName))
+            {
+                isValid = false;
+                errors.Add("Last name cannot be empty");
+            }
+
+            if (String.IsNullOrEmpty(moderatorDTO.Email))
+            {
+                isValid = false;
+                errors.Add("Email is required");
+            }
+
+            if (String.IsNullOrEmpty(moderatorDTO.Login))
+            {
+                isValid = false;
+                errors.Add("Login is required");
+            }
+
+            if (String.IsNullOrEmpty(moderatorDTO.PhotoLink))
+            {
+                isValid = false;
+                errors.Add("Photo is required");
+            }
+
+            return isValid;
         }
     }
 }

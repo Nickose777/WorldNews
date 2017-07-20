@@ -1,6 +1,6 @@
 ﻿namespace WorldNews.Logic.DTO.Profile
 {
-    public class ModeratorListDTO : ProfileBaseDTO
+    public class ModeratorEditDTO : ProfileBaseDTO
     {
         public string PhotoLink { get; set; }
     }

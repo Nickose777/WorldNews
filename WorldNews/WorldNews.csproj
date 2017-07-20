@@ -220,6 +220,7 @@
     <Compile Include="Models\ModeratorRegisterViewModel.cs" />
     <Compile Include="Models\ProfileViewModel.cs" />
     <Compile Include="Models\Profile\ModeratorDetailsViewModel.cs" />
+    <Compile Include="Models\Profile\ModeratorEditViewModel.cs" />
     <Compile Include="Models\Profile\ModeratorListViewModel.cs" />
     <Compile Include="Models\RegisterViewModel.cs" />
     <Compile Include="NinjectModules\OwinModule.cs" />
@@ -312,6 +313,7 @@
     <Content Include="Views\Article\ListAuthors.cshtml" />
     <Content Include="Views\Moderator\Details.cshtml" />
     <Content Include="Views\Comment\BanList.cshtml" />
+    <Content Include="Views\Moderator\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -37,9 +37,47 @@ namespace WorldNews.Controllers
             return View();
         }
 
+        [HttpGet]
+        public ActionResult Edit(string login)
+        {
+            DataServiceMessage<ModeratorEditDTO> serviceMessage = service.Get(login);
+            if (serviceMessage.Succeeded)
+            {
+                ModeratorEditViewModel model = Mapper.Map<ModeratorEditDTO, ModeratorEditViewModel>(serviceMessage.Data);
+                return View(model);
+            }
+            else
+            {
+                return RedirectToAction("List");
+            }
+        }
+
+        [HttpPost]
+        public ActionResult Edit(ModeratorEditViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            //TODO
+            //Edit photo
+            ModeratorEditDTO moderatorDTO = Mapper.Map<ModeratorEditViewModel, ModeratorEditDTO>(model);
+            ServiceMessage serviceMessage = service.Edit(moderatorDTO);
+            if (serviceMessage.Succeeded)
+            {
+                return RedirectToAction("Details");
+            }
+            else
+            {
+                AddModelErrors(serviceMessage.Errors);
+                return View(model);
+            }
+        }
+
         public ActionResult Details(string login)
         {
-            DataServiceMessage<ModeratorDetailsDTO> serviceMessage = service.Get(login);
+            DataServiceMessage<ModeratorDetailsDTO> serviceMessage = service.GetDetails(login);
             if (serviceMessage.Succeeded)
             {
                 ModeratorDetailsViewModel model = Mapper.Map<ModeratorDetailsDTO, ModeratorDetailsViewModel>(serviceMessage.Data);

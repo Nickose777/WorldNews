@@ -110,6 +110,7 @@
     <Compile Include="DTO\Comment\CommentBanDetailsDTO.cs" />
     <Compile Include="DTO\Comment\CommentListDTO.cs" />
     <Compile Include="DTO\Profile\ModeratorDetailsDTO.cs" />
+    <Compile Include="DTO\Profile\ModeratorEditDTO.cs" />
     <Compile Include="DTO\Profile\ModeratorListDTO.cs" />
     <Compile Include="DTO\Profile\ProfileBaseDTO.cs" />
     <Compile Include="DTO\BanReason\BanReasonCreateDTO.cs" />

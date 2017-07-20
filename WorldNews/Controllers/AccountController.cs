@@ -92,7 +92,7 @@ namespace WorldNews.Controllers
                 return View(model);
             }
 
-            string fileName = String.Format("{0}{2}", model.Login, System.IO.Path.GetExtension(model.Photo.FileName));
+            string fileName = String.Format("{0}{1}", model.Login, System.IO.Path.GetExtension(model.Photo.FileName));
             string serverPath = Server.MapPath("~/Images/Uploads");
             string path = System.IO.Path.Combine(serverPath, fileName);
 

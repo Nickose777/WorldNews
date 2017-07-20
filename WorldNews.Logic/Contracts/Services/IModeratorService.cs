@@ -7,7 +7,11 @@ namespace WorldNews.Logic.Contracts.Services
 {
     public interface IModeratorService : IDisposable
     {
-        DataServiceMessage<ModeratorDetailsDTO> Get(string login);
+        ServiceMessage Edit(ModeratorEditDTO moderatorDTO);
+
+        DataServiceMessage<ModeratorEditDTO> Get(string login);
+
+        DataServiceMessage<ModeratorDetailsDTO> GetDetails(string login);
 
         DataServiceMessage<IEnumerable<ModeratorListDTO>> GetAll();
     }
