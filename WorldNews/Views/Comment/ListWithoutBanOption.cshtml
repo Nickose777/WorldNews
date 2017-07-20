@@ -1,0 +1,19 @@
+﻿@using WorldNews.Helpers
+@model IEnumerable<WorldNews.Models.Comment.CommentListViewModel>
+
+<ul class="list-group">
+    @foreach (var comment in Model)
+    {
+        string textClass = comment.IsBanned ? "text-danger" : "text-muted";
+        
+        <li class="list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">@Html.DisplayFor(model => comment.AuthorDisplayFullName)</h5>
+                <small>
+                    @Html.DisplayFor(model => comment.DateCreated)
+                </small>
+            </div>
+            <p class="@textClass">@Html.TextToHtml(comment.Content)</p>
+        </li>
+    }
+</ul>

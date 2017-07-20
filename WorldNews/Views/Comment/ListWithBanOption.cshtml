@@ -1,0 +1,37 @@
+﻿@using WorldNews.Helpers
+@model IEnumerable<WorldNews.Models.Comment.CommentListViewModel>
+
+<ul class="list-group">
+    @foreach (var comment in Model)
+    {
+        bool banned = comment.IsBanned;
+        string disabled = banned ? "disabled" : "";
+        string text = banned ? "Banned" : "Ban";
+        string textClass = banned ? "text-danger" : "text-muted";
+        
+        <li class="list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">@Html.DisplayFor(model => comment.AuthorDisplayFullName)</h5>
+                <small>
+                    @Html.DisplayFor(model => comment.DateCreated)
+                    <button class="btn btn-danger @disabled" onclick="@("displayBanModal('" + @Url.Encode(comment.Id) + "')")">@text</button>
+                </small>
+            </div>
+            <p class="@textClass">@Html.TextToHtml(comment.Content)</p>
+        </li>
+    }
+</ul>
+
+<div id="commentModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Ban comment</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/Comments/commentBan.js"></script>

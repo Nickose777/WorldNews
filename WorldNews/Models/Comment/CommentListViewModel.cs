@@ -13,5 +13,7 @@ namespace WorldNews.Models.Comment
 
         [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy HH:mm:ss}")]
         public DateTime DateCreated { get; set; }
+
+        public bool IsBanned { get; set; }
     }
 }

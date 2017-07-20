@@ -13,6 +13,8 @@ namespace WorldNews.Logic.Contracts.Services
 
         DataServiceMessage<BanReasonEditDTO> Get(string id);
 
+        DataServiceMessage<IEnumerable<BanReasonListDTO>> GetEnabled();
+
         DataServiceMessage<IEnumerable<BanReasonListDTO>> GetAll();
     }
 }

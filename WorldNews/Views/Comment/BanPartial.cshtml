@@ -1,0 +1,22 @@
+﻿@model WorldNews.Models.Comment.CommentBanViewModel
+
+@using (Html.BeginForm("Ban", "Comment", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal d-flex justify-content-center">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="form-group">
+            @Html.DropDownListFor(model => model.BanReasonId, Model.BanReasons, "-- Select reason --", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.BanReasonId, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-10">
+                <input type="submit" onclick="banComment(this, event)" value="Ban" class="btn btn-danger" />
+            </div>
+        </div>
+    </div>
+}

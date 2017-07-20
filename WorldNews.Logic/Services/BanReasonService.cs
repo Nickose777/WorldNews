@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using WorldNews.Core.Entities;
 using WorldNews.Data.Contracts;
 using WorldNews.Logic.Contracts;
@@ -151,7 +152,17 @@ namespace WorldNews.Logic.Services
             };
         }
 
+        public DataServiceMessage<IEnumerable<BanReasonListDTO>> GetEnabled()
+        {
+            return GetAll(banReasonEntity => banReasonEntity.IsEnabled);
+        }
+
         public DataServiceMessage<IEnumerable<BanReasonListDTO>> GetAll()
+        {
+            return GetAll(banReasonEntity => true);
+        }
+
+        private DataServiceMessage<IEnumerable<BanReasonListDTO>> GetAll(Expression<Func<BanReasonEntity, bool>> expression)
         {
             List<string> errors = new List<string>();
             bool succeeded = true;
@@ -159,7 +170,7 @@ namespace WorldNews.Logic.Services
 
             try
             {
-                IEnumerable<BanReasonEntity> banReasonEntities = unitOfWork.Bans.GetAll();
+                IEnumerable<BanReasonEntity> banReasonEntities = unitOfWork.Bans.GetAll(expression);
                 data = banReasonEntities.Select(banReasonEntity =>
                     new BanReasonListDTO
                     {

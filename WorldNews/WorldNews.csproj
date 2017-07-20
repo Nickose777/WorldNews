@@ -191,6 +191,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="App_Start\AutoMapperConfiguration.cs" />
+    <Compile Include="Helpers\RenderHelper.cs" />
     <Compile Include="Helpers\RoleHelper.cs" />
     <Compile Include="Helpers\RouteHelper.cs" />
     <Compile Include="Helpers\TextHelper.cs" />
@@ -210,6 +211,7 @@
     <Compile Include="Models\Category\CategoryCreateViewModel.cs" />
     <Compile Include="Models\Category\CategoryEditViewModel.cs" />
     <Compile Include="Models\Category\CategoryListViewModel.cs" />
+    <Compile Include="Models\Comment\CommentBanViewModel.cs" />
     <Compile Include="Models\Comment\CommentCreateViewModel.cs" />
     <Compile Include="Models\Comment\CommentListViewModel.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
@@ -251,6 +253,7 @@
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\Comments\commentBan.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
     <Content Include="Scripts\jquery-3.1.1.min.js" />
     <Content Include="Scripts\jquery-3.1.1.slim.js" />
@@ -300,6 +303,9 @@
     <Content Include="Views\BanReason\Create.cshtml" />
     <Content Include="Views\BanReason\List.cshtml" />
     <Content Include="Views\BanReason\Edit.cshtml" />
+    <Content Include="Views\Comment\BanPartial.cshtml" />
+    <Content Include="Views\Comment\ListWithBanOption.cshtml" />
+    <Content Include="Views\Comment\ListWithoutBanOption.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

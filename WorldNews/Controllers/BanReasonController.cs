@@ -53,7 +53,7 @@ namespace WorldNews.Controllers
         [AdminAuthorize]
         public ActionResult List()
         {
-            IEnumerable<BanReasonListViewModel> model = GetAllBanReasons();
+            IEnumerable<BanReasonListViewModel> model = GetBanReasons(false);
 
             return View(model);
         }
@@ -98,9 +98,11 @@ namespace WorldNews.Controllers
             }
         }
 
-        private IEnumerable<BanReasonListViewModel> GetAllBanReasons()
+        private IEnumerable<BanReasonListViewModel> GetBanReasons(bool enabledOnly)
         {
-            DataServiceMessage<IEnumerable<BanReasonListDTO>> serviceMessage = service.GetAll();
+            DataServiceMessage<IEnumerable<BanReasonListDTO>> serviceMessage = enabledOnly
+                ? service.GetEnabled()
+                : service.GetAll();
 
             return serviceMessage.Succeeded
                 ? AutoMapperExtensions.Map<BanReasonListDTO, BanReasonListViewModel>(serviceMessage.Data)

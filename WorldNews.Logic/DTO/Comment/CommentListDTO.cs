@@ -11,5 +11,7 @@ namespace WorldNews.Logic.DTO.Comment
         public string AuthorDisplayFullName { get; set; }
 
         public DateTime DateCreated { get; set; }
+
+        public bool IsBanned { get; set; }
     }
 }

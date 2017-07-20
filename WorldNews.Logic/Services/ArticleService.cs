@@ -116,12 +116,16 @@ namespace WorldNews.Logic.Services
                                         fullName += " - [Admin]";
                                     }
 
+                                    string content = commentEntity.DateBanned.HasValue
+                                        ? "Reason of ban: " + commentEntity.BanReason.Name
+                                        : commentEntity.Text;
                                     CommentListDTO commentDTO = new CommentListDTO
                                     {
                                         Id = encryptor.Encrypt(commentEntity.Id.ToString()),
                                         DateCreated = commentEntity.DateCreated,
-                                        Content = commentEntity.Text,
-                                        AuthorDisplayFullName = fullName
+                                        Content = content,
+                                        AuthorDisplayFullName = fullName,
+                                        IsBanned = commentEntity.DateBanned.HasValue
                                     };
 
                                     return commentDTO;

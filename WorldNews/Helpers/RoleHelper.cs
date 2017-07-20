@@ -17,6 +17,16 @@ namespace WorldNews.Helpers
             return helper.Partial(partialViewName); ;
         }
 
+        public static MvcHtmlString RenderComments(this HtmlHelper helper, IPrincipal user, object model)
+        {
+            bool withBanOption = user.Identity.IsAuthenticated && user.IsInRole(Roles.ModeratorRole);
+            string partialViewName = withBanOption
+                ? RouteHelper.GetServerPath("ListWithBanOption", "Comment")
+                : RouteHelper.GetServerPath("ListWithoutBanOption", "Comment");
+
+            return helper.Partial(partialViewName);
+        }
+
         public static MvcHtmlString RenderGreeting(this HtmlHelper helper, IPrincipal user)
         {
             if (!user.Identity.IsAuthenticated)

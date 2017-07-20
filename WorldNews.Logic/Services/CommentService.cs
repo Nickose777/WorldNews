@@ -83,6 +83,77 @@ namespace WorldNews.Logic.Services
             };
         }
 
+        public ServiceMessage Ban(CommentBanDTO commentDTO)
+        {
+            int commentId;
+            string decryptedCommentId = encryptor.Decrypt(commentDTO.Id);
+
+            int banReasonId;
+            string decryptedBanReasonId = encryptor.Decrypt(commentDTO.BanReasonId);
+
+            List<string> errors = new List<string>();
+            bool succeeded = Validate(commentDTO, errors);
+
+            if (!Int32.TryParse(decryptedCommentId, out commentId))
+            {
+                succeeded = false;
+                errors.Add("Comment was not found");
+            }
+
+            if (!Int32.TryParse(decryptedBanReasonId, out banReasonId))
+            {
+                succeeded = false;
+                errors.Add("Ban reason was not found");
+            }
+
+            if (succeeded && (succeeded = Validate(commentDTO, errors)))
+            {
+                try
+                {
+                    ModeratorEntity moderatorEntity = unitOfWork.Moderators.GetByLogin(commentDTO.ModeratorLogin);
+                    if (moderatorEntity == null)
+                    {
+                        succeeded = false;
+                        errors.Add("Moderator with such login was not found");
+                    }
+
+                    BanReasonEntity banReasonEntity = unitOfWork.Bans.Get(banReasonId);
+                    if (moderatorEntity == null)
+                    {
+                        succeeded = false;
+                        errors.Add("Moderator with such login was not found");
+                    }
+
+                    CommentEntity commentEntity = unitOfWork.Comments.Get(commentId);
+                    if (commentEntity == null)
+                    {
+                        succeeded = false;
+                        errors.Add("Comment was not found");
+                    }
+
+                    if (succeeded)
+                    {
+                        commentEntity.BanReason = banReasonEntity;
+                        commentEntity.DateBanned = DateTime.Now;
+                        commentEntity.ModeratorWhoBanned = moderatorEntity;
+
+                        unitOfWork.Commit();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ExceptionMessageBuilder.FillErrors(ex, errors);
+                    succeeded = false;
+                }
+            }
+
+            return new ServiceMessage
+            {
+                Errors = errors,
+                Succeeded = succeeded
+            };
+        }
+
         public void Dispose()
         {
             unitOfWork.Dispose();
@@ -108,6 +179,19 @@ namespace WorldNews.Logic.Services
             {
                 isValid = false;
                 errors.Add("Author has to be specified");
+            }
+
+            return isValid;
+        }
+
+        private bool Validate(CommentBanDTO commentDTO, ICollection<string> errors)
+        {
+            bool isValid = true;
+
+            if (String.IsNullOrEmpty(commentDTO.ModeratorLogin))
+            {
+                isValid = false;
+                errors.Add("Moderator must be specified");
             }
 
             return isValid;

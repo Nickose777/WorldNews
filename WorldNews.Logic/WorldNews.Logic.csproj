@@ -105,6 +105,7 @@
     <Compile Include="DTO\Category\CategoryEditDTO.cs" />
     <Compile Include="DTO\Category\CategoryListDTO.cs" />
     <Compile Include="DTO\Comment\CommentCreateDTO.cs" />
+    <Compile Include="DTO\Comment\CommentBanDTO.cs" />
     <Compile Include="DTO\Comment\CommentListDTO.cs" />
     <Compile Include="DTO\Profile\ModeratorListDTO.cs" />
     <Compile Include="DTO\Profile\ProfileBaseDTO.cs" />

@@ -7,5 +7,7 @@ namespace WorldNews.Logic.Contracts.Services
     public interface ICommentService : IDisposable
     {
         ServiceMessage Create(CommentCreateDTO commentDTO);
+
+        ServiceMessage Ban(CommentBanDTO commentDTO);
     }
 }
