@@ -14,6 +14,7 @@ namespace WorldNews.Mappings
             this.CreateMap<CommentListDTO, CommentListViewModel>();
             this.CreateMap<CommentBanViewModel, CommentBanDTO>()
                 .ForMember(dest => dest.ModeratorLogin, opt => opt.MapFrom(src => HttpContext.Current.User.Identity.Name));
+            this.CreateMap<CommentBanDetailsDTO, CommentBanDetailsViewModel>();
         }
     }
 }

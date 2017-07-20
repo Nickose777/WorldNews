@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using AutoMapper;
+using System.Collections.Generic;
 using System.Web.Mvc;
 using WorldNews.Attributes;
 using WorldNews.Logic.Contracts.Services;
@@ -9,6 +10,7 @@ using WorldNews.Models.Profile;
 
 namespace WorldNews.Controllers
 {
+    [AdminAuthorize]
     public class ModeratorController : ControllerBase
     {
         private readonly IModeratorService service;
@@ -19,7 +21,6 @@ namespace WorldNews.Controllers
             this.service = service;
         }
 
-        [AdminAuthorize]
         public ActionResult List()
         {
             DataServiceMessage<IEnumerable<ModeratorListDTO>> serviceMessage = service.GetAll();
@@ -34,6 +35,20 @@ namespace WorldNews.Controllers
             }
 
             return View();
+        }
+
+        public ActionResult Details(string login)
+        {
+            DataServiceMessage<ModeratorDetailsDTO> serviceMessage = service.Get(login);
+            if (serviceMessage.Succeeded)
+            {
+                ModeratorDetailsViewModel model = Mapper.Map<ModeratorDetailsDTO, ModeratorDetailsViewModel>(serviceMessage.Data);
+                return View(model);
+            }
+            else
+            {
+                return RedirectToAction("List");
+            }
         }
     }
 }

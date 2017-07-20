@@ -25,7 +25,9 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            <img src="@Url.Content(item.PhotoLink)" alt="Photo" height="150" width="200" />
+            <a href="@Url.Action("Details", new { login = item.Login })">
+                <img src="@Url.Content(item.PhotoLink)" alt="Photo" height="150" width="200" />
+            </a>
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.FirstName)
@@ -34,16 +36,11 @@
             @Html.DisplayFor(modelItem => item.LastName)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Login)
+            @Html.ActionLink(item.Login, "Details", new { login = item.Login })
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Email)
         </td>
-        @*<td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>*@
     </tr>
 }
 
