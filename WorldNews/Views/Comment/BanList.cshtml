@@ -1,37 +1,20 @@
-﻿@model IEnumerable<WorldNews.Models.Comment.CommentBanDetailsViewModel>
+﻿@using WorldNews.Helpers
+@model IEnumerable<WorldNews.Models.Comment.CommentBanDetailsViewModel>
 
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.BanReason)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Text)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AuthorFullName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DateBanned)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.BanReason)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Text)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AuthorFullName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DateBanned)
-        </td>
-    </tr>
-}
-
-</table>
+<ul class="list-group list-group-flush">
+    @foreach (var comment in Model)
+    {
+        <li class="list-group-item">
+            <blockquote class="blockquote">
+                <p class="mb-0 text-danger">@Html.DisplayFor(model => @comment.BanReason)</p>
+                <p class="mb-0">@Html.TextToHtml(comment.Text)</p>
+                <footer class="blockquote-footer">
+                    @Html.DisplayFor(model => @comment.DateBanned) -
+                    <cite>
+                        @Html.DisplayFor(model => @comment.AuthorFullName)
+                    </cite>
+                </footer>
+            </blockquote>
+        </li>
+    }
+</ul>

@@ -3,3 +3,7 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.avatar {
+    height: 200px;
+}
