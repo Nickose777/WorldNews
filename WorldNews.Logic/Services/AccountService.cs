@@ -163,6 +163,18 @@ namespace WorldNews.Logic.Services
             signInManager.AuthenticationManager.SignOut();
         }
 
+        public ServiceMessage BanUser(string login)
+        {
+            DateTime lockoutEndDateUtc = DateTime.Now.AddYears(200);
+            return SetLockout(login, lockoutEndDateUtc);
+        }
+
+        public ServiceMessage UnbanUser(string login)
+        {
+            DateTime lockoutEndDateUtc = DateTime.Now.AddYears(-200);
+            return SetLockout(login, lockoutEndDateUtc);
+        }
+
         public void Dispose()
         {
             unitOfWork.Dispose();
@@ -191,6 +203,39 @@ namespace WorldNews.Logic.Services
             }
 
             return succeeded;
+        }
+
+        private ServiceMessage SetLockout(string login, DateTime lockoutEndDateUtc)
+        {
+            List<string> errors = new List<string>();
+            bool succeeded = true;
+
+            try
+            {
+                ApplicationUser applicationUser = userManager.FindByName(login);
+                if (applicationUser != null)
+                {
+                    IdentityResult identityResult = userManager.SetLockoutEndDate(applicationUser.Id, lockoutEndDateUtc);
+                    succeeded = identityResult.Succeeded;
+                    errors.AddRange(identityResult.Errors);
+                }
+                else
+                {
+                    succeeded = false;
+                    errors.Add("User with such login doesn't exist");
+                }
+            }
+            catch (Exception ex)
+            {
+                succeeded = false;
+                ExceptionMessageBuilder.FillErrors(ex, errors);
+            }
+
+            return new ServiceMessage
+            {
+                Errors = errors,
+                Succeeded = succeeded
+            };
         }
 
         #region Initialization

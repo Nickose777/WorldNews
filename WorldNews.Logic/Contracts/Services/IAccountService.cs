@@ -14,6 +14,10 @@ namespace WorldNews.Logic.Contracts.Services
 
         ServiceMessage LogIn(string login, string password);
 
+        ServiceMessage BanUser(string login);
+
+        ServiceMessage UnbanUser(string login);
+
         void LogOff();
     }
 }

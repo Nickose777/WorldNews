@@ -3,6 +3,7 @@ using System.Security.Principal;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
 using WorldNews.Logic.Infrastructure;
+using WorldNews.Models.Profile;
 
 namespace WorldNews.Helpers
 {
@@ -25,6 +26,16 @@ namespace WorldNews.Helpers
                 : RouteHelper.GetServerPath("ListWithoutBanOption", "Comment");
 
             return helper.Partial(partialViewName);
+        }
+
+        public static MvcHtmlString RenderModeratorAction(this HtmlHelper helper, ModeratorListViewModel model)
+        {
+            bool isBanned = model.IsBanned;
+            string action = isBanned
+                ? "Unban"
+                : "Ban";
+
+            return helper.ActionLink(action, action, "Account", new { login = model.Login }, new { @class = "dropdown-item" });
         }
 
         public static MvcHtmlString RenderGreeting(this HtmlHelper helper, IPrincipal user)

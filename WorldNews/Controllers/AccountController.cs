@@ -158,6 +158,36 @@ namespace WorldNews.Controllers
             return RedirectToAction("Login");
         }
 
+        [AdminAuthorize]
+        public ActionResult Ban(string login)
+        {
+            if (login != null)
+            {
+                ServiceMessage serviceMessage = service.BanUser(login);
+                if (!serviceMessage.Succeeded)
+                {
+                    return Content(String.Join(Environment.NewLine, serviceMessage.Errors));
+                }
+            }
+
+            return RedirectToAction("List", "Moderator");
+        }
+
+        [AdminAuthorize]
+        public ActionResult Unban(string login)
+        {
+            if (login != null)
+            {
+                ServiceMessage serviceMessage = service.UnbanUser(login);
+                if (!serviceMessage.Succeeded)
+                {
+                    return Content(String.Join(Environment.NewLine, serviceMessage.Errors));
+                }
+            }
+
+            return RedirectToAction("List", "Moderator");
+        }
+
         private ActionResult RedirectToLocal(string returnUrl)
         {
             return Url.IsLocalUrl(returnUrl) ? Redirect(returnUrl) as ActionResult : RedirectToAction("List", "Article");

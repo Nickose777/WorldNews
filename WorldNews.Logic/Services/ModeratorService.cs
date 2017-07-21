@@ -158,7 +158,10 @@ namespace WorldNews.Logic.Services
                         LastName = moderatorEntity.User.LastName,
                         Email = moderatorEntity.User.Email,
                         Login = moderatorEntity.User.UserName,
-                        PhotoLink = moderatorEntity.PhotoLink
+                        PhotoLink = moderatorEntity.PhotoLink,
+                        IsBanned = 
+                            moderatorEntity.User.LockoutEndDateUtc.HasValue &&
+                            moderatorEntity.User.LockoutEndDateUtc.Value > DateTime.Now
                     })
                     .OrderBy(moderator => moderator.FirstName)
                     .ThenBy(moderator => moderator.LastName)
