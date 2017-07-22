@@ -1,23 +1,31 @@
 ﻿@model IEnumerable<WorldNews.Models.Article.ArticleListViewModel>
-
 @{
-    ViewBag.Title = "List";
+    var articles = Model
+        .Select((x, i) => new { x, i })
+        .GroupBy(p => (p.i / 2), p => p.x);
 }
 
-@foreach (var item in Model)
+<p class="display-4">Политика</p>
+<hr />
+@foreach (var row in articles)
 {
-    <div class="media">
-        <div class="media-body">
-            <a href="@Url.Action("Details", "Article", new { id = Url.Encode(item.Id) })">
-                <div class="text-center">
-                    <img class="media-object img-responsive img-thumbnail" src="@Url.Content(item.PhotoLink)" alt="Photo">
+    <div class="row mb-4">
+        @foreach (var item in row)
+        {
+            <div class="col-6 card-deck">
+                <div class="card">
+                    <img class="img-fluid img-article rounded card-img-top" src="@Url.Content(item.PhotoLink)" alt="Photo">
+                    <div class="card-block">
+                        <a href="@Url.Action("Details", "Article", new { id = Url.Encode(item.Id) })" class="heading text-justify">
+                            <p class="mb-2">@item.Header</p>
+                        </a>
+                        <p class="text-justify text-article">@Html.DisplayFor(model => item.Description)</p>
+                    </div>
+                    <div class="card-footer text-right">
+                        @Html.DisplayFor(model => item.DateCreated)
+                    </div>
                 </div>
-            </a>
-            <a href="@Url.Action("Details", "Article", new { id = Url.Encode(item.Id) })">
-                <h3 class="media-heading h3">@item.Header</h3>
-            </a>
-            <p class="h4">@Html.DisplayFor(model => item.Description)</p>
-            <p>@Html.DisplayFor(model => item.DateCreated)</p>
-        </div>
+            </div>
+        }
     </div>
 }

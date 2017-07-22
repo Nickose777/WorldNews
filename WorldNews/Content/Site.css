@@ -1,4 +1,9 @@
-﻿input,
+﻿body {
+    /*TODO - background*/
+    background-color: #F6D8B2;
+}
+
+input,
 select,
 textarea {
     max-width: 280px;
@@ -10,4 +15,26 @@ textarea {
 
 .card-fixed-3 {
     width: 300px;
+}
+
+.img-article {
+    min-width: 100%;
+}
+
+.heading {
+    color: #f0ad4e;
+    font-size: 21px;
+    font-weight: bold;
+    font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+}
+
+.heading:hover {
+    color: #C48226;
+    text-decoration: none;
+}
+
+.text-article {
+	font-family: 'Book Antiqua';
+	font-size: 19px;
+	line-height: 28px;
 }
