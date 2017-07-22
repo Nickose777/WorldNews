@@ -1,58 +1,44 @@
 ﻿@using WorldNews.Helpers
 @model IEnumerable<WorldNews.Models.Profile.ModeratorListViewModel>
 
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.PhotoLink)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FirstName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LastName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Login)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Email)
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
+<p class="display-4">Moderators</p>
+<hr />
+<div class="d-flex flex-wrap justify-content-center">
+    @foreach (var moderator in Model)
     {
-        <tr>
-            <td>
-                <a href="@Url.Action("Details", new { login = item.Login })">
-                    <img src="@Url.Content(item.PhotoLink)" alt="Photo" height="150" width="200" />
-                </a>
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastName)
-            </td>
-            <td>
-                <div class="dropdown">
-                    <a class="btn btn-secondary dropdown-toggle" href="#" id="@item.Login" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        @Html.DisplayFor(model => item.Login)
-                    </a>
+        <div class="p-2">
+            <div class="card card-fixed-3">
+                @Html.Image(Url.Content(moderator.PhotoLink), "Avatar", new { @class = "card-img-top avatar rounded" })
+                <div class="card-block">
+                    @Html.RenderModeratorLogin(moderator)
+                    <hr />
+                    <p class="card-text">
+                        @Html.DisplayNameFor(model => model.First().FirstName)
+                        @Html.DisplayFor(model => moderator.FirstName)
+                    </p>
+                    <p class="card-text">
+                        @Html.DisplayNameFor(model => model.First().LastName)
+                        @Html.DisplayFor(model => moderator.LastName)
+                    </p>
+                    <div class="text-right">
+                    </div>
+                    <div class="dropdown">
+                        <a class="btn btn-primary dropdown-toggle" href="#" id="@moderator.Login" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Options
+                        </a>
 
-                    <div class="dropdown-menu" aria-labelledby="@item.Login">
-                        @Html.ActionLink("Details", "Details", new { login = item.Login }, new { @class = "dropdown-item" })
-                        @Html.ActionLink("Edit", "Edit", new { login = item.Login }, new { @class = "dropdown-item" })
-                        <div class="dropdown-divider"></div>
-                        @Html.RenderModeratorAction(item)
+                        <div class="dropdown-menu" aria-labelledby="@moderator.Login">
+                            @Html.ActionLink("Details", "Details", new { login = moderator.Login }, new { @class = "dropdown-item" })
+                            @Html.ActionLink("Edit", "Edit", new { login = moderator.Login }, new { @class = "dropdown-item" })
+                            <div class="dropdown-divider"></div>
+                            @Html.RenderModeratorAction(moderator)
+                        </div>
                     </div>
                 </div>
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-        </tr>
+                <div class="card-footer">
+                    <small class="text-muted">@Html.DisplayFor(model => moderator.Email)</small>
+                </div>
+            </div>
+        </div>
     }
-
-</table>
+</div>

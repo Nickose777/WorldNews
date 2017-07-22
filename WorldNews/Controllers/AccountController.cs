@@ -71,9 +71,8 @@ namespace WorldNews.Controllers
             else
             {
                 AddModelErrors(serviceMessage.Errors);
+                return View(model);
             }
-
-            return View(model);
         }
 
         [HttpGet]
@@ -104,14 +103,13 @@ namespace WorldNews.Controllers
             if (serviceMessage.Succeeded)
             {
                 model.Photo.SaveAs(path);
-                return RedirectToAction("Login");
+                return RedirectToAction("List", "Moderator");
             }
             else
             {
                 AddModelErrors(serviceMessage.Errors);
+                return View(model);
             }
-
-            return View(model);
         }
 
         [HttpGet]

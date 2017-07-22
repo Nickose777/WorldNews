@@ -1,46 +1,43 @@
-﻿@model WorldNews.Models.Profile.ModeratorEditViewModel
+﻿@using WorldNews.Helpers
+@model WorldNews.Models.Profile.ModeratorEditViewModel
 
+<p class="display-4">Edit profile</p>
+<hr />
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
-        <h4>@Model.Login</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.Login)
+    @Html.HiddenFor(model => model.Email)
+    @Html.HiddenFor(model => model.PhotoLink)
 
-        @Html.HiddenFor(model => model.Login)
-        @Html.HiddenFor(model => model.Email)
-        @Html.HiddenFor(model => model.PhotoLink)
-
-        <img src="@Url.Content(Model.PhotoLink)" alt="Photo" height="150" width="200" />
-
-        @Html.DisplayFor(model => model.Email, new { @class = "form-control" })
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+    <div class="d-flex justify-content-center">
+        <div class="card card-fixed-3 mb-3">
+            @Html.Image(Url.Content(Model.PhotoLink), "Avatar", new { @class = "card-img-top avatar rounded" })
+            <div class="card-block">
+                <h4 class="card-title">@Html.DisplayFor(model => model.Login)</h4>
+                <hr />
+                <p class="card-text">
+                    @Html.DisplayNameFor(model => model.FirstName)
+                    @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                </p>
+                <p class="card-text">
+                    @Html.DisplayNameFor(model => model.LastName)
+                    @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                </p>
             </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+            <div class="card-block text-right">
+                <input type="submit" value="Save" class="btn btn-success" />
             </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+            <div class="card-footer">
+                <small class="text-muted">@Html.DisplayFor(model => model.Email)</small>
             </div>
         </div>
     </div>
 }
-
-<div>
-    @Html.ActionLink("Back to List", "List")
-</div>
+<p class="text-primary">
+    <i class="fa fa-arrow-left"></i>
+    @Html.ActionLink("Back", "List")
+</p>

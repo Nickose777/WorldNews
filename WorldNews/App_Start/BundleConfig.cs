@@ -30,6 +30,9 @@ namespace WorldNews
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
 
+            bundles.Add(new StyleBundle("~/Content/font-awesome").Include(
+                      "~/Content/font-awesome.css"));
+
             bundles.Add(new StyleBundle("~/Content/Sidebar/css").Include(
                       "~/Content/Sidebar/sidebar.css"));
         }

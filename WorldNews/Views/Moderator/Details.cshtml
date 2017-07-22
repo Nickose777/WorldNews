@@ -1,7 +1,7 @@
 ﻿@using WorldNews.Helpers
 @model WorldNews.Models.Profile.ModeratorDetailsViewModel
 
-<h4 class="display-4">Profile</h4>
+<p class="display-4">Profile</p>
 <hr />
 <div class="row justify-content-md-center mb-3">
     <div class="col-3">
@@ -19,7 +19,7 @@
                     @Html.DisplayFor(model => model.LastName)
                 </p>
                 <div class="text-right">
-                    <a href="#" class="btn btn-primary">Edit profile</a>
+                    @Html.ActionLink("Edit profile", "Edit", new { login = Model.Login }, new { @class = "btn btn-primary" })
                 </div>
             </div>
             <div class="card-footer">
@@ -36,6 +36,7 @@
         </div>
     </div>
 </div>
-<p>
-    @Html.ActionLink("Back to List", "List")
+<p class="text-primary">
+    <i class="fa fa-arrow-left"></i>
+    @Html.ActionLink("Back", "List")
 </p>

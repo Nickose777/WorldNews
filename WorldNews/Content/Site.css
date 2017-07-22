@@ -5,5 +5,9 @@ textarea {
 }
 
 .avatar {
-    height: 200px;
+    height: 240px;
+}
+
+.card-fixed-3 {
+    width: 300px;
 }

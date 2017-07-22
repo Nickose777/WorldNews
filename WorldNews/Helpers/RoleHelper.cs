@@ -38,6 +38,25 @@ namespace WorldNews.Helpers
             return helper.ActionLink(action, action, "Account", new { login = model.Login }, new { @class = "dropdown-item" });
         }
 
+        public static MvcHtmlString RenderModeratorLogin(this HtmlHelper helper, ModeratorListViewModel model)
+        {
+            TagBuilder h4 = new TagBuilder("h4");
+
+            bool isBanned = model.IsBanned;
+            string innerText = !isBanned
+                ? model.Login
+                : model.Login + " - [Banned]";
+            if (isBanned)
+            {
+                h4.AddCssClass("text-danger");
+            }
+
+            h4.SetInnerText(innerText);
+            h4.AddCssClass("card-title");
+
+            return MvcHtmlString.Create(h4.ToString(TagRenderMode.Normal));
+        }
+
         public static MvcHtmlString RenderGreeting(this HtmlHelper helper, IPrincipal user)
         {
             if (!user.Identity.IsAuthenticated)
