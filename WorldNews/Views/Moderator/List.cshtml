@@ -3,6 +3,9 @@
 
 <p class="display-4">Moderators</p>
 <hr />
+<div class="text-right">
+    @Html.ActionLink("Register new", "RegisterModerator", "Account", null, new { @class = "btn btn-success" })
+</div>
 <div class="d-flex flex-wrap justify-content-center">
     @foreach (var moderator in Model)
     {
