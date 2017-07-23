@@ -11,6 +11,8 @@ namespace WorldNews.Logic.Contracts.Services
 
         ServiceMessage Edit(ArticleEditDTO articleDTO);
 
+        ServiceMessage Delete(string id);
+
         DataServiceMessage<ArticleEditDTO> Get(string id);
 
         DataServiceMessage<ArticleDetailsDTO> GetDetails(string id);

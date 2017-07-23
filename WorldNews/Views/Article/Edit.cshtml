@@ -1,5 +1,6 @@
 ﻿@model WorldNews.Models.Article.ArticleEditViewModel
 
+@{string id = Url.Encode(Model.Id);}
 @using (Html.BeginForm("Edit", "Article", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
@@ -8,7 +9,6 @@
         <h4>ArticleEditViewModel</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @{string id = Url.Encode(Model.Id);}
         @Html.HiddenFor(model => id)
         @Html.HiddenFor(model => model.PhotoLink)
 
@@ -51,6 +51,7 @@
         </div>
     </div>
 }
+@Html.ActionLink("Delete", "Delete", new { id = id }, new { @class = "btn btn-danger" })
 
 <div>
     @Html.ActionLink("Back to List", "Index")

@@ -134,6 +134,49 @@ namespace WorldNews.Logic.Services
             };
         }
 
+        public ServiceMessage Delete(string encryptedId)
+        {
+            int id;
+            string decryptedId = encryptor.Decrypt(encryptedId);
+
+            List<string> errors = new List<string>();
+            bool succeeded = true;
+
+            if (Int32.TryParse(decryptedId, out id))
+            {
+                try
+                {
+                    ArticleEntity articleEntity = unitOfWork.Articles.Get(id);
+                    if (articleEntity != null)
+                    {
+                        unitOfWork.Articles.Remove(articleEntity);
+                        unitOfWork.Commit();
+                    }
+                    else
+                    {
+                        succeeded = false;
+                        errors.Add("Article was not found");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ExceptionMessageBuilder.FillErrors(ex, errors);
+                    succeeded = false;
+                }
+            }
+            else
+            {
+                succeeded = false;
+                errors.Add("Article was not found");
+            }
+
+            return new ServiceMessage
+            {
+                Errors = errors,
+                Succeeded = succeeded
+            };
+        }
+
         public DataServiceMessage<ArticleEditDTO> Get(string encryptedId)
         {
             string decryptedId = encryptor.Decrypt(encryptedId);

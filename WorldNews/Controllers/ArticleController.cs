@@ -151,6 +151,21 @@ namespace WorldNews.Controllers
             }
         }
 
+        [ModeratorAuthorize]
+        public ActionResult Delete(string id)
+        {
+            id = HttpUtility.UrlDecode(id);
+            ServiceMessage serviceMessage = articleService.Delete(id);
+            if (serviceMessage.Succeeded)
+            {
+                return RedirectToAction("List");
+            }
+            else
+            {
+                return HttpNotFound(String.Join(Environment.NewLine, serviceMessage.Errors));
+            }
+        }
+
         private IEnumerable<string> GetAllCategoryNames()
         {
             DataServiceMessage<IEnumerable<string>> serviceMessage = categoryService.GetAllNames();
