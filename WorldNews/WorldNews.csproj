@@ -267,6 +267,7 @@
     <Content Include="fonts\fontawesome-webfont.eot" />
     <Content Include="fonts\FontAwesome.otf" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
+    <Content Include="Scripts\Account\accountModal.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\Comments\commentBan.js" />
@@ -328,6 +329,7 @@
     <Content Include="Views\Moderator\Edit.cshtml" />
     <Content Include="Views\Article\Edit.cshtml" />
     <Content Include="Views\Account\LoginPartial.cshtml" />
+    <Content Include="Views\Account\RegisterUserPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

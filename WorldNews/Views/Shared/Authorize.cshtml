@@ -1,45 +1,4 @@
-﻿<button class="dropdown-item" type="button" onclick="showLoginView()">Log in</button>
-<button class="dropdown-item" type="button">Register</button>
+﻿<button class="dropdown-item" type="button" onclick="showLoginView(false)">Log in</button>
+<button class="dropdown-item" type="button" onclick="showRegisterView(false)">Register</button>
 
-<script>
-    function showLoginView() {
-        var handler = function () {
-            var data = $("#modalWindow .modal-body").find("form").serialize();
-
-            $.ajax({
-                url: "/Account/LoginJson",
-                type: "POST",
-                dataType: "json",
-                data: data,
-                success: function (response) {
-                    if (response.success) {
-                        //if not reloading then off click
-                        //$("#modalWindow #btnModalAction").off("click");
-                        window.location.reload(true);
-                    }
-                    else {
-                        $("#modalWindow .modal-body").html(response.html);
-                    }
-                },
-                error: function (error) {
-                    alert("Couldn't connect to server. Try a bit later");
-                }
-            });
-        }
-
-        $.ajax({
-            url: "/Account/LoginPartial",
-            type: "GET",
-            dataType: "html",
-            success: function (html) {
-                $("#modalWindow .modal-body").html(html);
-                $("#modalWindow #modalTitle").text("Login");
-                $("#modalWindow #btnModalAction").on("click", handler);
-                $("#modalWindow").modal("show");
-            },
-            error: function (error) {
-                alert("Couldn't connect to server. Try a bit later");
-            }
-        });
-    }
-</script>
+<script type="text/javascript" src="~/Scripts/Account/accountModal.js"></script>

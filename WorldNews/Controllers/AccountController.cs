@@ -53,6 +53,20 @@ namespace WorldNews.Controllers
             }
         }
 
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult RegisterUserPartial()
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return PartialView();
+            }
+            else
+            {
+                return Content("User already authenticated");
+            }
+        }
+
         [HttpPost]
         [AllowAnonymous]
         public ActionResult RegisterUser(RegisterViewModel model)
@@ -74,6 +88,31 @@ namespace WorldNews.Controllers
                 AddModelErrors(serviceMessage.Errors);
                 return View(model);
             }
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public ActionResult RegisterUserJson(RegisterViewModel model)
+        {
+            bool success = ModelState.IsValid;
+
+            if (success)
+            {
+                UserRegisterDTO userDTO = Mapper.Map<RegisterViewModel, UserRegisterDTO>(model);
+                ServiceMessage serviceMessage = service.RegisterUser(userDTO);
+                if (!(success = serviceMessage.Succeeded))
+                {
+                    AddModelErrors(serviceMessage.Errors);
+                }
+            }
+
+            return Json(new
+            {
+                success = success,
+                html = !success
+                    ? RenderHelper.PartialView(this, "RegisterUserPartial", model)
+                    : String.Empty
+            });
         }
 
         [HttpGet]
