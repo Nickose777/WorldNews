@@ -1,11 +1,11 @@
-﻿@model IEnumerable<WorldNews.Models.Article.ArticleListViewModel>
+﻿@model WorldNews.Models.Article.ArticleOfCategoryListViewModel
 @{
-    var articles = Model
+    var articles = Model.Articles
         .Select((x, i) => new { x, i })
         .GroupBy(p => (p.i / 2), p => p.x);
 }
 
-<p class="display-4">Политика</p>
+<p class="display-4">@Model.CategoryName</p>
 <hr />
 @foreach (var row in articles)
 {

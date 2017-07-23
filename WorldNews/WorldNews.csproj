@@ -209,6 +209,7 @@
     <Compile Include="Models\Article\ArticleDetailsViewModel.cs" />
     <Compile Include="Models\Article\ArticleEditViewModel.cs" />
     <Compile Include="Models\Article\ArticleListViewModel.cs" />
+    <Compile Include="Models\Article\ArticleOfCategoryListViewModel.cs" />
     <Compile Include="Models\BanReason\BanReasonCreateViewModel.cs" />
     <Compile Include="Models\BanReason\BanReasonEditViewModel.cs" />
     <Compile Include="Models\BanReason\BanReasonListViewModel.cs" />

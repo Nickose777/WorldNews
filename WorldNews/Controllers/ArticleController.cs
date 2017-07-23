@@ -79,7 +79,12 @@ namespace WorldNews.Controllers
 
         public ActionResult List(string categoryName)
         {
-            var model = GetArticles(categoryName);
+            IEnumerable<ArticleListViewModel> articles = GetArticles(categoryName);
+            ArticleOfCategoryListViewModel model = new ArticleOfCategoryListViewModel
+            {
+                Articles = articles,
+                CategoryName = categoryName ?? "All news"
+            };
             return View(model);
         }
 
