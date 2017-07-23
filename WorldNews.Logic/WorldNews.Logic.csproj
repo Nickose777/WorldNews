@@ -99,6 +99,7 @@
     <Compile Include="DTO\Article\ArticleAuthorListDTO.cs" />
     <Compile Include="DTO\Article\ArticleCreateDTO.cs" />
     <Compile Include="DTO\Article\ArticleDetailsDTO.cs" />
+    <Compile Include="DTO\Article\ArticleEditDTO.cs" />
     <Compile Include="DTO\Article\ArticleListDTO.cs" />
     <Compile Include="DTO\BanReason\BanReasonEditDTO.cs" />
     <Compile Include="DTO\BanReason\BanReasonListDTO.cs" />

@@ -90,10 +90,56 @@ namespace WorldNews.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        [ModeratorAuthorize]
+        public ActionResult Edit(string id)
+        {
+            id = HttpUtility.UrlDecode(id);
+            DataServiceMessage<ArticleEditDTO> serviceMessage = articleService.Get(id);
+            if (serviceMessage.Succeeded)
+            {
+                ArticleEditViewModel model = Mapper.Map<ArticleEditDTO, ArticleEditViewModel>(serviceMessage.Data);
+                var categoryNames = GetAllCategoryNames();
+                model.Categories = ConvertToSelectListItems(categoryNames);
+                return View(model);
+            }
+            else
+            {
+                return HttpNotFound(String.Join(Environment.NewLine, serviceMessage.Errors));
+            }
+        }
+
+        [HttpPost]
+        [ModeratorAuthorize]
+        public ActionResult Edit(ArticleEditViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                var categoryNames = GetAllCategoryNames();
+                model.Categories = ConvertToSelectListItems(categoryNames);
+                return View(model);
+            }
+
+            model.Id = HttpUtility.UrlDecode(model.Id);
+            ArticleEditDTO articleDTO = Mapper.Map<ArticleEditViewModel, ArticleEditDTO>(model);
+            ServiceMessage serviceMessage = articleService.Edit(articleDTO);
+            if (serviceMessage.Succeeded)
+            {
+                return RedirectToAction("List");
+            }
+            else
+            {
+                var categoryNames = GetAllCategoryNames();
+                model.Categories = ConvertToSelectListItems(categoryNames);
+                AddModelErrors(serviceMessage.Errors);
+                return View(model);
+            }
+        }
+
         public ActionResult Details(string id)
         {
             id = HttpUtility.UrlDecode(id);
-            DataServiceMessage<ArticleDetailsDTO> serviceMessage = articleService.Get(id);
+            DataServiceMessage<ArticleDetailsDTO> serviceMessage = articleService.GetDetails(id);
             if (serviceMessage.Succeeded)
             {
                 ArticleDetailsViewModel model = Mapper.Map<ArticleDetailsDTO, ArticleDetailsViewModel>(serviceMessage.Data);

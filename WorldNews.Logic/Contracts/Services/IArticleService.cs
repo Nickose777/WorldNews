@@ -9,7 +9,11 @@ namespace WorldNews.Logic.Contracts.Services
     {
         ServiceMessage Create(ArticleCreateDTO articleDTO);
 
-        DataServiceMessage<ArticleDetailsDTO> Get(string id);
+        ServiceMessage Edit(ArticleEditDTO articleDTO);
+
+        DataServiceMessage<ArticleEditDTO> Get(string id);
+
+        DataServiceMessage<ArticleDetailsDTO> GetDetails(string id);
 
         DataServiceMessage<IEnumerable<ArticleListDTO>> GetAllByCategory(string categoryName);
 

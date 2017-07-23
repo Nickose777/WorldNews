@@ -202,10 +202,12 @@
     <Compile Include="Mappings\BanReasonProfile.cs" />
     <Compile Include="Mappings\CategoryProfile.cs" />
     <Compile Include="Mappings\CommentProfile.cs" />
+    <Compile Include="Mappings\ProfileBase.cs" />
     <Compile Include="Mappings\RegisterProfile.cs" />
     <Compile Include="Models\Article\ArticleAuthorListViewModel.cs" />
     <Compile Include="Models\Article\ArticleCreateViewModel.cs" />
     <Compile Include="Models\Article\ArticleDetailsViewModel.cs" />
+    <Compile Include="Models\Article\ArticleEditViewModel.cs" />
     <Compile Include="Models\Article\ArticleListViewModel.cs" />
     <Compile Include="Models\BanReason\BanReasonCreateViewModel.cs" />
     <Compile Include="Models\BanReason\BanReasonEditViewModel.cs" />
@@ -323,6 +325,7 @@
     <Content Include="Views\Moderator\Details.cshtml" />
     <Content Include="Views\Comment\BanList.cshtml" />
     <Content Include="Views\Moderator\Edit.cshtml" />
+    <Content Include="Views\Article\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

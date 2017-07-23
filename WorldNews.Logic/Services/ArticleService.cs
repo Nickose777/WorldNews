@@ -73,16 +73,129 @@ namespace WorldNews.Logic.Services
             };
         }
 
-        public DataServiceMessage<ArticleDetailsDTO> Get(string encryptedId)
+        public ServiceMessage Edit(ArticleEditDTO articleDTO)
+        {
+            int id;
+            string decryptedId = encryptor.Decrypt(articleDTO.Id);
+
+            List<string> errors = new List<string>();
+            bool succeeded = true;
+
+            if (Int32.TryParse(decryptedId, out id))
+            {
+                if (succeeded = Validate(articleDTO, errors))
+                {
+                    try
+                    {
+                        CategoryEntity categoryEntity = unitOfWork.Categories.GetByName(articleDTO.CategoryName);
+                        if (categoryEntity != null)
+                        {
+                            ArticleEntity articleEntity = unitOfWork.Articles.Get(id);
+                            if (articleEntity != null)
+                            {
+                                articleEntity.Category = categoryEntity;
+                                articleEntity.DateLastModified = DateTime.Now;
+                                articleEntity.Header = articleDTO.Header;
+                                articleEntity.PhotoLink = articleDTO.PhotoLink;
+                                articleEntity.ShortDescription = articleDTO.ShortDescription;
+                                articleEntity.Text = articleDTO.Text;
+
+                                unitOfWork.Commit();
+                            }
+                            else
+                            {
+                                succeeded = false;
+                                errors.Add("Article was not found");
+                            }
+                        }
+                        else
+                        {
+                            succeeded = false;
+                            errors.Add(String.Format("Category with name {0} was not found", articleDTO.CategoryName));
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        ExceptionMessageBuilder.FillErrors(ex, errors);
+                        succeeded = false;
+                    }
+                }
+            }
+            else
+            {
+                succeeded = false;
+                errors.Add("Article was not found");
+            }
+
+            return new ServiceMessage
+            {
+                Errors = errors,
+                Succeeded = succeeded
+            };
+        }
+
+        public DataServiceMessage<ArticleEditDTO> Get(string encryptedId)
         {
             string decryptedId = encryptor.Decrypt(encryptedId);
             int id;
 
             List<string> errors = new List<string>();
-            bool succeeded = Int32.TryParse(decryptedId, out id);
+            bool succeeded = true;
+            ArticleEditDTO data = null;
+
+            if (Int32.TryParse(decryptedId, out id))
+            {
+                try
+                {
+                    ArticleEntity articleEntity = unitOfWork.Articles.Get(id);
+                    if (articleEntity != null)
+                    {
+                        data = new ArticleEditDTO
+                        {
+                            Id = encryptedId,
+                            CategoryName = articleEntity.Category.Name,
+                            Header = articleEntity.Header,
+                            PhotoLink = articleEntity.PhotoLink,
+                            Text = articleEntity.Text,
+                            ShortDescription = articleEntity.ShortDescription
+                        };
+                    }
+                    else
+                    {
+                        succeeded = false;
+                        errors.Add("Article was not found");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    succeeded = false;
+                    ExceptionMessageBuilder.FillErrors(ex, errors);
+                }
+            }
+            else
+            {
+                succeeded = false;
+                errors.Add("Article was not found");
+            }
+
+            return new DataServiceMessage<ArticleEditDTO>
+            {
+                Errors = errors,
+                Succeeded = succeeded,
+                Data = data
+            };
+        }
+
+        public DataServiceMessage<ArticleDetailsDTO> GetDetails(string encryptedId)
+        {
+            string decryptedId = encryptor.Decrypt(encryptedId);
+            int id;
+
+            List<string> errors = new List<string>();
+            bool succeeded = true;
             ArticleDetailsDTO data = null;
 
-            if (succeeded)
+            if (Int32.TryParse(decryptedId, out id))
             {
                 try
                 {
@@ -142,6 +255,7 @@ namespace WorldNews.Logic.Services
             }
             else
             {
+                succeeded = false;
                 errors.Add("Article was not found");
             }
 
@@ -240,7 +354,7 @@ namespace WorldNews.Logic.Services
             };
         }
 
-        private bool Validate(ArticleCreateDTO articleDTO, List<string> errors)
+        private bool Validate(ArticleCreateDTO articleDTO, ICollection<string> errors)
         {
             bool isValid = true;
 
@@ -278,6 +392,43 @@ namespace WorldNews.Logic.Services
             {
                 isValid = false;
                 errors.Add("Author must be selected");
+            }
+
+            return isValid;
+        }
+
+        private bool Validate(ArticleEditDTO articleDTO, ICollection<string> errors)
+        {
+            bool isValid = true;
+
+            if (String.IsNullOrEmpty(articleDTO.Header))
+            {
+                isValid = false;
+                errors.Add("Header cannot be empty");
+            }
+
+            if (String.IsNullOrEmpty(articleDTO.Text))
+            {
+                isValid = false;
+                errors.Add("Text cannot be empty");
+            }
+
+            if (String.IsNullOrEmpty(articleDTO.ShortDescription))
+            {
+                isValid = false;
+                errors.Add("Description cannot be empty");
+            }
+
+            if (String.IsNullOrEmpty(articleDTO.PhotoLink))
+            {
+                isValid = false;
+                errors.Add("A photo must be chosen");
+            }
+
+            if (String.IsNullOrEmpty(articleDTO.CategoryName))
+            {
+                isValid = false;
+                errors.Add("Category must be selected");
             }
 
             return isValid;
