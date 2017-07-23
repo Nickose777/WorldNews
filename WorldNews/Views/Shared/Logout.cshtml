@@ -1,13 +1,5 @@
-﻿@using WorldNews.Helpers;
-
-<li class="nav-item">
-    <a href="#" class="nav-link">@Html.RenderGreeting(User)</a>
-</li>
-<li class="nav-item">
-    <a href="javascript:document.getElementById('logoff').submit()" class="nav-link">Log off</a>
-</li>
-
-@using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { @class = "navbar-right", id = "logoff" }))
+﻿<a class="dropdown-item" href="javascript:document.getElementById('logoff').submit()">Log off</a>
+@using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoff" }))
 {
     @Html.AntiForgeryToken()
 }

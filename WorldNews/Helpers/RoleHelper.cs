@@ -61,7 +61,7 @@ namespace WorldNews.Helpers
         {
             if (!user.Identity.IsAuthenticated)
             {
-                return MvcHtmlString.Empty;
+                return MvcHtmlString.Create("Account");
             }
 
             string name;

@@ -9,6 +9,15 @@ textarea {
     max-width: 280px;
 }
 
+.text-link {
+    color: black;
+}
+
+.text-link:link, .text-link:visited, .text-link:hover, .text-link:active {
+    text-decoration: none;
+    color: gray;
+}
+
 .avatar {
     height: 240px;
 }
@@ -19,6 +28,10 @@ textarea {
 
 .img-article {
     min-width: 100%;
+}
+
+.category-heading {
+    font-size: 24px;
 }
 
 .heading {
@@ -34,7 +47,15 @@ textarea {
 }
 
 .text-article {
-	font-family: 'Book Antiqua';
-	font-size: 19px;
-	line-height: 28px;
+    font-family: 'Book Antiqua';
+    font-size: 19px;
+    line-height: 28px;
+}
+
+.dropdown-menu {
+    background-color: transparent;
+}
+
+.dropdown-menu a {
+    color: black;
 }
