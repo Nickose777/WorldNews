@@ -300,7 +300,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Account\RegisterUser.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
-    <Content Include="Views\Shared\LoginPartial.cshtml" />
+    <Content Include="Views\Shared\Account.cshtml" />
     <Content Include="Views\Admin\Edit.cshtml" />
     <Content Include="Views\Shared\Authorize.cshtml" />
     <Content Include="Views\Shared\Logout.cshtml" />
@@ -327,6 +327,7 @@
     <Content Include="Views\Comment\BanList.cshtml" />
     <Content Include="Views\Moderator\Edit.cshtml" />
     <Content Include="Views\Article\Edit.cshtml" />
+    <Content Include="Views\Account\LoginPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

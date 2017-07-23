@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using WorldNews.Attributes;
+using WorldNews.Helpers;
 using WorldNews.Logic.Contracts.Services;
 using WorldNews.Logic.DTO.Registration;
 using WorldNews.Logic.Infrastructure;
@@ -127,6 +128,21 @@ namespace WorldNews.Controllers
             }
         }
 
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult LoginPartial(string returnUrl)
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                ViewBag.ReturnUrl = returnUrl;
+                return PartialView();
+            }
+            else
+            {
+                return Content("User already authenticated");
+            }
+        }
+
         [HttpPost]
         [AllowAnonymous]
         public ActionResult Login(LoginViewModel model, string returnUrl)
@@ -146,6 +162,30 @@ namespace WorldNews.Controllers
                 AddModelErrors(serviceMessage.Errors);
                 return View();
             }
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public ActionResult LoginJson(LoginViewModel model)
+        {
+            bool success = ModelState.IsValid;
+
+            if (success)
+            {
+                ServiceMessage serviceMessage = service.LogIn(model.Login, model.Password);
+                if (!(success = serviceMessage.Succeeded))
+                {
+                    AddModelErrors(serviceMessage.Errors);
+                }
+            }
+
+            return Json(new
+            {
+                success = success,
+                html = !success
+                    ? RenderHelper.PartialView(this, "LoginPartial", model)
+                    : String.Empty
+            });
         }
 
         [Authorize]
