@@ -3,6 +3,7 @@ using System.Security.Principal;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
 using WorldNews.Logic.Infrastructure;
+using WorldNews.Models.Comment;
 using WorldNews.Models.Profile;
 
 namespace WorldNews.Helpers
@@ -15,17 +16,26 @@ namespace WorldNews.Helpers
                 ? RouteHelper.GetServerPath("Logout", "Shared")
                 : RouteHelper.GetServerPath("Authorize", "Shared");
 
-            return helper.Partial(partialViewName); ;
+            return helper.Partial(partialViewName);
         }
 
-        public static MvcHtmlString RenderComments(this HtmlHelper helper, IPrincipal user, object model)
+        public static MvcHtmlString CommentsPartial(this HtmlHelper helper, IPrincipal user, object model)
         {
             bool withBanOption = user.Identity.IsAuthenticated && user.IsInRole(Roles.ModeratorRole);
             string partialViewName = withBanOption
                 ? RouteHelper.GetServerPath("ListWithBanOption", "Comment")
                 : RouteHelper.GetServerPath("ListWithoutBanOption", "Comment");
 
-            return helper.Partial(partialViewName);
+            return helper.Partial(partialViewName, model);
+        }
+
+        public static void RenderCreateCommentPartial(this HtmlHelper helper, IPrincipal user, string articleId)
+        {
+            if (user.Identity.IsAuthenticated)
+            {
+                string partialViewName = RouteHelper.GetServerPath("Create", "Comment");
+                helper.RenderPartial(partialViewName, new CommentCreateViewModel { ArticleId = articleId });
+            }
         }
 
         public static MvcHtmlString RenderModeratorAction(this HtmlHelper helper, ModeratorListViewModel model)
