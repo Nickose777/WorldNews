@@ -1,0 +1,32 @@
+﻿@using WorldNews.Helpers
+<li>
+    <p>@Html.RenderGreeting(User)</p>
+</li>
+<li>
+    @Html.ActionLink("Profile", "Edit", "Admin")
+</li>
+<li>
+    <a href="#moderatorSubmenu" data-toggle="collapse" aria-expanded="false">Manage moderators</a>
+    <ul class="collapse list-unstyled" id="moderatorSubmenu">
+        <li>
+            @Html.ActionLink("Register", "RegisterModerator", "Account")
+        </li>
+        <li>
+            @Html.ActionLink("List", "List", "Moderator")
+        </li>
+    </ul>
+</li>
+<li>
+    @Html.ActionLink("Articles with authors", "ListAuthors", "Article")
+</li>
+<li>
+    <a href="#banSubmenu" data-toggle="collapse" aria-expanded="false">Manage ban reasons</a>
+    <ul class="collapse list-unstyled" id="banSubmenu">
+        <li>
+            @Html.ActionLink("Create", "Create", "BanReason")
+        </li>
+        <li>
+            @Html.ActionLink("List", "List", "BanReason")
+        </li>
+    </ul>
+</li>

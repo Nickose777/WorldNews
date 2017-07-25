@@ -10,6 +10,32 @@ namespace WorldNews.Helpers
 {
     public static class RoleHelper
     {
+        //TODO - naming convenstions (Render - void, Partial - MvcHtmlString)
+        //TODO - RoleHelper for roles, RenderHelper for render etc.
+        public static void RenderSidebar(this HtmlHelper helper, IPrincipal user)
+        {
+            if (user.Identity.IsAuthenticated)
+            {
+                object model;
+
+                if (user.IsInRole(Roles.AdminRole))
+                {
+                    model = RouteHelper.GetServerPath("Admin", "Shared", "Sidebar");
+                }
+                else if (user.IsInRole(Roles.ModeratorRole))
+                {
+                    model = RouteHelper.GetServerPath("Moderator", "Shared", "Sidebar");
+                }
+                else
+                {
+                    model = RouteHelper.GetServerPath("User", "Shared", "Sidebar");
+                }
+
+                string partialViewName = RouteHelper.GetServerPath("Sidebar", "Shared", "Sidebar");
+                helper.RenderPartial(partialViewName, model);
+            }
+        }
+
         public static MvcHtmlString RenderLogin(this HtmlHelper helper, IPrincipal user)
         {
             string partialViewName = user.Identity.IsAuthenticated

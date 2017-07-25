@@ -18,11 +18,6 @@ namespace WorldNews.Controllers
         {
             this.service = service;
         }
-
-        public ActionResult Index()
-        {
-            return RedirectToAction("Edit");
-        }
         
         [HttpGet]
         public ActionResult Edit()

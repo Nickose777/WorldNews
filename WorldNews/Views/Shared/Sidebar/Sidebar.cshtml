@@ -1,0 +1,28 @@
+﻿@model String
+
+<nav id="sidebar">
+    <div id="dismiss-sidebar">
+        <i class="fa fa-times"></i>
+    </div>
+
+    <div class="sidebar-header">
+        <p class="h3">World News</p>
+    </div>
+    <div class="components sidebar-components-divider">
+        <ul class="list-unstyled">
+            @{Html.RenderPartial(Model);}
+        </ul>
+    </div>
+    <div class="components">
+        <ul class="list-unstyled">
+            <li>
+                @Html.ActionLink("Log off", "LogOff", "Account")
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="overlay"></div>
+
+<button type="button" id="sidebarCollapse" class="btn btn-info">
+    <i class="fa fa-bars"></i>
+</button>

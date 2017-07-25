@@ -1,0 +1,26 @@
+﻿@using WorldNews.Helpers
+<li>
+    <p>@Html.RenderGreeting(User)</p>
+</li>
+<li>
+    <a href="#categorySubmenu" data-toggle="collapse" aria-expanded="false">Manage categories</a>
+    <ul class="collapse list-unstyled" id="categorySubmenu">
+        <li>
+            @Html.ActionLink("Create", "Create", "Category")
+        </li>
+        <li>
+            @Html.ActionLink("List", "List", "Category")
+        </li>
+    </ul>
+</li>
+<li>
+    <a href="#articleSubmenu" data-toggle="collapse" aria-expanded="false">Manage articles</a>
+    <ul class="collapse list-unstyled" id="articleSubmenu">
+        <li>
+            @Html.ActionLink("Create", "Create", "Article")
+        </li>
+        <li>
+            @Html.ActionLink("List", "List", "Article")
+        </li>
+    </ul>
+</li>
