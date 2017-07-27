@@ -5,7 +5,7 @@
         .GroupBy(p => (p.i / 2), p => p.x);
 }
 
-<p class="display-4">@Model.CategoryName</p>
+<p class="display-4">@(Model.CategoryName ?? "Latest news")</p>
 @foreach (var row in articles)
 {
     <div class="row mb-4">
@@ -27,4 +27,19 @@
             </div>
         }
     </div>
+}
+@{
+    WorldNews.Models.PageViewModel viewModel = new WorldNews.Models.PageViewModel
+    {
+        Action = "List",
+        ControllerName = "Article",
+        CurrentPage = Model.CurrentPage,
+        PagesCount = Model.PagesCount
+    };
+    if (Model.CategoryName != null)
+    {
+        viewModel.RouteValues.Add("categoryName", Model.CategoryName);
+    }
+
+    Html.RenderPartial("~/Views/Shared/Pagination.cshtml", viewModel);
 }

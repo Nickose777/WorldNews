@@ -21,6 +21,14 @@ namespace WorldNews.Logic.Contracts.Services
 
         DataServiceMessage<IEnumerable<ArticleListDTO>> GetAllEnabled();
 
+        StructServiceMessage<int> GetPagesCount(int itemsPerPage);
+
+        StructServiceMessage<int> GetPagesCountByCategory(int itemsPerPage, string categoryName);
+
+        DataServiceMessage<IEnumerable<ArticleListDTO>> GetAllByCategoryByPage(int pageNumber, int itemsPerPage, string categoryName);
+
+        DataServiceMessage<IEnumerable<ArticleListDTO>> GetAllEnabledByPage(int pageNumber, int itemsPerPage);
+
         DataServiceMessage<IEnumerable<ArticleListDTO>> GetAll();
 
         DataServiceMessage<IEnumerable<ArticleAuthorListDTO>> GetAllWithAuthors();

@@ -1,0 +1,43 @@
+﻿@using WorldNews.Helpers
+@model WorldNews.Models.PageViewModel
+
+@{
+    int prevPage = Model.CurrentPage - 1;
+    int nextPage = Model.CurrentPage + 1;
+    IDictionary<string, object> routeValues = new Dictionary<string, object>(Model.RouteValues);
+    routeValues.Add("pageNumber", prevPage);
+}
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+        <li class="page-item @(prevPage > 0 ? "enabled" : "disabled")">
+            @Html.ActionLinkWithRouteValues("Previous", Model.Action, Model.ControllerName, routeValues, "page-link")
+        </li>
+        @for (int i = 1; i <= Model.PagesCount; i++)
+        {
+            routeValues = new Dictionary<string, object>(Model.RouteValues);
+            routeValues.Add("pageNumber", i);
+
+            if (i != Model.CurrentPage)
+            {
+                <li class="page-item">
+                    @Html.ActionLinkWithRouteValues(i.ToString(), Model.Action, Model.ControllerName, routeValues, "page-link")
+                </li>
+            }
+            else
+            {
+                <li class="page-item active">
+                    <span class="page-link">@i</span>
+                </li>
+            }
+        }
+
+        @{
+            routeValues = new Dictionary<string, object>(Model.RouteValues);
+            routeValues.Add("pageNumber", nextPage);
+        }
+        <li class="page-item @(nextPage <= Model.PagesCount ? "enabled" : "disabled")">
+            @Html.ActionLinkWithRouteValues("Next", Model.Action, Model.ControllerName, routeValues, "page-link")
+        </li>
+    </ul>
+</nav>

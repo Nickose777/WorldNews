@@ -128,6 +128,7 @@
     <Compile Include="Infrastructure\ExceptionMessagBuilder.cs" />
     <Compile Include="Infrastructure\Roles.cs" />
     <Compile Include="Infrastructure\ServiceMessage.cs" />
+    <Compile Include="Infrastructure\StructServiceMessage.cs" />
     <Compile Include="NinjectModules\LogicModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AccountService.cs" />

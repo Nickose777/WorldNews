@@ -8,6 +8,10 @@ namespace WorldNews.Models.Article
         [Display(Name = "Category")]
         public string CategoryName { get; set; }
 
+        public int PagesCount { get; set; }
+
+        public int CurrentPage { get; set; }
+
         public IEnumerable<ArticleListViewModel> Articles { get; set; }
     }
 }

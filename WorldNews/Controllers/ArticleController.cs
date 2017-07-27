@@ -15,6 +15,8 @@ namespace WorldNews.Controllers
 {
     public class ArticleController : ControllerBase
     {
+        private const int ItemsPerPage = 2;
+
         private readonly IArticleService articleService;
         private readonly ICategoryService categoryService;
 
@@ -77,14 +79,18 @@ namespace WorldNews.Controllers
             }
         }
 
-        public ActionResult List(string categoryName)
+        public ActionResult List(int? pageNumber, string categoryName)
         {
-            IEnumerable<ArticleListViewModel> articles = GetArticles(categoryName);
+            int currentPage = pageNumber ?? 1;
+            IEnumerable<ArticleListViewModel> articles = GetArticles(currentPage, ItemsPerPage, categoryName);
             ArticleOfCategoryListViewModel model = new ArticleOfCategoryListViewModel
             {
                 Articles = articles,
-                CategoryName = categoryName ?? "All news"
+                CategoryName = categoryName,
+                PagesCount = GetPagesCount(ItemsPerPage, categoryName),
+                CurrentPage = currentPage
             };
+
             return View(model);
         }
 
@@ -190,11 +196,18 @@ namespace WorldNews.Controllers
                 });
         }
 
-        private IEnumerable<ArticleListViewModel> GetArticles(string categoryName = null)
+        private int GetPagesCount(int itemsPerPage, string categoryName = null)
+        {
+            return categoryName == null
+                ? articleService.GetPagesCount(itemsPerPage).Data
+                : articleService.GetPagesCountByCategory(itemsPerPage, categoryName).Data;
+        }
+
+        private IEnumerable<ArticleListViewModel> GetArticles(int pageNumber, int itemsPerPage, string categoryName = null)
         {
             DataServiceMessage<IEnumerable<ArticleListDTO>> serviceMessage = categoryName == null
-                ? articleService.GetAllEnabled()
-                : articleService.GetAllByCategory(categoryName);
+                ? articleService.GetAllEnabledByPage(pageNumber, itemsPerPage)
+                : articleService.GetAllByCategoryByPage(pageNumber, itemsPerPage, categoryName);
 
             return serviceMessage.Succeeded
                 ? AutoMapperExtensions.Map<ArticleListDTO, ArticleListViewModel>(serviceMessage.Data)

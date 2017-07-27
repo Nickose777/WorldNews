@@ -191,6 +191,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="App_Start\AutoMapperConfiguration.cs" />
+    <Compile Include="Helpers\ActionLinkHelper.cs" />
     <Compile Include="Helpers\DateTimeHelper.cs" />
     <Compile Include="Helpers\ImageHelper.cs" />
     <Compile Include="Helpers\RenderHelper.cs" />
@@ -223,6 +224,7 @@
     <Compile Include="Models\Comment\CommentListViewModel.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
     <Compile Include="Models\ModeratorRegisterViewModel.cs" />
+    <Compile Include="Models\PageViewModel.cs" />
     <Compile Include="Models\ProfileViewModel.cs" />
     <Compile Include="Models\Profile\ModeratorDetailsViewModel.cs" />
     <Compile Include="Models\Profile\ModeratorEditViewModel.cs" />
@@ -336,6 +338,7 @@
     <Content Include="Views\Shared\Sidebar\Admin.cshtml" />
     <Content Include="Views\Shared\Sidebar\Moderator.cshtml" />
     <Content Include="Views\Shared\Sidebar\User.cshtml" />
+    <Content Include="Views\Shared\Pagination.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
