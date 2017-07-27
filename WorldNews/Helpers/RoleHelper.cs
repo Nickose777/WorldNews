@@ -36,13 +36,13 @@ namespace WorldNews.Helpers
             }
         }
 
-        public static MvcHtmlString RenderLogin(this HtmlHelper helper, IPrincipal user)
+        public static void RenderLogin(this HtmlHelper helper, IPrincipal user)
         {
-            string partialViewName = user.Identity.IsAuthenticated
-                ? RouteHelper.GetServerPath("Logout", "Shared")
-                : RouteHelper.GetServerPath("Authorize", "Shared");
-
-            return helper.Partial(partialViewName);
+            if (!user.Identity.IsAuthenticated)
+            {
+                string partialViewName = RouteHelper.GetServerPath("LogIn", "Shared");
+                helper.RenderPartial(partialViewName);
+            }
         }
 
         public static MvcHtmlString CommentsPartial(this HtmlHelper helper, IPrincipal user, object model)

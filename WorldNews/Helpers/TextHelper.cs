@@ -9,5 +9,12 @@ namespace WorldNews.Helpers
         {
             return MvcHtmlString.Create(text.Replace(Environment.NewLine, "<br />"));
         }
+
+        public static string MaxString(string text, int maxLength)
+        {
+            return text.Length > maxLength
+                ? text.Substring(0, maxLength) + "..."
+                : text;
+        }
     }
 }

@@ -1,5 +1,0 @@
-﻿<a class="dropdown-item" href="javascript:document.getElementById('logoff').submit()">Log off</a>
-@using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoff" }))
-{
-    @Html.AntiForgeryToken()
-}

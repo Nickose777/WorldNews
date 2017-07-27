@@ -1,49 +1,38 @@
-﻿@model IEnumerable<WorldNews.Models.Article.ArticleAuthorListViewModel>
+﻿@using WorldNews.Helpers
+@model IEnumerable<WorldNews.Models.Article.ArticleAuthorListViewModel>
 
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Header)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AuthorFullName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AuthorLogin)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DateCreated)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DateLastModified)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CommentsCount)
-        </th>
-        <th></th>
-    </tr>
+@foreach (var article in Model)
+{
+    string id = Url.Encode(article.Id);
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Header)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AuthorFullName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AuthorLogin)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DateCreated)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DateLastModified)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CommentsCount)
-        </td>
-    </tr>
+    <div class="row mb-3">
+        <div class="col-12">
+            <div class="card">
+                <p class="card-header h4">
+                    @TextHelper.MaxString(article.Header, 70)
+                </p>
+                <div class="card-block">
+                    <h4 class="card-title">
+                        @Html.DisplayFor(model => article.AuthorFullName)
+                        (@Html.ActionLink(article.AuthorLogin, "Details", "Moderator", new { login = article.AuthorLogin }, null))
+                    </h4>
+                    <div class="card-text">
+                        <p>
+                            @Html.DisplayNameFor(model => model.First().DateCreated)
+                            @Html.DisplayFor(model => article.DateCreated)
+                            <span class="pull-right badge badge-pill badge-default">
+                                @Html.DisplayNameFor(model => model.First().CommentsCount)
+                                @Html.DisplayFor(model => article.CommentsCount)
+                            </span>
+                        </p>
+                    </div>
+                    @Html.ActionLink("Go to article", "Details", "Article", new { id = id }, new { @class = "btn btn-primary" })
+                </div>
+                <div class="card-footer text-muted">
+                    @Html.DisplayNameFor(model => model.First().DateLastModified)
+                    @DateTimeHelper.TimeAgo(article.DateLastModified)
+                </div>
+            </div>
+        </div>
+    </div>
 }
-
-</table>

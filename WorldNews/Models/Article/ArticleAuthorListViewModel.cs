@@ -9,21 +9,21 @@ namespace WorldNews.Models.Article
 
         public string Header { get; set; }
 
-        [Display(Name = "Full name")]
+        [Display(Name = "Author's name")]
         public string AuthorFullName { get; set; }
 
-        [Display(Name = "Moderator")]
+        [Display(Name = "Author's login")]
         public string AuthorLogin { get; set; }
 
-        [Display(Name = "Created")]
+        [Display(Name = "Created: ")]
         [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy HH:mm}")]
         public DateTime DateCreated { get; set; }
 
-        [Display(Name = "Last modified")]
+        [Display(Name = "Last modified: ")]
         [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy HH:mm}")]
         public DateTime DateLastModified { get; set; }
 
-        [Display(Name = "Comments")]
+        [Display(Name = "Comments: ")]
         public int CommentsCount { get; set; }
     }
 }

@@ -191,6 +191,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="App_Start\AutoMapperConfiguration.cs" />
+    <Compile Include="Helpers\DateTimeHelper.cs" />
     <Compile Include="Helpers\ImageHelper.cs" />
     <Compile Include="Helpers\RenderHelper.cs" />
     <Compile Include="Helpers\RoleHelper.cs" />
@@ -304,10 +305,9 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Account\RegisterUser.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
-    <Content Include="Views\Shared\Account.cshtml" />
     <Content Include="Views\Admin\Edit.cshtml" />
-    <Content Include="Views\Shared\Authorize.cshtml" />
-    <Content Include="Views\Shared\Logout.cshtml" />
+    <Content Include="Views\Shared\LogIn.cshtml" />
+    <Content Include="Views\Shared\LogOff.cshtml" />
     <Content Include="Views\Shared\Sidebar\Sidebar.cshtml" />
     <Content Include="Views\Account\RegisterModerator.cshtml" />
     <Content Include="Views\Moderator\List.cshtml" />

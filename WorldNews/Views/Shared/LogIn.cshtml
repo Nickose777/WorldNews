@@ -1,0 +1,13 @@
+﻿@using WorldNews.Helpers
+
+<li class="nav-item dropup">
+    <a class="nav-link dropdown-toggle" href="http://example.com" id="accountDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <span class="fa fa-user-circle-o mr-2"></span>@Html.RenderGreeting(User)
+    </a>
+    <div class="dropdown-menu" aria-labelledby="accountDropdown">
+        <button class="dropdown-item" type="button" onclick="showLoginView(false)">Log in</button>
+        <button class="dropdown-item" type="button" onclick="showRegisterView(false)">Register</button>
+    </div>
+</li>
+
+<script type="text/javascript" src="~/Scripts/Account/accountModal.js"></script>

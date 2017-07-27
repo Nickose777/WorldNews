@@ -19,14 +19,7 @@
                         @Html.ActionLink(categoryName, "List", "Article", new { @categoryName = categoryName }, new { @class = "nav-link" })
                     </li>
                 }
-                <li class="nav-item dropup">
-                    <a class="nav-link dropdown-toggle" href="http://example.com" id="accountDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="fa fa-user-circle-o mr-2"></span>@Html.RenderGreeting(User)
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="accountDropdown">
-                        @{Html.RenderPartial("Account");}
-                    </div>
-                </li>
+                @{Html.RenderLogin(User);}
             </ul>
         </div>
     </nav>
