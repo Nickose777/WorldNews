@@ -271,6 +271,7 @@
     <Content Include="fonts\FontAwesome.otf" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\Account\accountModal.js" />
+    <Content Include="Scripts\Ajax\ajax-functions.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\Comments\commentBan.js" />
@@ -281,6 +282,8 @@
     <Content Include="Scripts\jquery-3.1.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.1.1.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\UnobtrusiveAjax\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\UnobtrusiveAjax\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\Nicescroll\jquery.nicescroll.js" />
     <Content Include="Scripts\Nicescroll\jquery.nicescroll.min.js" />
     <Content Include="Scripts\jquery.validate.js" />

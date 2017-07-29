@@ -91,7 +91,9 @@ namespace WorldNews.Controllers
                 CurrentPage = currentPage
             };
 
-            return View(model);
+            return Request.IsAjaxRequest()
+                ? PartialView(model) as ActionResult
+                : View(model);
         }
 
         [AdminAuthorize]
@@ -154,7 +156,10 @@ namespace WorldNews.Controllers
             if (serviceMessage.Succeeded)
             {
                 ArticleDetailsViewModel model = Mapper.Map<ArticleDetailsDTO, ArticleDetailsViewModel>(serviceMessage.Data);
-                return View(model);
+
+                return Request.IsAjaxRequest()
+                    ? PartialView(model) as ActionResult
+                    : View(model);
             }
             else
             {

@@ -10,7 +10,6 @@
     @Styles.Render("~/Content/css")
     @Styles.Render("~/Content/font-awesome")
     @Styles.Render("~/Content/Sidebar/css")
-
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
@@ -38,7 +37,9 @@
             </div>
 
             <div class="container">
-                @RenderBody()
+                <div id="main-content">
+                    @RenderBody()
+                </div>
                 <hr />
                 <footer>
                     <p>&copy; @DateTime.Now.Year - World News</p>
@@ -49,9 +50,14 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/tether")
+    @Scripts.Render("~/bundles/unobtrusive-ajax")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/nicescroll")
     @Scripts.Render("~/bundles/sidebar")
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery.loadingoverlay/latest/loadingoverlay.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery.loadingoverlay/latest/loadingoverlay_progress.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/Ajax/ajax-functions.js"></script>
 
     @RenderSection("scripts", required: false)
 </body>

@@ -11,7 +11,7 @@
 <nav aria-label="Page navigation example">
     <ul class="pagination justify-content-center">
         <li class="page-item @(prevPage > 0 ? "enabled" : "disabled")">
-            @Html.ActionLinkWithRouteValues("Previous", Model.Action, Model.ControllerName, routeValues, "page-link")
+            @Ajax.ActionLinkWithRouteValues("Previous", Model.Action, Model.ControllerName, routeValues, "page-link")
         </li>
         @for (int i = 1; i <= Model.PagesCount; i++)
         {
@@ -21,7 +21,7 @@
             if (i != Model.CurrentPage)
             {
                 <li class="page-item">
-                    @Html.ActionLinkWithRouteValues(i.ToString(), Model.Action, Model.ControllerName, routeValues, "page-link")
+                    @Ajax.ActionLinkWithRouteValues(i.ToString(), Model.Action, Model.ControllerName, routeValues, "page-link")
                 </li>
             }
             else
@@ -37,7 +37,7 @@
             routeValues.Add("pageNumber", nextPage);
         }
         <li class="page-item @(nextPage <= Model.PagesCount ? "enabled" : "disabled")">
-            @Html.ActionLinkWithRouteValues("Next", Model.Action, Model.ControllerName, routeValues, "page-link")
+            @Ajax.ActionLinkWithRouteValues("Next", Model.Action, Model.ControllerName, routeValues, "page-link")
         </li>
     </ul>
 </nav>

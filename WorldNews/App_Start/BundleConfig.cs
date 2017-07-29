@@ -26,8 +26,10 @@ namespace WorldNews
                       "~/Scripts/respond.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/nicescroll").Include(
-                        "~/Scripts/Nicescroll/jquery.nicescroll.js",
                         "~/Scripts/Nicescroll/jquery.nicescroll.min.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/unobtrusive-ajax").Include(
+                        "~/Scripts/UnobtrusiveAjax/jquery.unobtrusive-ajax.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/sidebar").Include(
                         "~/Scripts/Sidebar/sidebar.js"));

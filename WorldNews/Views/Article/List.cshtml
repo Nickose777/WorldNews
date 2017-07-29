@@ -17,10 +17,19 @@
                 <div class="card">
                     <img class="img-fluid img-article rounded card-img-top" src="@Url.Content(item.PhotoLink)" alt="Photo">
                     <div class="card-block">
-                        <a href="@Url.Action("Details", "Article", new { id = articleId })" class="heading text-justify">
-                            <p class="mb-2">@item.Header</p>
-                        </a>
-                        <p class="text-justify text-article">@Html.DisplayFor(model => item.Description)</p>
+                        @Ajax.ActionLink(
+                            item.Header,
+                            "Details",
+                            "Article",
+                            new { id = articleId },
+                            new AjaxOptions
+                                {
+                                    HttpMethod = "GET",
+                                    OnSuccess = "onSuccess"
+                                },
+                            new { @class = "heading text-justify" }
+                        )
+                        <p class="text-justify text-article mt-3">@Html.DisplayFor(model => item.Description)</p>
                         <div class="text-right">
                             @Html.EditArticleButtonPartial(User, articleId)
                         </div>
