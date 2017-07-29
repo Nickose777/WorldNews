@@ -1,4 +1,5 @@
 ﻿using System;
+using WorldNews.Logic.DTO.Account;
 using WorldNews.Logic.DTO.Registration;
 using WorldNews.Logic.Infrastructure;
 
@@ -17,6 +18,8 @@ namespace WorldNews.Logic.Contracts.Services
         ServiceMessage BanUser(string login);
 
         ServiceMessage UnbanUser(string login);
+
+        ServiceMessage ChangePassword(ChangePasswordDTO changePasswordDTO);
 
         void LogOff();
     }

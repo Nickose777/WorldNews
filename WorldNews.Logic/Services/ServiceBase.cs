@@ -4,7 +4,7 @@ using WorldNews.Logic.Contracts;
 
 namespace WorldNews.Logic.Services
 {
-    public class ServiceBase : IDisposable
+    public abstract class ServiceBase : IDisposable
     {
         protected readonly IUnitOfWork unitOfWork;
         protected readonly IEncryptor encryptor;

@@ -7,9 +7,11 @@ using System.Web.Mvc;
 using WorldNews.Attributes;
 using WorldNews.Helpers;
 using WorldNews.Logic.Contracts.Services;
+using WorldNews.Logic.DTO.Account;
 using WorldNews.Logic.DTO.Registration;
 using WorldNews.Logic.Infrastructure;
 using WorldNews.Models;
+using WorldNews.Models.Account;
 
 namespace WorldNews.Controllers
 {
@@ -265,9 +267,39 @@ namespace WorldNews.Controllers
             return RedirectToAction("List", "Moderator");
         }
 
-        private ActionResult RedirectToLocal(string returnUrl)
+        [HttpGet]
+        [Authorize]
+        public ActionResult ChangePassword()
         {
-            return Url.IsLocalUrl(returnUrl) ? Redirect(returnUrl) as ActionResult : RedirectToAction("List", "Article");
+            return Request.IsAjaxRequest()
+                ? PartialView() as ActionResult
+                : View();
+        }
+
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public ActionResult ChangePassword(ChangePasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return ActionResultDependingOnRequest(model);
+            }
+            else
+            {
+                ChangePasswordDTO changePasswordDTO = Mapper.Map<ChangePasswordViewModel, ChangePasswordDTO>(model);
+                ServiceMessage serviceMessage = service.ChangePassword(changePasswordDTO);
+
+                if (serviceMessage.Succeeded)
+                {
+                    return RedirectToAction("List", "Article");
+                }
+                else
+                {
+                    AddModelErrors(serviceMessage.Errors);
+                    return ActionResultDependingOnRequest(model);
+                }
+            }
         }
     }
 }

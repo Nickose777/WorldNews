@@ -37,5 +37,24 @@ namespace WorldNews.Controllers
                 serviceMessage.Data :
                 new List<string>();
         }
+
+        protected ActionResult RedirectToLocal(string returnUrl)
+        {
+            return Url.IsLocalUrl(returnUrl) ? Redirect(returnUrl) as ActionResult : RedirectToAction("List", "Article");
+        }
+
+        protected ActionResult ActionResultDependingOnRequest()
+        {
+            return Request.IsAjaxRequest()
+                ? PartialView() as ActionResult
+                : View();
+        }
+
+        protected ActionResult ActionResultDependingOnRequest(object model)
+        {
+            return Request.IsAjaxRequest()
+                ? PartialView(model) as ActionResult
+                : View(model);
+        }
     }
 }

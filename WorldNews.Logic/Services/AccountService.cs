@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using WorldNews.Core.Entities;
 using WorldNews.Data.Contracts;
 using WorldNews.Logic.Contracts.Services;
+using WorldNews.Logic.DTO.Account;
 using WorldNews.Logic.DTO.Registration;
 using WorldNews.Logic.Identity;
 using WorldNews.Logic.Infrastructure;
@@ -173,6 +174,44 @@ namespace WorldNews.Logic.Services
         {
             DateTime lockoutEndDateUtc = DateTime.Now.AddYears(-200);
             return SetLockout(login, lockoutEndDateUtc);
+        }
+
+        public ServiceMessage ChangePassword(ChangePasswordDTO changePasswordDTO)
+        {
+            List<string> errors = new List<string>();
+            bool succeeded = true;
+
+            try
+            {
+                ApplicationUser applicationUser = userManager.FindByName(changePasswordDTO.Login);
+                if (applicationUser != null)
+                {
+                    IdentityResult identityResult = userManager.ChangePassword(
+                        applicationUser.Id, 
+                        changePasswordDTO.OldPassword,
+                        changePasswordDTO.NewPassword
+                        );
+
+                    succeeded = identityResult.Succeeded;
+                    errors.AddRange(identityResult.Errors);
+                }
+                else
+                {
+                    succeeded = false;
+                    errors.Add("User with such login was not found");
+                }
+            }
+            catch (Exception ex)
+            {
+                succeeded = false;
+                ExceptionMessageBuilder.FillErrors(ex, errors);
+            }
+
+            return new ServiceMessage
+            {
+                Succeeded = succeeded,
+                Errors = errors
+            };
         }
 
         public void Dispose()
