@@ -15,7 +15,7 @@ namespace WorldNews.Controllers
 {
     public class ArticleController : ControllerBase
     {
-        private const int ItemsPerPage = 2;
+        private const int ItemsPerPage = 6;
 
         private readonly IArticleService articleService;
         private readonly ICategoryService categoryService;
