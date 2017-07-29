@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Security.Principal;
 using System.Web.Mvc;
+using System.Web.Mvc.Ajax;
 using System.Web.Mvc.Html;
 using WorldNews.Logic.Infrastructure;
 using WorldNews.Models.Comment;
@@ -71,14 +72,14 @@ namespace WorldNews.Helpers
                 : MvcHtmlString.Empty;
         }
 
-        public static MvcHtmlString RenderModeratorAction(this HtmlHelper helper, ModeratorListViewModel model)
+        public static MvcHtmlString RenderModeratorAction(this AjaxHelper helper, ModeratorListViewModel model)
         {
             bool isBanned = model.IsBanned;
             string action = isBanned
                 ? "Unban"
                 : "Ban";
 
-            return helper.ActionLink(action, action, "Account", new { login = model.Login }, new { @class = "dropdown-item" });
+            return helper.ActionLinkPost(action, action, "Account", "/Moderator/List", new { login = model.Login }, new { @class = "dropdown-item" });
         }
 
         public static MvcHtmlString RenderModeratorLogin(this HtmlHelper helper, ModeratorListViewModel model)

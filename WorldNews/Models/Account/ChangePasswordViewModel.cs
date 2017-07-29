@@ -6,14 +6,17 @@ namespace WorldNews.Models.Account
     {
         [Required]
         [DataType(DataType.Password)]
+        [Display(Name = "Old password")]
         public string OldPassword { get; set; }
-
-        [Compare("OldPassword")]
-        [DataType(DataType.Password)]
-        public string Submit { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
+        [Display(Name = "New password")]
         public string NewPassword { get; set; }
+
+        [Compare("NewPassword")]
+        [DataType(DataType.Password)]
+        [Display(Name = "Submit password")]
+        public string Submit { get; set; }
     }
 }

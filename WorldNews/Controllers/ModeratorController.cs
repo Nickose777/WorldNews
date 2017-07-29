@@ -27,14 +27,13 @@ namespace WorldNews.Controllers
             if (serviceMessage.Succeeded)
             {
                 IEnumerable<ModeratorListViewModel> model = AutoMapperExtensions.Map<ModeratorListDTO, ModeratorListViewModel>(serviceMessage.Data);
-                return View(model);
+                return ActionResultDependingOnGetRequest(model);
             }
             else
             {
                 AddModelErrors(serviceMessage.Errors);
+                return ActionResultDependingOnGetRequest();
             }
-
-            return View();
         }
 
         [HttpGet]
@@ -44,7 +43,7 @@ namespace WorldNews.Controllers
             if (serviceMessage.Succeeded)
             {
                 ModeratorEditViewModel model = Mapper.Map<ModeratorEditDTO, ModeratorEditViewModel>(serviceMessage.Data);
-                return View(model);
+                return ActionResultDependingOnGetRequest(model);
             }
             else
             {
@@ -57,7 +56,7 @@ namespace WorldNews.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return ActionResultDependingOnGetRequest(model);
             }
 
             //TODO
@@ -71,7 +70,7 @@ namespace WorldNews.Controllers
             else
             {
                 AddModelErrors(serviceMessage.Errors);
-                return View(model);
+                return ActionResultDependingOnGetRequest(model);
             }
         }
 
@@ -81,7 +80,7 @@ namespace WorldNews.Controllers
             if (serviceMessage.Succeeded)
             {
                 ModeratorDetailsViewModel model = Mapper.Map<ModeratorDetailsDTO, ModeratorDetailsViewModel>(serviceMessage.Data);
-                return View(model);
+                return ActionResultDependingOnGetRequest(model);
             }
             else
             {

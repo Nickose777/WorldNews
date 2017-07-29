@@ -1,9 +1,15 @@
-﻿function showLoginView(isAlreadyShown) {
-    var loginHandler = function () {
+﻿function showLoginView() {
+    function onclickFunction(e) {
+        e.preventDefault();
+
+        showRegisterView();
+    }
+
+    var clickHandler = function () {
         var data = $("#modalWindow .modal-body").find("form").serialize();
 
         $.ajax({
-            url: "/Account/LoginJson",
+            url: "/Account/Login",
             type: "POST",
             dataType: "json",
             data: data,
@@ -13,59 +19,48 @@
                 }
                 else {
                     $("#modalWindow .modal-body").html(response.html);
-                    $("#modalWindow #goToRegister").on("click", function (e) {
-                        e.preventDefault();
-                        showRegisterView(true);
-                    });
+                    $("#modalWindow #goToRegister").on("click", onclickFunction);
                 }
             },
-            error: function (error) {
-                alert("Couldn't connect to server. Try a bit later");
-            }
+            error: onError
         });
     }
 
-    $.ajax({
-        url: "/Account/LoginPartial",
-        type: "GET",
-        dataType: "html",
-        success: function (html) {
-            var loginViewReady = function () {
-                $("#modalWindow #modalTitle").text("Login");
-                $("#modalWindow #btnModalAction").on("click", loginHandler);
-                $("#modalWindow #goToRegister").on("click", function (e) {
-                    e.preventDefault();
-                    showRegisterView(true);
-                });
-            }
+    function prepareModal() {
+        $("#modalWindow #modalTitle").text("Login");
+        $("#modalWindow #btnModalAction").on("click", clickHandler);
+        $("#modalWindow #goToRegister").on("click", onclickFunction);
+    }
 
-            if (isAlreadyShown) {
-                $("#modalWindow .modal-body").fadeOut("slow", function () {
-                    $(this).empty();
-                    $(this).hide().html(html).fadeIn("slow", loginViewReady);
-                });
-            }
-            else {
-                $("#modalWindow .modal-body").html(html);
-                loginViewReady();
-            }
-
-            if (!isAlreadyShown) {
-                $("#modalWindow").modal("show");
-            }
-        },
-        error: function (error) {
-            alert("Couldn't connect to server. Try a bit later");
+    function onModalReady(html) {
+        if (isModalDisplayed()) {
+            $("#modalWindow .modal-body").fadeOut("slow", function () {
+                $(this).empty();
+                $(this).hide().html(html).fadeIn("slow", prepareModal);
+            });
         }
-    });
+        else {
+            $("#modalWindow .modal-body").html(html);
+            prepareModal();
+            $("#modalWindow").modal("show");
+        }
+    }
+
+    $.get("/Account/Login", onModalReady).fail(onError);
 }
 
-function showRegisterView(isAlreadyShown) {
-    var registerHandler = function () {
+function showRegisterView() {
+    function onclickFunction(e) {
+        e.preventDefault();
+
+        showLoginView();
+    }
+
+    var clickHandler = function () {
         var data = $("#modalWindow .modal-body").find("form").serialize();
 
         $.ajax({
-            url: "/Account/RegisterUserJson",
+            url: "/Account/RegisterUser",
             type: "POST",
             dataType: "json",
             data: data,
@@ -75,51 +70,40 @@ function showRegisterView(isAlreadyShown) {
                 }
                 else {
                     $("#modalWindow .modal-body").html(response.html);
-                    $("#modalWindow #goToLogin").on("click", function (e) {
-                        e.preventDefault();
-
-                        showLoginView(true);
-                    });
+                    $("#modalWindow #goToLogin").on("click", onclickFunction);
                 }
             },
-            error: function (error) {
-                alert("Couldn't connect to server. Try a bit later");
-            }
+            error: onError
         });
     }
 
-    $.ajax({
-        url: "/Account/RegisterUserPartial",
-        type: "GET",
-        dataType: "html",
-        success: function (html) {
-            var registerViewReady = function () {
-                $("#modalWindow #modalTitle").text("Register");
-                $("#modalWindow #btnModalAction").on("click", registerHandler);
-                $("#modalWindow #goToLogin").on("click", function (e) {
-                    e.preventDefault();
+    function prepareModal() {
+        $("#modalWindow #modalTitle").text("Register");
+        $("#modalWindow #btnModalAction").on("click", clickHandler);
+        $("#modalWindow #goToLogin").on("click", onclickFunction);
+    }
 
-                    showLoginView(true);
-                });
-            }
-
-            if (isAlreadyShown) {
-                $("#modalWindow .modal-body").fadeOut("slow", function () {
-                    $(this).empty();
-                    $(this).hide().html(html).fadeIn("slow", registerViewReady);
-                });
-            }
-            else {
-                $("#modalWindow .modal-body").html(html);
-                registerViewReady();
-            }
-
-            if (!isAlreadyShown) {
-                $("#modalWindow").modal("show");
-            }
-        },
-        error: function (error) {
-            alert("Couldn't connect to server. Try a bit later");
+    function onModalReady(html) {
+        if (isModalDisplayed()) {
+            $("#modalWindow .modal-body").fadeOut("slow", function () {
+                $(this).empty();
+                $(this).hide().html(html).fadeIn("slow", prepareModal);
+            });
         }
-    });
+        else {
+            $("#modalWindow .modal-body").html(html);
+            prepareModal();
+            $("#modalWindow").modal("show");
+        }
+    }
+
+    $.get("/Account/RegisterUser", onModalReady).fail(onError);
+}
+
+function isModalDisplayed() {
+    return $("#modalWindow").hasClass("show");
+}
+
+function onError(error) {
+    alert("Couldn't connect to server...");
 }

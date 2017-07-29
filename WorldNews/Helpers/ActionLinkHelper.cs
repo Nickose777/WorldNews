@@ -17,5 +17,20 @@ namespace WorldNews.Helpers
 
             return ajaxHelper.ActionLink(linkText, actionName, controllerName, new RouteValueDictionary(routeValues), new AjaxOptions { OnSuccess = "onSuccess" }, htmlAttributes);
         }
+
+        public static MvcHtmlString ActionLink(this AjaxHelper ajaxHelper, string linkText, string actionName, string controllerName, object routeValues = null, object htmlAttributes = null)
+        {
+            return ajaxHelper.ActionLink(linkText, actionName, controllerName, routeValues, new AjaxOptions { OnSuccess = "onSuccess" }, htmlAttributes);
+        }
+
+        public static MvcHtmlString ActionLinkPost(this AjaxHelper ajaxHelper, string linkText, string actionName, string controllerName, string urlOnSuccess, object routeValues = null, object htmlAttributes = null)
+        {
+            return ajaxHelper.ActionLink(linkText, actionName, controllerName, routeValues, new AjaxOptions { HttpMethod = "Post", OnSuccess = "(function() { onSuccessStay('" + urlOnSuccess + "'); })" }, htmlAttributes);
+        }
+
+        public static MvcHtmlString ActionLinkCloseSidebar(this AjaxHelper ajaxHelper, string linkText, string actionName, string controllerName, object routeValues = null, object htmlAttributes = null)
+        {
+            return ajaxHelper.ActionLink(linkText, actionName, controllerName, routeValues, new AjaxOptions { OnSuccess = "onSuccess", OnBegin = "closeSidebar" }, htmlAttributes);
+        }
     }
 }

@@ -27,7 +27,7 @@ namespace WorldNews.Controllers
         [ModeratorAuthorize]
         public ActionResult Create()
         {
-            return View();
+            return ActionResultDependingOnGetRequest();
         }
 
         [HttpPost]
@@ -36,7 +36,7 @@ namespace WorldNews.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return ActionResultDependingOnGetRequest(model);
             }
 
             CategoryCreateDTO categoryDTO = Mapper.Map<CategoryCreateViewModel, CategoryCreateDTO>(model);
@@ -49,7 +49,7 @@ namespace WorldNews.Controllers
             else
             {
                 AddModelErrors(serviceMessage.Errors);
-                return View(model);
+                return ActionResultDependingOnGetRequest(model);
             }
         }
 
@@ -61,7 +61,7 @@ namespace WorldNews.Controllers
                 ? AutoMapperExtensions.Map<CategoryListDTO, CategoryListViewModel>(serviceMessage.Data) 
                 : new List<CategoryListViewModel>();
 
-            return View(model);
+            return ActionResultDependingOnGetRequest(model);
         }
 
         [HttpGet]
@@ -74,7 +74,7 @@ namespace WorldNews.Controllers
             if (serviceMessage.Succeeded)
             {
                 CategoryEditViewModel model = Mapper.Map<CategoryEditDTO, CategoryEditViewModel>(serviceMessage.Data);
-                return View(model);
+                return ActionResultDependingOnGetRequest(model);
             }
             else
             {
@@ -88,7 +88,7 @@ namespace WorldNews.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return ActionResultDependingOnGetRequest(model);
             }
 
             model.Id = HttpUtility.UrlDecode(model.Id);
@@ -101,7 +101,7 @@ namespace WorldNews.Controllers
             else
             {
                 AddModelErrors(serviceMessage.Errors);
-                return View(model);
+                return ActionResultDependingOnGetRequest(model);
             }
         }
     }

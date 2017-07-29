@@ -1,4 +1,5 @@
-﻿@model WorldNews.Models.ModeratorRegisterViewModel
+﻿@using WorldNews.Helpers
+@model WorldNews.Models.ModeratorRegisterViewModel
 
 @using (Html.BeginForm("RegisterModerator", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
@@ -74,5 +75,5 @@
 }
 <p class="text-primary">
     <i class="fa fa-arrow-left"></i>
-    @Html.ActionLink("Back", "List", "Moderator")
+    @Ajax.ActionLink("Back", "List", "Moderator")
 </p>

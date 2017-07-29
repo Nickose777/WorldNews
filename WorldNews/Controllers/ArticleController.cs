@@ -40,7 +40,7 @@ namespace WorldNews.Controllers
                     Categories = ConvertToSelectListItems(categoryNames)
                 };
 
-                return View(model);
+                return ActionResultDependingOnGetRequest(model);
             }
             else
             {
@@ -56,7 +56,7 @@ namespace WorldNews.Controllers
             {
                 var categoryNames = GetAllCategoryNames();
                 model.Categories = ConvertToSelectListItems(categoryNames);
-                return View(model);
+                return ActionResultDependingOnGetRequest(model);
             }
 
             string fileName = String.Format("{0}_{1}{2}", model.CategoryName, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss"), System.IO.Path.GetExtension(model.Photo.FileName));
@@ -75,7 +75,7 @@ namespace WorldNews.Controllers
             else
             {
                 AddModelErrors(serviceMessage.Errors);
-                return View(model);
+                return ActionResultDependingOnGetRequest(model);
             }
         }
 
@@ -91,16 +91,14 @@ namespace WorldNews.Controllers
                 CurrentPage = currentPage
             };
 
-            return Request.IsAjaxRequest()
-                ? PartialView(model) as ActionResult
-                : View(model);
+            return ActionResultDependingOnGetRequest(model);
         }
 
         [AdminAuthorize]
         public ActionResult ListAuthors()
         {
             IEnumerable<ArticleAuthorListViewModel> model = GetArticlesWithAuthors();
-            return View(model);
+            return ActionResultDependingOnGetRequest(model);
         }
 
         [HttpGet]
@@ -114,7 +112,7 @@ namespace WorldNews.Controllers
                 ArticleEditViewModel model = Mapper.Map<ArticleEditDTO, ArticleEditViewModel>(serviceMessage.Data);
                 var categoryNames = GetAllCategoryNames();
                 model.Categories = ConvertToSelectListItems(categoryNames);
-                return View(model);
+                return ActionResultDependingOnGetRequest(model);
             }
             else
             {
@@ -130,7 +128,7 @@ namespace WorldNews.Controllers
             {
                 var categoryNames = GetAllCategoryNames();
                 model.Categories = ConvertToSelectListItems(categoryNames);
-                return View(model);
+                return ActionResultDependingOnGetRequest(model);
             }
 
             model.Id = HttpUtility.UrlDecode(model.Id);
@@ -145,7 +143,7 @@ namespace WorldNews.Controllers
                 var categoryNames = GetAllCategoryNames();
                 model.Categories = ConvertToSelectListItems(categoryNames);
                 AddModelErrors(serviceMessage.Errors);
-                return View(model);
+                return ActionResultDependingOnGetRequest(model);
             }
         }
 
@@ -156,10 +154,7 @@ namespace WorldNews.Controllers
             if (serviceMessage.Succeeded)
             {
                 ArticleDetailsViewModel model = Mapper.Map<ArticleDetailsDTO, ArticleDetailsViewModel>(serviceMessage.Data);
-
-                return Request.IsAjaxRequest()
-                    ? PartialView(model) as ActionResult
-                    : View(model);
+                return ActionResultDependingOnGetRequest(model);
             }
             else
             {

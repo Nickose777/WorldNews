@@ -25,7 +25,7 @@ namespace WorldNews.Controllers
         [AdminAuthorize]
         public ActionResult Create()
         {
-            return View();
+            return ActionResultDependingOnGetRequest();
         }
 
         [HttpPost]
@@ -34,7 +34,7 @@ namespace WorldNews.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return ActionResultDependingOnGetRequest(model);
             }
 
             BanReasonCreateDTO banReasonDTO = Mapper.Map<BanReasonCreateViewModel, BanReasonCreateDTO>(model);
@@ -46,7 +46,7 @@ namespace WorldNews.Controllers
             else
             {
                 AddModelErrors(serviceMessage.Errors);
-                return View(model);
+                return ActionResultDependingOnGetRequest(model);
             }
         }
 
@@ -54,8 +54,7 @@ namespace WorldNews.Controllers
         public ActionResult List()
         {
             IEnumerable<BanReasonListViewModel> model = GetBanReasons(false);
-
-            return View(model);
+            return ActionResultDependingOnGetRequest(model);
         }
 
         [HttpGet]
@@ -67,7 +66,7 @@ namespace WorldNews.Controllers
             if (serviceMessage.Succeeded)
             {
                 BanReasonEditViewModel model = Mapper.Map<BanReasonEditDTO, BanReasonEditViewModel>(serviceMessage.Data);
-                return View(model);
+                return ActionResultDependingOnGetRequest(model);
             }
             else
             {
@@ -81,7 +80,7 @@ namespace WorldNews.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return ActionResultDependingOnGetRequest(model);
             }
 
             model.Id = HttpUtility.UrlDecode(model.Id);
@@ -94,7 +93,7 @@ namespace WorldNews.Controllers
             else
             {
                 AddModelErrors(serviceMessage.Errors);
-                return View(model);
+                return ActionResultDependingOnGetRequest(model);
             }
         }
 

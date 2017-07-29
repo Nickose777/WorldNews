@@ -178,6 +178,7 @@
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Attributes\AdminAuthorizeAttribute.cs" />
+    <Compile Include="Attributes\AjaxOnlyAttribute.cs" />
     <Compile Include="Attributes\ModeratorAuthorizeAttribute.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
@@ -195,6 +196,7 @@
     <Compile Include="Helpers\DateTimeHelper.cs" />
     <Compile Include="Helpers\ImageHelper.cs" />
     <Compile Include="Helpers\RenderHelper.cs" />
+    <Compile Include="Helpers\RequestHelper.cs" />
     <Compile Include="Helpers\RoleHelper.cs" />
     <Compile Include="Helpers\RouteHelper.cs" />
     <Compile Include="Helpers\TextHelper.cs" />
@@ -309,8 +311,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Account\RegisterUser.cshtml" />
-    <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Admin\Edit.cshtml" />
     <Content Include="Views\Shared\LogIn.cshtml" />
     <Content Include="Views\Shared\LogOff.cshtml" />
@@ -337,8 +337,8 @@
     <Content Include="Views\Comment\BanList.cshtml" />
     <Content Include="Views\Moderator\Edit.cshtml" />
     <Content Include="Views\Article\Edit.cshtml" />
-    <Content Include="Views\Account\LoginPartial.cshtml" />
-    <Content Include="Views\Account\RegisterUserPartial.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\RegisterUser.cshtml" />
     <Content Include="Views\Shared\Sidebar\Admin.cshtml" />
     <Content Include="Views\Shared\Sidebar\Moderator.cshtml" />
     <Content Include="Views\Shared\Sidebar\User.cshtml" />

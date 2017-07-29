@@ -47,7 +47,7 @@ namespace WorldNews.Controllers
         {
             if (!User.Identity.IsAuthenticated)
             {
-                return View();
+                return ActionResultDependingOnGetRequest();
             }
             else
             {
@@ -61,97 +61,78 @@ namespace WorldNews.Controllers
         {
             if (!User.Identity.IsAuthenticated)
             {
-                return PartialView();
+                return ActionResultDependingOnGetRequest();
             }
             else
             {
-                return Content("User already authenticated");
+                return RedirectToAction("List", "Article");
             }
         }
 
         [HttpPost]
         [AllowAnonymous]
+        [ValidateAntiForgeryToken]
         public ActionResult RegisterUser(RegisterViewModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
+            bool succeeded = false;
 
-            UserRegisterDTO userDTO = Mapper.Map<RegisterViewModel, UserRegisterDTO>(model);
-            ServiceMessage serviceMessage = service.RegisterUser(userDTO);
-
-            if (serviceMessage.Succeeded)
-            {
-                return RedirectToAction("Login");
-            }
-            else
-            {
-                AddModelErrors(serviceMessage.Errors);
-                return View(model);
-            }
-        }
-
-        [HttpPost]
-        [AllowAnonymous]
-        public ActionResult RegisterUserJson(RegisterViewModel model)
-        {
-            bool success = ModelState.IsValid;
-
-            if (success)
+            if (ModelState.IsValid)
             {
                 UserRegisterDTO userDTO = Mapper.Map<RegisterViewModel, UserRegisterDTO>(model);
                 ServiceMessage serviceMessage = service.RegisterUser(userDTO);
-                if (!(success = serviceMessage.Succeeded))
+                if (!serviceMessage.Succeeded)
                 {
                     AddModelErrors(serviceMessage.Errors);
                 }
+
+                succeeded = serviceMessage.Succeeded;
             }
 
-            return Json(new
-            {
-                success = success,
-                html = !success
-                    ? RenderHelper.PartialView(this, "RegisterUserPartial", model)
-                    : String.Empty
-            });
+            return Request.IsAjaxRequest()
+                ? ActionResultDependingOnAjaxPostRequest(succeeded, "~/Views/Account/RegisterUser.cshtml", model)
+                : RedirectToAction("List", "Article");
         }
 
         [HttpGet]
         [AdminAuthorize]
         public ActionResult RegisterModerator()
         {
-            return View();
+            return ActionResultDependingOnGetRequest();
         }
 
         [HttpPost]
         [AdminAuthorize]
+        [ValidateAntiForgeryToken]
         public ActionResult RegisterModerator(ModeratorRegisterViewModel model)
         {
-            if (!ModelState.IsValid)
+            bool succeeded = false;
+
+            if (ModelState.IsValid)
             {
-                return View(model);
+                string fileName = String.Format("{0}{1}", model.Login, System.IO.Path.GetExtension(model.Photo.FileName));
+                string serverPath = Server.MapPath("~/Images/Uploads");
+                string path = System.IO.Path.Combine(serverPath, fileName);
+
+                ModeratorRegisterDTO moderatorDTO = Mapper.Map<ModeratorRegisterViewModel, ModeratorRegisterDTO>(model);
+                moderatorDTO.PhotoLink = path;
+
+                ServiceMessage serviceMessage = service.RegisterModerator(moderatorDTO);
+                if (serviceMessage.Succeeded)
+                {
+                    model.Photo.SaveAs(path);
+                }
+                else
+                {
+                    AddModelErrors(serviceMessage.Errors);
+                    return ActionResultDependingOnGetRequest(model);
+                }
+
+                succeeded = serviceMessage.Succeeded;
             }
 
-            string fileName = String.Format("{0}{1}", model.Login, System.IO.Path.GetExtension(model.Photo.FileName));
-            string serverPath = Server.MapPath("~/Images/Uploads");
-            string path = System.IO.Path.Combine(serverPath, fileName);
-
-            ModeratorRegisterDTO moderatorDTO = Mapper.Map<ModeratorRegisterViewModel, ModeratorRegisterDTO>(model);
-            moderatorDTO.PhotoLink = path;
-
-            ServiceMessage serviceMessage = service.RegisterModerator(moderatorDTO);
-
-            if (serviceMessage.Succeeded)
-            {
-                model.Photo.SaveAs(path);
-                return RedirectToAction("List", "Moderator");
-            }
-            else
-            {
-                AddModelErrors(serviceMessage.Errors);
-                return View(model);
-            }
+            return Request.IsAjaxRequest()
+                ? ActionResultDependingOnAjaxPostRequest(succeeded, "~/Views/Account/RegisterModerator.cshtml", model)
+                : RedirectToAction("List", "Moderator");
         }
 
         [HttpGet]
@@ -160,8 +141,11 @@ namespace WorldNews.Controllers
         {
             if (!User.Identity.IsAuthenticated)
             {
-                ViewBag.ReturnUrl = returnUrl;
-                return View();
+                if (returnUrl != null)
+                {
+                    ViewBag.ReturnUrl = returnUrl;
+                }
+                return ActionResultDependingOnGetRequest();
             }
             else
             {
@@ -169,111 +153,67 @@ namespace WorldNews.Controllers
             }
         }
 
-        [HttpGet]
-        [AllowAnonymous]
-        public ActionResult LoginPartial(string returnUrl)
-        {
-            if (!User.Identity.IsAuthenticated)
-            {
-                ViewBag.ReturnUrl = returnUrl;
-                return PartialView();
-            }
-            else
-            {
-                return Content("User already authenticated");
-            }
-        }
-
         [HttpPost]
         [AllowAnonymous]
-        public ActionResult Login(LoginViewModel model, string returnUrl)
+        [ValidateAntiForgeryToken]
+        public ActionResult Login(LoginViewModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
+            bool succeeded = false;
 
-            ServiceMessage serviceMessage = service.LogIn(model.Login, model.Password);
-            if (serviceMessage.Succeeded)
-            {
-                return RedirectToLocal(returnUrl);
-            }
-            else
-            {
-                AddModelErrors(serviceMessage.Errors);
-                return View();
-            }
-        }
-
-        [HttpPost]
-        [AllowAnonymous]
-        public ActionResult LoginJson(LoginViewModel model)
-        {
-            bool success = ModelState.IsValid;
-
-            if (success)
+            if (ModelState.IsValid)
             {
                 ServiceMessage serviceMessage = service.LogIn(model.Login, model.Password);
-                if (!(success = serviceMessage.Succeeded))
+                if (!serviceMessage.Succeeded)
                 {
                     AddModelErrors(serviceMessage.Errors);
                 }
+
+                succeeded = serviceMessage.Succeeded;
             }
 
-            return Json(new
-            {
-                success = success,
-                html = !success
-                    ? RenderHelper.PartialView(this, "LoginPartial", model)
-                    : String.Empty
-            });
+            return Request.IsAjaxRequest()
+                ? ActionResultDependingOnAjaxPostRequest(succeeded, "~/Views/Account/Login.cshtml", model)
+                : View(model);
         }
 
         [Authorize]
         public ActionResult LogOff()
         {
             service.LogOff();
-
-            return RedirectToAction("Login");
+            return RedirectToAction("List", "Article");
         }
 
+        [HttpPost]
+        [AjaxOnly]
         [AdminAuthorize]
         public ActionResult Ban(string login)
         {
-            if (login != null)
+            ServiceMessage serviceMessage = service.BanUser(login);
+            return Json(new
             {
-                ServiceMessage serviceMessage = service.BanUser(login);
-                if (!serviceMessage.Succeeded)
-                {
-                    return Content(String.Join(Environment.NewLine, serviceMessage.Errors));
-                }
-            }
-
-            return RedirectToAction("List", "Moderator");
+                success = serviceMessage.Succeeded,
+                errors = serviceMessage.Errors
+            });
         }
 
+        [HttpPost]
+        [AjaxOnly]
         [AdminAuthorize]
         public ActionResult Unban(string login)
         {
-            if (login != null)
+            ServiceMessage serviceMessage = service.UnbanUser(login);
+            return Json(new
             {
-                ServiceMessage serviceMessage = service.UnbanUser(login);
-                if (!serviceMessage.Succeeded)
-                {
-                    return Content(String.Join(Environment.NewLine, serviceMessage.Errors));
-                }
-            }
-
-            return RedirectToAction("List", "Moderator");
+                success = serviceMessage.Succeeded,
+                errors = serviceMessage.Errors
+            });
         }
 
         [HttpGet]
         [Authorize]
         public ActionResult ChangePassword()
         {
-            return Request.IsAjaxRequest()
-                ? PartialView() as ActionResult
-                : View();
+            return ActionResultDependingOnGetRequest();
         }
 
         [HttpPost]
@@ -281,25 +221,23 @@ namespace WorldNews.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ChangePassword(ChangePasswordViewModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                return ActionResultDependingOnRequest(model);
-            }
-            else
+            bool succeeded = false;
+
+            if (ModelState.IsValid)
             {
                 ChangePasswordDTO changePasswordDTO = Mapper.Map<ChangePasswordViewModel, ChangePasswordDTO>(model);
                 ServiceMessage serviceMessage = service.ChangePassword(changePasswordDTO);
-
-                if (serviceMessage.Succeeded)
-                {
-                    return RedirectToAction("List", "Article");
-                }
-                else
+                if (!serviceMessage.Succeeded)
                 {
                     AddModelErrors(serviceMessage.Errors);
-                    return ActionResultDependingOnRequest(model);
                 }
+
+                succeeded = serviceMessage.Succeeded;
             }
+
+            return Request.IsAjaxRequest()
+                ? ActionResultDependingOnAjaxPostRequest(succeeded, "~/Views/Account/ChangePassword.cshtml", model)
+                : RedirectToAction("List", "Article");
         }
     }
 }

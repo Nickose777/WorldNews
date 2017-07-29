@@ -1,11 +1,13 @@
-﻿<li>
+﻿@using WorldNews.Helpers
+
+<li>
     <a href="#categorySubmenu" data-toggle="collapse" aria-expanded="false">Manage categories</a>
     <ul class="collapse list-unstyled" id="categorySubmenu">
         <li>
-            @Html.ActionLink("Create", "Create", "Category")
+            @Ajax.ActionLinkCloseSidebar("Create", "Create", "Category")
         </li>
         <li>
-            @Html.ActionLink("List", "List", "Category")
+            @Ajax.ActionLinkCloseSidebar("List", "List", "Category")
         </li>
     </ul>
 </li>
@@ -13,10 +15,10 @@
     <a href="#articleSubmenu" data-toggle="collapse" aria-expanded="false">Manage articles</a>
     <ul class="collapse list-unstyled" id="articleSubmenu">
         <li>
-            @Html.ActionLink("Create", "Create", "Article")
+            @Ajax.ActionLinkCloseSidebar("Create", "Create", "Article")
         </li>
         <li>
-            @Html.ActionLink("List", "List", "Article")
+            @Ajax.ActionLinkCloseSidebar("List", "List", "Article")
         </li>
     </ul>
 </li>

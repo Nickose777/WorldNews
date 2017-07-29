@@ -26,12 +26,12 @@ namespace WorldNews.Controllers
             if (serviceMessage.Succeeded)
             {
                 ProfileViewModel model = Mapper.Map<ProfileBaseDTO, ProfileViewModel>(serviceMessage.Data);
-                return View(model);
+                return ActionResultDependingOnGetRequest(model);
             }
             else
             {
                 AddModelErrors(serviceMessage.Errors);
-                return View();
+                return ActionResultDependingOnGetRequest();
             }
         }
 
@@ -40,21 +40,18 @@ namespace WorldNews.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return ActionResultDependingOnGetRequest(model);
             }
 
             ProfileBaseDTO profileDTO = Mapper.Map<ProfileViewModel, ProfileBaseDTO>(model);
             ServiceMessage serviceMessage = service.UpdateAdminProfile(profileDTO);
 
-            if (serviceMessage.Succeeded)
-            {
-                return RedirectToAction("Index");
-            }
-            else
+            if (!serviceMessage.Succeeded)
             {
                 AddModelErrors(serviceMessage.Errors);
-                return View();
             }
+
+            return ActionResultDependingOnGetRequest(model);
         }
     }
 }
