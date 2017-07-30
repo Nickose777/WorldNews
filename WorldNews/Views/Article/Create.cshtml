@@ -1,6 +1,7 @@
-﻿@model WorldNews.Models.Article.ArticleCreateViewModel
+﻿@using WorldNews.Helpers
+@model WorldNews.Models.Article.ArticleCreateViewModel
 
-@using (Html.BeginForm("Create", "Article", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Ajax.BeginForm("Create", "Article", "/Article/List", new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 

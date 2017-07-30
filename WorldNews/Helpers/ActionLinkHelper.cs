@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using System.Web.Mvc.Ajax;
 using System.Web.Mvc.Html;
 using System.Web.Routing;
-using System.Web.Mvc.Ajax;
 
 namespace WorldNews.Helpers
 {
@@ -15,22 +14,48 @@ namespace WorldNews.Helpers
             IDictionary<string, object> htmlAttributes = new Dictionary<string, object>();
             htmlAttributes.Add("class", String.Join(" ", htmlClasses));
 
-            return ajaxHelper.ActionLink(linkText, actionName, controllerName, new RouteValueDictionary(routeValues), new AjaxOptions { OnSuccess = "onSuccess" }, htmlAttributes);
+            return ajaxHelper.ActionLink(linkText, actionName, controllerName, new RouteValueDictionary(routeValues), new AjaxOptions { OnSuccess = "onGetRequestSuccess" }, htmlAttributes);
         }
 
-        public static MvcHtmlString ActionLink(this AjaxHelper ajaxHelper, string linkText, string actionName, string controllerName, object routeValues = null, object htmlAttributes = null)
+        public static MvcHtmlString ActionLinkGet(this AjaxHelper ajaxHelper, string linkText, string actionName, string controllerName, object routeValues = null, object htmlAttributes = null)
         {
-            return ajaxHelper.ActionLink(linkText, actionName, controllerName, routeValues, new AjaxOptions { OnSuccess = "onSuccess" }, htmlAttributes);
+            AjaxOptions ajaxOptions = new AjaxOptions
+            {
+                HttpMethod = "GET",
+                OnSuccess = "onGetRequestSuccess"
+            };
+            return ajaxHelper.ActionLink(linkText, actionName, controllerName, routeValues, ajaxOptions, htmlAttributes);
         }
 
         public static MvcHtmlString ActionLinkPost(this AjaxHelper ajaxHelper, string linkText, string actionName, string controllerName, string urlOnSuccess, object routeValues = null, object htmlAttributes = null)
         {
-            return ajaxHelper.ActionLink(linkText, actionName, controllerName, routeValues, new AjaxOptions { HttpMethod = "Post", OnSuccess = "(function() { onSuccessStay('" + urlOnSuccess + "'); })" }, htmlAttributes);
+            AjaxOptions ajaxOptions = new AjaxOptions
+            {
+                HttpMethod = "POST",
+                OnSuccess = String.Format("onActionPostRequestSuccess(data, '{0}')", urlOnSuccess)
+            };
+            return ajaxHelper.ActionLink(linkText, actionName, controllerName, routeValues, ajaxOptions, htmlAttributes);
+        }
+
+        public static MvcForm BeginForm(this AjaxHelper ajaxHelper, string action, string controller, string urlOnSuccess, object routeValues = null)
+        {
+            AjaxOptions ajaxOptions = new AjaxOptions
+            {
+                HttpMethod = "POST",
+                OnSuccess = String.Format("onFormPostRequestSuccess(data, '{0}')", urlOnSuccess)
+            };
+            return ajaxHelper.BeginForm(action, controller, routeValues, ajaxOptions);
         }
 
         public static MvcHtmlString ActionLinkCloseSidebar(this AjaxHelper ajaxHelper, string linkText, string actionName, string controllerName, object routeValues = null, object htmlAttributes = null)
         {
-            return ajaxHelper.ActionLink(linkText, actionName, controllerName, routeValues, new AjaxOptions { OnSuccess = "onSuccess", OnBegin = "closeSidebar" }, htmlAttributes);
+            AjaxOptions ajaxOptions = new AjaxOptions
+            {
+                HttpMethod = "GET",
+                OnBegin = "closeSidebar",
+                OnSuccess = "onGetRequestSuccess"
+            };
+            return ajaxHelper.ActionLink(linkText, actionName, controllerName, routeValues, ajaxOptions, htmlAttributes);
         }
     }
 }

@@ -17,18 +17,7 @@
                 <div class="card">
                     <img class="img-fluid img-article rounded card-img-top" src="@Url.Content(item.PhotoLink)" alt="Photo">
                     <div class="card-block">
-                        @Ajax.ActionLink(
-                            item.Header,
-                            "Details",
-                            "Article",
-                            new { id = articleId },
-                            new AjaxOptions
-                                {
-                                    HttpMethod = "GET",
-                                    OnSuccess = "onSuccess"
-                                },
-                            new { @class = "heading text-justify" }
-                        )
+                        @Ajax.ActionLinkGet(item.Header, "Details", "Article", new { id = articleId }, new { @class = "heading text-justify" })
                         <p class="text-justify text-article mt-3">@Html.DisplayFor(model => item.Description)</p>
                         <div class="text-right">
                             @Html.EditArticleButtonPartial(User, articleId)

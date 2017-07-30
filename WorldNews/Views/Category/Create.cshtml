@@ -1,6 +1,7 @@
-﻿@model WorldNews.Models.Category.CategoryCreateViewModel
+﻿@using WorldNews.Helpers
+@model WorldNews.Models.Category.CategoryCreateViewModel
 
-@using (Html.BeginForm()) 
+@using (Ajax.BeginForm("Create", "Category", "/Category/List"))
 {
     @Html.AntiForgeryToken()
     
@@ -23,3 +24,7 @@
         </div>
     </div>
 }
+
+<div>
+    @Ajax.ActionLinkGet("Back to List", "List", "Category")
+</div>

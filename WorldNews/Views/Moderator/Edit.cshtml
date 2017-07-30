@@ -3,7 +3,7 @@
 
 <p class="display-4">Edit profile</p>
 <hr />
-@using (Html.BeginForm())
+@using (Ajax.BeginForm("Edit", "Moderator", "/Moderator/Details?login=" + Model.Login, new { login = Model.Login }))
 {
     @Html.AntiForgeryToken()
 
@@ -39,5 +39,5 @@
 }
 <p class="text-primary">
     <i class="fa fa-arrow-left"></i>
-    @Ajax.ActionLink("Back", "List", "Moderator")
+    @Ajax.ActionLinkGet("Back", "List", "Moderator")
 </p>

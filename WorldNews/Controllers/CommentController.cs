@@ -34,32 +34,33 @@ namespace WorldNews.Controllers
             return View(model);
         }
 
+        [AjaxOnly]
         [HttpPost]
         [Authorize]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(CommentCreateViewModel model)
         {
-            if (!ModelState.IsValid)
+            bool succeeded = false;
+
+            if (ModelState.IsValid)
             {
-                return View(model);
+                model.ArticleId = HttpUtility.UrlDecode(model.ArticleId);
+                CommentCreateDTO commentDTO = Mapper.Map<CommentCreateViewModel, CommentCreateDTO>(model);
+                ServiceMessage serviceMessage = commentService.Create(commentDTO);
+                if (!serviceMessage.Succeeded)
+                {
+                    AddModelErrors(serviceMessage.Errors);
+                }
+
+                succeeded = serviceMessage.Succeeded;
             }
 
-            string articleId = model.ArticleId;
-            model.ArticleId = HttpUtility.UrlDecode(model.ArticleId);
-            CommentCreateDTO commentDTO = Mapper.Map<CommentCreateViewModel, CommentCreateDTO>(model);
-            ServiceMessage serviceMessage = commentService.Create(commentDTO);
-            if (serviceMessage.Succeeded)
-            {
-                return RedirectToAction("Details", "Article", new { id = articleId });
-            }
-            else
-            {
-                AddModelErrors(serviceMessage.Errors);
-                return View(model);
-            }
+            return JsonOnFormPost(succeeded, "~/Views/Comment/Create.cshtml", model);
         }
 
         [HttpGet]
         [ModeratorAuthorize]
+        //TODO
         public ActionResult BanPartial(string id)
         {
             bool success = id != null;
@@ -85,30 +86,27 @@ namespace WorldNews.Controllers
             }, JsonRequestBehavior.AllowGet);
         }
 
+        [AjaxOnly]
         [HttpPost]
         [ModeratorAuthorize]
+        [ValidateAntiForgeryToken]
         public ActionResult Ban(CommentBanViewModel model)
         {
-            bool success = ModelState.IsValid;
-            string html = "";
+            bool succeeded = false;
 
-            if (success)
+            if (ModelState.IsValid)
             {
-                model.Id = HttpUtility.UrlDecode(model.Id);
                 CommentBanDTO commentDTO = Mapper.Map<CommentBanViewModel, CommentBanDTO>(model);
                 ServiceMessage serviceMessage = commentService.Ban(commentDTO);
-                if (!(success = serviceMessage.Succeeded))
+                if (!serviceMessage.Succeeded)
                 {
                     AddModelErrors(serviceMessage.Errors);
-                    html = RenderHelper.PartialView(this, "BanPartial", model);
                 }
+
+                succeeded = serviceMessage.Succeeded;
             }
 
-            return Json(new 
-            {
-                success = success,
-                html = html
-            });
+            return JsonOnFormPost(succeeded, "~/Views/Comment/BanPartial.cshtml", model);
         }
 
         private IEnumerable<SelectListItem> GetSelectListItems()

@@ -18,7 +18,7 @@ namespace WorldNews.Controllers
         {
             this.service = service;
         }
-        
+
         [HttpGet]
         public ActionResult Edit()
         {
@@ -35,23 +35,27 @@ namespace WorldNews.Controllers
             }
         }
 
+        [AjaxOnly]
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Edit(ProfileViewModel model)
         {
-            if (!ModelState.IsValid)
+            bool success = false;
+
+            if (ModelState.IsValid)
             {
-                return ActionResultDependingOnGetRequest(model);
+                ProfileBaseDTO profileDTO = Mapper.Map<ProfileViewModel, ProfileBaseDTO>(model);
+                ServiceMessage serviceMessage = service.UpdateAdminProfile(profileDTO);
+
+                if (!serviceMessage.Succeeded)
+                {
+                    AddModelErrors(serviceMessage.Errors);
+                }
+
+                success = serviceMessage.Succeeded;
             }
 
-            ProfileBaseDTO profileDTO = Mapper.Map<ProfileViewModel, ProfileBaseDTO>(model);
-            ServiceMessage serviceMessage = service.UpdateAdminProfile(profileDTO);
-
-            if (!serviceMessage.Succeeded)
-            {
-                AddModelErrors(serviceMessage.Errors);
-            }
-
-            return ActionResultDependingOnGetRequest(model);
+            return JsonOnFormPost(success, "~/Views/Admin/Edit.cshtml", model);
         }
     }
 }

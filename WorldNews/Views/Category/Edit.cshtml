@@ -1,6 +1,7 @@
-﻿@model WorldNews.Models.Category.CategoryEditViewModel
+﻿@using WorldNews.Helpers
+@model WorldNews.Models.Category.CategoryEditViewModel
 
-@using (Html.BeginForm("Edit", "Category", FormMethod.Post))
+@using (Ajax.BeginForm("Edit", "Category", "/Category/List"))
 {
     @Html.AntiForgeryToken()
 
@@ -39,5 +40,5 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "List")
+    @Ajax.ActionLinkGet("Back to List", "List", "Category")
 </div>

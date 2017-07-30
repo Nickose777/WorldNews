@@ -1,6 +1,7 @@
-﻿@model WorldNews.Models.BanReason.BanReasonEditViewModel
+﻿@using WorldNews.Helpers
+@model WorldNews.Models.BanReason.BanReasonEditViewModel
 
-@using (Html.BeginForm("Edit", "BanReason", FormMethod.Post))
+@using (Ajax.BeginForm("Edit", "BanReason", "/BanReason/List"))
 {
     @Html.AntiForgeryToken()
 
@@ -39,5 +40,5 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "List")
+    @Ajax.ActionLinkGet("Back to List", "List", "BanReason")
 </div>

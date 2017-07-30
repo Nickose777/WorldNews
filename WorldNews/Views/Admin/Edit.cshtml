@@ -1,6 +1,7 @@
-﻿@model WorldNews.Models.ProfileViewModel
+﻿@using WorldNews.Helpers
+@model WorldNews.Models.ProfileViewModel
 
-@using (Html.BeginForm())
+@using (Ajax.BeginForm("Edit", "Admin", "/Admin/Edit"))
 {
     @Html.AntiForgeryToken()
     

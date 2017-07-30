@@ -70,6 +70,7 @@ namespace WorldNews.Controllers
         }
 
         [HttpPost]
+        [AjaxOnly]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public ActionResult RegisterUser(RegisterViewModel model)
@@ -88,9 +89,7 @@ namespace WorldNews.Controllers
                 succeeded = serviceMessage.Succeeded;
             }
 
-            return Request.IsAjaxRequest()
-                ? ActionResultDependingOnAjaxPostRequest(succeeded, "~/Views/Account/RegisterUser.cshtml", model)
-                : RedirectToAction("List", "Article");
+            return JsonOnFormPost(succeeded, "~/Views/Account/RegisterUser.cshtml", model);
         }
 
         [HttpGet]
@@ -101,6 +100,7 @@ namespace WorldNews.Controllers
         }
 
         [HttpPost]
+        [AjaxOnly]
         [AdminAuthorize]
         [ValidateAntiForgeryToken]
         public ActionResult RegisterModerator(ModeratorRegisterViewModel model)
@@ -130,9 +130,7 @@ namespace WorldNews.Controllers
                 succeeded = serviceMessage.Succeeded;
             }
 
-            return Request.IsAjaxRequest()
-                ? ActionResultDependingOnAjaxPostRequest(succeeded, "~/Views/Account/RegisterModerator.cshtml", model)
-                : RedirectToAction("List", "Moderator");
+            return JsonOnFormPost(succeeded, "~/Views/Account/RegisterModerator.cshtml", model);
         }
 
         [HttpGet]
@@ -153,6 +151,7 @@ namespace WorldNews.Controllers
             }
         }
 
+        [AjaxOnly]
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -171,9 +170,7 @@ namespace WorldNews.Controllers
                 succeeded = serviceMessage.Succeeded;
             }
 
-            return Request.IsAjaxRequest()
-                ? ActionResultDependingOnAjaxPostRequest(succeeded, "~/Views/Account/Login.cshtml", model)
-                : View(model);
+            return JsonOnFormPost(succeeded, "~/Views/Account/Login.cshtml", model);
         }
 
         [Authorize]
@@ -189,11 +186,7 @@ namespace WorldNews.Controllers
         public ActionResult Ban(string login)
         {
             ServiceMessage serviceMessage = service.BanUser(login);
-            return Json(new
-            {
-                success = serviceMessage.Succeeded,
-                errors = serviceMessage.Errors
-            });
+            return JsonOnActionPost(serviceMessage);
         }
 
         [HttpPost]
@@ -202,11 +195,7 @@ namespace WorldNews.Controllers
         public ActionResult Unban(string login)
         {
             ServiceMessage serviceMessage = service.UnbanUser(login);
-            return Json(new
-            {
-                success = serviceMessage.Succeeded,
-                errors = serviceMessage.Errors
-            });
+            return JsonOnActionPost(serviceMessage);
         }
 
         [HttpGet]
@@ -217,6 +206,7 @@ namespace WorldNews.Controllers
         }
 
         [HttpPost]
+        [AjaxOnly]
         [Authorize]
         [ValidateAntiForgeryToken]
         public ActionResult ChangePassword(ChangePasswordViewModel model)
@@ -235,9 +225,7 @@ namespace WorldNews.Controllers
                 succeeded = serviceMessage.Succeeded;
             }
 
-            return Request.IsAjaxRequest()
-                ? ActionResultDependingOnAjaxPostRequest(succeeded, "~/Views/Account/ChangePassword.cshtml", model)
-                : RedirectToAction("List", "Article");
+            return JsonOnFormPost(succeeded, "~/Views/Account/ChangePassword.cshtml", model);
         }
     }
 }

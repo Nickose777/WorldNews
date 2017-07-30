@@ -1,17 +1,7 @@
 ﻿@using WorldNews.Helpers
 @model WorldNews.Models.Article.ArticleDetailsViewModel
 
-@Ajax.ActionLink(
-        "Back to articles",
-        "List",
-        "Article",
-        null,
-        new AjaxOptions
-        {
-            HttpMethod = "GET",
-            OnSuccess = "onSuccess"
-        },
-        new { @class = "mb-3" })
+@Ajax.ActionLinkGet("Back to articles", "List", "Article", htmlAttributes: new { @class = "mb-3" })
 <div class="row">
     <div class="col-md-6">
         <div>

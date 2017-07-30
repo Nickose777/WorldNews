@@ -29,25 +29,26 @@ namespace WorldNews.Controllers
         }
 
         [HttpPost]
+        [AjaxOnly]
         [AdminAuthorize]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(BanReasonCreateViewModel model)
         {
-            if (!ModelState.IsValid)
+            bool succeeded = false;
+
+            if (ModelState.IsValid)
             {
-                return ActionResultDependingOnGetRequest(model);
+                BanReasonCreateDTO banReasonDTO = Mapper.Map<BanReasonCreateViewModel, BanReasonCreateDTO>(model);
+                ServiceMessage serviceMessage = service.Create(banReasonDTO);
+                if (!serviceMessage.Succeeded)
+                {
+                    AddModelErrors(serviceMessage.Errors);
+                }
+
+                succeeded = serviceMessage.Succeeded;
             }
 
-            BanReasonCreateDTO banReasonDTO = Mapper.Map<BanReasonCreateViewModel, BanReasonCreateDTO>(model);
-            ServiceMessage serviceMessage = service.Create(banReasonDTO);
-            if (serviceMessage.Succeeded)
-            {
-                return RedirectToAction("List");
-            }
-            else
-            {
-                AddModelErrors(serviceMessage.Errors);
-                return ActionResultDependingOnGetRequest(model);
-            }
+            return JsonOnFormPost(succeeded, "~/Views/BanReason/Create.cshtml", model);
         }
 
         [AdminAuthorize]
@@ -75,26 +76,27 @@ namespace WorldNews.Controllers
         }
 
         [HttpPost]
+        [AjaxOnly]
         [AdminAuthorize]
+        [ValidateAntiForgeryToken]
         public ActionResult Edit(BanReasonEditViewModel model)
         {
-            if (!ModelState.IsValid)
+            bool succeeded = false;
+
+            if (ModelState.IsValid)
             {
-                return ActionResultDependingOnGetRequest(model);
+                model.Id = HttpUtility.UrlDecode(model.Id);
+                BanReasonEditDTO banReasonDTO = Mapper.Map<BanReasonEditViewModel, BanReasonEditDTO>(model);
+                ServiceMessage serviceMessage = service.Edit(banReasonDTO);
+                if (!serviceMessage.Succeeded)
+                {
+                    AddModelErrors(serviceMessage.Errors);
+                }
+
+                succeeded = serviceMessage.Succeeded;
             }
 
-            model.Id = HttpUtility.UrlDecode(model.Id);
-            BanReasonEditDTO banReasonDTO = Mapper.Map<BanReasonEditViewModel, BanReasonEditDTO>(model);
-            ServiceMessage serviceMessage = service.Edit(banReasonDTO);
-            if (serviceMessage.Succeeded)
-            {
-                return RedirectToAction("List");
-            }
-            else
-            {
-                AddModelErrors(serviceMessage.Errors);
-                return ActionResultDependingOnGetRequest(model);
-            }
+            return JsonOnFormPost(succeeded, "~/Views/BanReason/Edit.cshtml", model);
         }
 
         private IEnumerable<BanReasonListViewModel> GetBanReasons(bool enabledOnly)

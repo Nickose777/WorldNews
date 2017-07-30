@@ -59,41 +59,26 @@ namespace WorldNews.Controllers
                 : View(model);
         }
 
-        protected ActionResult ActionResultDependingOnAjaxPostRequest(bool success, string partialViewName)
-        {
-            return Request.IsJsonRequest()
-                    ? JsonOnPost(success, partialViewName)
-                    : PartialView(partialViewName);
-        }
-
-        protected ActionResult ActionResultDependingOnAjaxPostRequest(bool success, string partialViewName, object model)
-        {
-            return Request.IsAjaxRequest()
-                ? (Request.IsJsonRequest()
-                    ? JsonOnPost(success, partialViewName, model)
-                    : PartialView(partialViewName, model)) as ActionResult
-                : View(model);
-        }
-
-        private ActionResult JsonOnPost(bool success, string partialViewName)
+        protected ActionResult JsonOnFormPost(bool success, string partialViewName, object model)
         {
             return Json(new
             {
                 success = success,
-                html = partialViewName != null
-                    ? RenderHelper.PartialView(this, partialViewName)
-                    : String.Empty
+                html = RenderHelper.PartialView(this, partialViewName, model)
             });
         }
 
-        private ActionResult JsonOnPost(bool success, string partialViewName, object model)
+        protected ActionResult JsonOnActionPost(ServiceMessage serviceMessage)
+        {
+            return JsonOnActionPost(serviceMessage.Succeeded, serviceMessage.Errors);
+        }
+
+        protected ActionResult JsonOnActionPost(bool success, IEnumerable<string> errors)
         {
             return Json(new
             {
                 success = success,
-                html = partialViewName != null
-                    ? RenderHelper.PartialView(this, partialViewName, model)
-                    : String.Empty
+                errors = errors
             });
         }
     }

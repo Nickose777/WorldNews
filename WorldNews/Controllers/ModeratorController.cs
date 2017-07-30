@@ -51,27 +51,26 @@ namespace WorldNews.Controllers
             }
         }
 
+        [AjaxOnly]
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Edit(ModeratorEditViewModel model)
         {
-            if (!ModelState.IsValid)
+            bool succeeded = false;
+
+            if (ModelState.IsValid)
             {
-                return ActionResultDependingOnGetRequest(model);
+                ModeratorEditDTO moderatorDTO = Mapper.Map<ModeratorEditViewModel, ModeratorEditDTO>(model);
+                ServiceMessage serviceMessage = service.Edit(moderatorDTO);
+                if (!serviceMessage.Succeeded)
+                {
+                    AddModelErrors(serviceMessage.Errors);
+                }
+
+                succeeded = serviceMessage.Succeeded;
             }
 
-            //TODO
-            //Edit photo
-            ModeratorEditDTO moderatorDTO = Mapper.Map<ModeratorEditViewModel, ModeratorEditDTO>(model);
-            ServiceMessage serviceMessage = service.Edit(moderatorDTO);
-            if (serviceMessage.Succeeded)
-            {
-                return RedirectToAction("Details");
-            }
-            else
-            {
-                AddModelErrors(serviceMessage.Errors);
-                return ActionResultDependingOnGetRequest(model);
-            }
+            return JsonOnFormPost(succeeded, "~/Views/Moderator/Edit.cshtml", model);
         }
 
         public ActionResult Details(string login)
@@ -84,6 +83,7 @@ namespace WorldNews.Controllers
             }
             else
             {
+                //TODO RedirectToErrorPage
                 return RedirectToAction("List");
             }
         }

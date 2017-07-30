@@ -4,7 +4,7 @@
 <p class="display-4">Moderators</p>
 <hr />
 <div class="text-right">
-    @Ajax.ActionLink("Register new", "RegisterModerator", "Account", htmlAttributes: new { @class = "btn btn-success" })
+    @Ajax.ActionLinkGet("Register new", "RegisterModerator", "Account", htmlAttributes: new { @class = "btn btn-success" })
 </div>
 <div class="d-flex flex-wrap justify-content-center">
     @foreach (var moderator in Model)
@@ -34,14 +34,10 @@
                         </a>
 
                         <div class="dropdown-menu" aria-labelledby="@moderator.Login">
-                            @Ajax.ActionLink("Details", "Details", "Moderator", new { login = moderator.Login }, new { @class = "dropdown-item" })
-                            @Ajax.ActionLink("Edit", "Edit", "Moderator", new { login = moderator.Login }, new { @class = "dropdown-item" })
+                            @Ajax.ActionLinkGet("Details", "Details", "Moderator", new { login = moderator.Login }, new { @class = "dropdown-item" })
+                            @Ajax.ActionLinkGet("Edit", "Edit", "Moderator", new { login = moderator.Login }, new { @class = "dropdown-item" })
                             <div class="dropdown-divider"></div>
-                            @*@Ajax.RenderModeratorAction(moderator)*@
-                            @using (Ajax.BeginForm(action, "Account", new { login = moderator.Login }, new AjaxOptions { HttpMethod = "POST", OnSuccess = "onSuccessStay(data, '/Moderator/List')" }))
-                            {
-                                <input type="submit" value="@action" class="dropdown-item" />
-                            }
+                            @Ajax.ActionLinkPost(action, action, "Account", "/Moderator/List", new { login = moderator.Login }, new { @class = "dropdown-item" })
                         </div>
                     </div>
                 </div>

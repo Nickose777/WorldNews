@@ -2,10 +2,7 @@
 
 <div class="container">
     <div class="display-3 text-center">
-        @Ajax.ActionLink("World News", "List", "Article",
-            null,
-            new AjaxOptions { OnSuccess = "onSuccess" },
-            new { @class = "text-link" })
+        @Ajax.ActionLinkGet("World News", "List", "Article", htmlAttributes: new { @class = "text-link" })
     </div>
 </div>
 <div class="container">
@@ -19,19 +16,7 @@
                 @foreach (string categoryName in ViewBag.Categories)
                 {
                     <li class="nav-item">
-                        @Ajax.ActionLink(categoryName, "List", "Article",
-                                new
-                                {
-                                    @categoryName = categoryName
-                                },
-                                new AjaxOptions
-                                {
-                                    OnSuccess = "onSuccess"
-                                },
-                                new
-                                {
-                                    @class = "nav-link"
-                                })
+                        @Ajax.ActionLinkGet(categoryName, "List", "Article", new { categoryName = categoryName }, new { @class = "nav-link" })
                     </li>
                 }
                 @{Html.RenderLogin(User);}

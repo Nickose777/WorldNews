@@ -1,7 +1,7 @@
 ﻿@using WorldNews.Helpers
 @model WorldNews.Models.ModeratorRegisterViewModel
 
-@using (Html.BeginForm("RegisterModerator", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Ajax.BeginForm("RegisterModerator", "Account", "/Moderator/List", new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 
@@ -75,5 +75,5 @@
 }
 <p class="text-primary">
     <i class="fa fa-arrow-left"></i>
-    @Ajax.ActionLink("Back", "List", "Moderator")
+    @Ajax.ActionLinkGet("Back", "List", "Moderator")
 </p>

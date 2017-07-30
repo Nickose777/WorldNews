@@ -1,7 +1,8 @@
-﻿@model IEnumerable<WorldNews.Models.BanReason.BanReasonListViewModel>
+﻿@using WorldNews.Helpers
+@model IEnumerable<WorldNews.Models.BanReason.BanReasonListViewModel>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Ajax.ActionLinkGet("Create New", "Create", "BanReason")
 </p>
 
 <ul class="list-group">
@@ -12,7 +13,7 @@
             : "list-group-item-danger";
 
         <li class="list-group-item justify-content-between @className">
-            @Html.ActionLink(banReason.Name, "Edit", new { id = Url.Encode(banReason.Id) })
+            @Ajax.ActionLinkGet(banReason.Name, "Edit", "BanReason", new { id = Url.Encode(banReason.Id) })
         </li>
     }
 </ul>

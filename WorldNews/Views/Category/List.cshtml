@@ -1,7 +1,8 @@
-﻿@model IEnumerable<WorldNews.Models.Category.CategoryListViewModel>
+﻿@using WorldNews.Helpers
+@model IEnumerable<WorldNews.Models.Category.CategoryListViewModel>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Ajax.ActionLinkGet("Create New", "Create", "Category")
 </p>
 
 <ul class="list-group">
@@ -12,7 +13,7 @@
             : "list-group-item-danger";
         
         <li class="list-group-item justify-content-between @className">
-            @Html.ActionLink(category.Name, "Edit", new { id = Url.Encode(category.Id) })
+            @Ajax.ActionLinkGet(category.Name, "Edit", "Category", new { id = Url.Encode(category.Id) })
             <span class="badge badge-default badge-pill">@category.NewsCount</span>
         </li>
     }

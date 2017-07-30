@@ -30,27 +30,27 @@ namespace WorldNews.Controllers
             return ActionResultDependingOnGetRequest();
         }
 
+        [AjaxOnly]
         [HttpPost]
         [ModeratorAuthorize]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(CategoryCreateViewModel model)
         {
-            if (!ModelState.IsValid)
+            bool succeeded = false;
+
+            if (ModelState.IsValid)
             {
-                return ActionResultDependingOnGetRequest(model);
+                CategoryCreateDTO categoryDTO = Mapper.Map<CategoryCreateViewModel, CategoryCreateDTO>(model);
+                ServiceMessage serviceMessage = service.Create(categoryDTO);
+                if (!serviceMessage.Succeeded)
+                {
+                    AddModelErrors(serviceMessage.Errors);
+                }
+
+                succeeded = serviceMessage.Succeeded;
             }
 
-            CategoryCreateDTO categoryDTO = Mapper.Map<CategoryCreateViewModel, CategoryCreateDTO>(model);
-            ServiceMessage serviceMessage = service.Create(categoryDTO);
-
-            if (serviceMessage.Succeeded)
-            {
-                return RedirectToAction("List");
-            }
-            else
-            {
-                AddModelErrors(serviceMessage.Errors);
-                return ActionResultDependingOnGetRequest(model);
-            }
+            return JsonOnFormPost(succeeded, "~/Views/Category/Create.cshtml", model);
         }
 
         [ModeratorAuthorize]
@@ -82,27 +82,28 @@ namespace WorldNews.Controllers
             }
         }
 
+        [AjaxOnly]
         [HttpPost]
         [ModeratorAuthorize]
+        [ValidateAntiForgeryToken]
         public ActionResult Edit(CategoryEditViewModel model)
         {
-            if (!ModelState.IsValid)
+            bool succeeded = false;
+
+            if (ModelState.IsValid)
             {
-                return ActionResultDependingOnGetRequest(model);
+                model.Id = HttpUtility.UrlDecode(model.Id);
+                CategoryEditDTO categoryDTO = Mapper.Map<CategoryEditViewModel, CategoryEditDTO>(model);
+                ServiceMessage serviceMessage = service.Edit(categoryDTO);
+                if (!serviceMessage.Succeeded)
+                {
+                    AddModelErrors(serviceMessage.Errors);
+                }
+
+                succeeded = serviceMessage.Succeeded;
             }
 
-            model.Id = HttpUtility.UrlDecode(model.Id);
-            CategoryEditDTO categoryDTO = Mapper.Map<CategoryEditViewModel, CategoryEditDTO>(model);
-            ServiceMessage serviceMessage = service.Edit(categoryDTO);
-            if (serviceMessage.Succeeded)
-            {
-                return RedirectToAction("List");
-            }
-            else
-            {
-                AddModelErrors(serviceMessage.Errors);
-                return ActionResultDependingOnGetRequest(model);
-            }
+            return JsonOnFormPost(succeeded, "~/Views/Category/Edit.cshtml", model);
         }
     }
 }

@@ -1,7 +1,8 @@
-﻿@model WorldNews.Models.Article.ArticleEditViewModel
+﻿@using WorldNews.Helpers
+@model WorldNews.Models.Article.ArticleEditViewModel
 
 @{string id = Url.Encode(Model.Id);}
-@using (Html.BeginForm("Edit", "Article", FormMethod.Post))
+@using (Ajax.BeginForm("Details", "Article", "/Article/Details?id=" + id))
 {
     @Html.AntiForgeryToken()
 
@@ -51,8 +52,4 @@
         </div>
     </div>
 }
-@Html.ActionLink("Delete", "Delete", new { id = id }, new { @class = "btn btn-danger" })
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+@Ajax.ActionLinkPost("Delete", "Delete", "Article", "/Articles/List", new { id = id }, new { @class = "btn btn-danger" })

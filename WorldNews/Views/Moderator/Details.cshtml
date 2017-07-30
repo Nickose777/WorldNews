@@ -19,7 +19,7 @@
                     @Html.DisplayFor(model => model.LastName)
                 </p>
                 <div class="text-right">
-                    @Html.ActionLink("Edit profile", "Edit", new { login = Model.Login }, new { @class = "btn btn-primary" })
+                    @Ajax.ActionLinkGet("Edit profile", "Edit", "Moderator", new { login = Model.Login }, new { @class = "btn btn-primary" })
                 </div>
             </div>
             <div class="card-footer">
@@ -38,5 +38,5 @@
 </div>
 <p class="text-primary">
     <i class="fa fa-arrow-left"></i>
-    @Ajax.ActionLink("Back", "List", "Moderator")
+    @Ajax.ActionLinkGet("Back", "List", "Moderator")
 </p>

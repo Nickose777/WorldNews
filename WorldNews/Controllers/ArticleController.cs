@@ -44,39 +44,43 @@ namespace WorldNews.Controllers
             }
             else
             {
+                //Error page
                 return Content(String.Join(Environment.NewLine, serviceMessage.Errors));
             }
         }
 
+        [AjaxOnly]
         [HttpPost]
         [ModeratorAuthorize]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(ArticleCreateViewModel model)
         {
-            if (!ModelState.IsValid)
+            bool success = false;
+
+            if (ModelState.IsValid)
             {
-                var categoryNames = GetAllCategoryNames();
-                model.Categories = ConvertToSelectListItems(categoryNames);
-                return ActionResultDependingOnGetRequest(model);
-            }
+                string fileName = String.Format("{0}_{1}{2}", model.CategoryName, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss"), System.IO.Path.GetExtension(model.Photo.FileName));
+                string serverPath = Server.MapPath("~/Images/Uploads");
+                string path = System.IO.Path.Combine(serverPath, fileName);
 
-            string fileName = String.Format("{0}_{1}{2}", model.CategoryName, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss"), System.IO.Path.GetExtension(model.Photo.FileName));
-            string serverPath = Server.MapPath("~/Images/Uploads");
-            string path = System.IO.Path.Combine(serverPath, fileName);
+                ArticleCreateDTO articleDTO = Mapper.Map<ArticleCreateViewModel, ArticleCreateDTO>(model);
+                articleDTO.PhotoLink = path;
 
-            ArticleCreateDTO articleDTO = Mapper.Map<ArticleCreateViewModel, ArticleCreateDTO>(model);
-            articleDTO.PhotoLink = path;
+                ServiceMessage serviceMessage = articleService.Create(articleDTO);
+                if (!serviceMessage.Succeeded)
+                {
+                    AddModelErrors(serviceMessage.Errors);
+                }
 
-            ServiceMessage serviceMessage = articleService.Create(articleDTO);
-            if (serviceMessage.Succeeded)
-            {
-                model.Photo.SaveAs(path);
-                return RedirectToAction("List");
+                success = serviceMessage.Succeeded;
             }
             else
             {
-                AddModelErrors(serviceMessage.Errors);
-                return ActionResultDependingOnGetRequest(model);
+                var categoryNames = GetAllCategoryNames();
+                model.Categories = ConvertToSelectListItems(categoryNames);
             }
+
+            return JsonOnFormPost(success, "~/Views/Article/Create.cshtml", model);
         }
 
         public ActionResult List(int? pageNumber, string categoryName)
@@ -120,31 +124,33 @@ namespace WorldNews.Controllers
             }
         }
 
+        [AjaxOnly]
         [HttpPost]
         [ModeratorAuthorize]
+        [ValidateAntiForgeryToken]
         public ActionResult Edit(ArticleEditViewModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                var categoryNames = GetAllCategoryNames();
-                model.Categories = ConvertToSelectListItems(categoryNames);
-                return ActionResultDependingOnGetRequest(model);
-            }
+            bool success = false;
 
-            model.Id = HttpUtility.UrlDecode(model.Id);
-            ArticleEditDTO articleDTO = Mapper.Map<ArticleEditViewModel, ArticleEditDTO>(model);
-            ServiceMessage serviceMessage = articleService.Edit(articleDTO);
-            if (serviceMessage.Succeeded)
+            if (ModelState.IsValid)
             {
-                return RedirectToAction("List");
+                model.Id = HttpUtility.UrlDecode(model.Id);
+                ArticleEditDTO articleDTO = Mapper.Map<ArticleEditViewModel, ArticleEditDTO>(model);
+                ServiceMessage serviceMessage = articleService.Edit(articleDTO);
+                if (!serviceMessage.Succeeded)
+                {
+                    AddModelErrors(serviceMessage.Errors);
+                }
+
+                success = serviceMessage.Succeeded;
             }
             else
             {
                 var categoryNames = GetAllCategoryNames();
                 model.Categories = ConvertToSelectListItems(categoryNames);
-                AddModelErrors(serviceMessage.Errors);
-                return ActionResultDependingOnGetRequest(model);
             }
+
+            return JsonOnFormPost(success, "~/Views/Article/Edit.cshtml", model);
         }
 
         public ActionResult Details(string id)
@@ -162,19 +168,19 @@ namespace WorldNews.Controllers
             }
         }
 
+        [AjaxOnly]
+        [HttpPost]
         [ModeratorAuthorize]
         public ActionResult Delete(string id)
         {
             id = HttpUtility.UrlDecode(id);
             ServiceMessage serviceMessage = articleService.Delete(id);
-            if (serviceMessage.Succeeded)
+            if (!serviceMessage.Succeeded)
             {
-                return RedirectToAction("List");
+                AddModelErrors(serviceMessage.Errors);
             }
-            else
-            {
-                return HttpNotFound(String.Join(Environment.NewLine, serviceMessage.Errors));
-            }
+
+            return JsonOnActionPost(serviceMessage);
         }
 
         private IEnumerable<string> GetAllCategoryNames()

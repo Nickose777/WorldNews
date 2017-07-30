@@ -72,16 +72,6 @@ namespace WorldNews.Helpers
                 : MvcHtmlString.Empty;
         }
 
-        public static MvcHtmlString RenderModeratorAction(this AjaxHelper helper, ModeratorListViewModel model)
-        {
-            bool isBanned = model.IsBanned;
-            string action = isBanned
-                ? "Unban"
-                : "Ban";
-
-            return helper.ActionLinkPost(action, action, "Account", "/Moderator/List", new { login = model.Login }, new { @class = "dropdown-item" });
-        }
-
         public static MvcHtmlString RenderModeratorLogin(this HtmlHelper helper, ModeratorListViewModel model)
         {
             TagBuilder h4 = new TagBuilder("h4");

@@ -1,6 +1,7 @@
-﻿@model WorldNews.Models.BanReason.BanReasonCreateViewModel
+﻿@using WorldNews.Helpers
+@model WorldNews.Models.BanReason.BanReasonCreateViewModel
 
-@using (Html.BeginForm()) 
+@using (Ajax.BeginForm("Create", "BanReason", "/BanReason/List"))
 {
     @Html.AntiForgeryToken()
     
@@ -23,3 +24,7 @@
         </div>
     </div>
 }
+
+<div>
+    @Ajax.ActionLinkGet("Back to List", "List", "BanReason")
+</div>

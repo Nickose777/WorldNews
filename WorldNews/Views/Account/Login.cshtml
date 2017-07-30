@@ -1,6 +1,7 @@
-﻿@model WorldNews.Models.LoginViewModel
+﻿@using WorldNews.Helpers
+@model WorldNews.Models.LoginViewModel
 
-@using (Html.BeginForm())
+@using (Ajax.BeginForm("Login", "Account", "/Article/List"))
 {
     @Html.AntiForgeryToken()
 
