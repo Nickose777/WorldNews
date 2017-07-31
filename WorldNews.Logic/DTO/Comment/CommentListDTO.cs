@@ -6,6 +6,8 @@ namespace WorldNews.Logic.DTO.Comment
     {
         public string Id { get; set; }
 
+        public string ArticleId { get; set; }
+
         public string Content { get; set; }
 
         public string AuthorDisplayFullName { get; set; }

@@ -1,15 +1,15 @@
-﻿@model WorldNews.Models.Comment.CommentCreateViewModel
+﻿@using WorldNews.Helpers
+@model WorldNews.Models.Comment.CommentCreateViewModel
 
-@using (Html.BeginForm("Create", "Comment", FormMethod.Post)) 
+@{string articleId = Url.Encode(Model.ArticleId);}
+
+@using (Ajax.BeginForm("Create", "Comment", "/Article/Details?id=" + articleId)) 
 {
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Leave comment</h4>
-        <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         
-        @{string articleId = Url.Encode(Model.ArticleId);}
         @Html.HiddenFor(model => articleId)
         <div class="form-group">
             @Html.LabelFor(model => model.Text, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -21,7 +21,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Leave comment" class="btn btn-primary" />
             </div>
         </div>
     </div>

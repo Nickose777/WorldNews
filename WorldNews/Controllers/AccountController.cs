@@ -100,13 +100,10 @@ namespace WorldNews.Controllers
         }
 
         [HttpPost]
-        [AjaxOnly]
         [AdminAuthorize]
         [ValidateAntiForgeryToken]
         public ActionResult RegisterModerator(ModeratorRegisterViewModel model)
         {
-            bool succeeded = false;
-
             if (ModelState.IsValid)
             {
                 string fileName = String.Format("{0}{1}", model.Login, System.IO.Path.GetExtension(model.Photo.FileName));
@@ -120,17 +117,15 @@ namespace WorldNews.Controllers
                 if (serviceMessage.Succeeded)
                 {
                     model.Photo.SaveAs(path);
+                    return View();
                 }
                 else
                 {
                     AddModelErrors(serviceMessage.Errors);
-                    return ActionResultDependingOnGetRequest(model);
                 }
-
-                succeeded = serviceMessage.Succeeded;
             }
 
-            return JsonOnFormPost(succeeded, "~/Views/Account/RegisterModerator.cshtml", model);
+            return View(model);
         }
 
         [HttpGet]

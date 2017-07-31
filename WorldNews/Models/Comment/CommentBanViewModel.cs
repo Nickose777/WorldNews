@@ -10,6 +10,8 @@ namespace WorldNews.Models.Comment
         [HiddenInput]
         public string Id { get; set; }
 
+        public string ArticleId { get; set; }
+
         [Required(ErrorMessage = "You must select the reason")]
         [Display(Name = "Select the reason")]
         public string BanReasonId { get; set; }

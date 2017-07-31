@@ -4,9 +4,10 @@
 <ul class="list-group">
     @foreach (var comment in Model)
     {
+        string commentId = Url.Encode(comment.Id);
+        string articleId = Url.Encode(comment.ArticleId);
+        
         bool banned = comment.IsBanned;
-        string disabled = banned ? "disabled" : "";
-        string text = banned ? "Banned" : "Ban";
         string textClass = banned ? "text-danger" : "text-muted";
         
         <li class="list-group-item list-group-item-action flex-column align-items-start">
@@ -14,7 +15,14 @@
                 <h5 class="mb-1">@Html.DisplayFor(model => comment.AuthorDisplayFullName)</h5>
                 <small>
                     @Html.DisplayFor(model => comment.DateCreated)
-                    <button class="btn btn-danger @disabled" onclick="@("displayBanModal('" + @Url.Encode(comment.Id) + "')")">@text</button>
+                    @if (banned)
+                    {
+                        <button class="btn btn-danger disabled">Banned</button>
+                    }
+                    else
+                    {
+                        <button class="btn btn-danger" onclick="@("displayBanModal('" + commentId + "', '" + articleId + "')")">Ban</button>
+                    }
                 </small>
             </div>
             <p class="@textClass">@Html.TextToHtml(comment.Content)</p>

@@ -24,6 +24,8 @@
 
 <hr />
 <div id="comments">
-    @{Html.RenderPartial("~/Views/Comment/List.cshtml", Model.Comments);}
-    @{Html.RenderCreateCommentPartial(User, Model.Id);}
+    @{
+        Html.RenderPartial("~/Views/Comment/List.cshtml", Model.Comments);
+        Html.RenderCreateCommentPartial(User, Model.Id);
+    }
 </div>

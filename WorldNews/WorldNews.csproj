@@ -328,7 +328,7 @@
     <Content Include="Views\BanReason\Create.cshtml" />
     <Content Include="Views\BanReason\List.cshtml" />
     <Content Include="Views\BanReason\Edit.cshtml" />
-    <Content Include="Views\Comment\BanPartial.cshtml" />
+    <Content Include="Views\Comment\Ban.cshtml" />
     <Content Include="Views\Comment\ListWithBanOption.cshtml" />
     <Content Include="Views\Comment\ListWithoutBanOption.cshtml" />
     <Content Include="Views\Article\ListAuthors.cshtml" />

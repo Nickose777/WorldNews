@@ -1,6 +1,6 @@
-﻿function displayBanModal(commentId) {
+﻿function displayBanModal(commentId, articleId) {
     $.ajax({
-        url: "/Comment/BanPartial/" + encodeURIComponent(commentId),
+        url: "/Comment/Ban?commentId=" + encodeURIComponent(commentId) + "&articleId=" + encodeURIComponent(articleId),
         dataType: "json",
         type: "GET",
         success: function (response) {
@@ -19,7 +19,7 @@
     });
 }
 
-function banComment(sender, event) {
+function banComment(sender, event, articleId) {
     event.preventDefault();
     var data = $(sender).closest("form").serialize();
 
@@ -30,7 +30,10 @@ function banComment(sender, event) {
         data: data,
         success: function (response) {
             if (response.success) {
-                window.location.reload(true);
+                var modal = $("#commentModal");
+                modal.modal("hide");
+                $("#commentModal .modal-body").empty();
+                $.get("/Article/Details/" + articleId, onGetRequestSuccess);
             }
             else {
                 $("#commentModal .modal-body").html(response.html);

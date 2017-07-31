@@ -272,6 +272,7 @@ namespace WorldNews.Logic.Services
                                     CommentListDTO commentDTO = new CommentListDTO
                                     {
                                         Id = encryptor.Encrypt(commentEntity.Id.ToString()),
+                                        ArticleId = encryptedId,
                                         DateCreated = commentEntity.DateCreated,
                                         Content = content,
                                         AuthorDisplayFullName = fullName,

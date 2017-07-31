@@ -65,10 +65,10 @@ namespace WorldNews.Helpers
             }
         }
 
-        public static MvcHtmlString EditArticleButtonPartial(this HtmlHelper helper, IPrincipal user, string articleId)
+        public static MvcHtmlString EditArticleButtonPartial(this AjaxHelper ajaxHelper, IPrincipal user, string articleId)
         {
             return user.Identity.IsAuthenticated && user.IsInRole(Roles.ModeratorRole)
-                ? helper.ActionLink("Edit", "Edit", "Article", new { id = articleId }, new { @class = "btn btn-warning" })
+                ? ajaxHelper.ActionLinkGet("Edit", "Edit", "Article", new { id = articleId }, new { @class = "btn btn-warning" })
                 : MvcHtmlString.Empty;
         }
 

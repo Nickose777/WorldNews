@@ -1,0 +1,24 @@
+﻿@model WorldNews.Models.Comment.CommentBanViewModel
+
+@using (Html.BeginForm("Ban", "Comment", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal d-flex justify-content-center">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="custom-controls-stacked">
+            @foreach (var reason in Model.BanReasons)
+            {
+                <label class="custom-control custom-radio">
+                    @Html.RadioButtonFor(model => model.BanReasonId, reason.Value, new { @class = "custom-control-input" })
+                    <span class="custom-control-indicator"></span>
+                    <span class="custom-control-description">@reason.Text</span>
+                </label>
+            }
+            @Html.ValidationMessageFor(model => model.BanReasonId, "", new { @class = "text-danger" })
+            <input type="submit" onclick="@("banComment(this, event, '" + Model.ArticleId + "')")" value="Ban" class="btn btn-danger mx-auto my-3" />
+        </div>
+    </div>
+}

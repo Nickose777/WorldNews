@@ -49,38 +49,40 @@ namespace WorldNews.Controllers
             }
         }
 
-        [AjaxOnly]
         [HttpPost]
         [ModeratorAuthorize]
         [ValidateAntiForgeryToken]
         public ActionResult Create(ArticleCreateViewModel model)
         {
-            bool success = false;
-
-            if (ModelState.IsValid)
+            var categoryNames = GetAllCategoryNames();
+            model.Categories = ConvertToSelectListItems(categoryNames);
+            if (!ModelState.IsValid)
             {
-                string fileName = String.Format("{0}_{1}{2}", model.CategoryName, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss"), System.IO.Path.GetExtension(model.Photo.FileName));
-                string serverPath = Server.MapPath("~/Images/Uploads");
-                string path = System.IO.Path.Combine(serverPath, fileName);
+                return View(model);
+            }
 
-                ArticleCreateDTO articleDTO = Mapper.Map<ArticleCreateViewModel, ArticleCreateDTO>(model);
-                articleDTO.PhotoLink = path;
+            string fileName = String.Format("{0}_{1}{2}", model.CategoryName, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss"), System.IO.Path.GetExtension(model.Photo.FileName));
+            string serverPath = Server.MapPath("~/Images/Uploads");
+            string path = System.IO.Path.Combine(serverPath, fileName);
 
-                ServiceMessage serviceMessage = articleService.Create(articleDTO);
-                if (!serviceMessage.Succeeded)
-                {
-                    AddModelErrors(serviceMessage.Errors);
-                }
+            ArticleCreateDTO articleDTO = Mapper.Map<ArticleCreateViewModel, ArticleCreateDTO>(model);
+            articleDTO.PhotoLink = path;
 
-                success = serviceMessage.Succeeded;
+            ServiceMessage serviceMessage = articleService.Create(articleDTO);
+            if (serviceMessage.Succeeded)
+            {
+                model.Photo.SaveAs(path);
             }
             else
             {
-                var categoryNames = GetAllCategoryNames();
-                model.Categories = ConvertToSelectListItems(categoryNames);
+                AddModelErrors(serviceMessage.Errors);
+                return View(model);
             }
 
-            return JsonOnFormPost(success, "~/Views/Article/Create.cshtml", model);
+            return View(new ArticleCreateViewModel
+            {
+                Categories = ConvertToSelectListItems(categoryNames)
+            });
         }
 
         public ActionResult List(int? pageNumber, string categoryName)

@@ -61,9 +61,9 @@ namespace WorldNews.Controllers
         [HttpGet]
         [ModeratorAuthorize]
         //TODO
-        public ActionResult BanPartial(string id)
+        public ActionResult Ban(string commentId, string articleId)
         {
-            bool success = id != null;
+            bool success = commentId != null;
             string html = "";
             if (!success)
             {
@@ -73,10 +73,11 @@ namespace WorldNews.Controllers
             {
                 CommentBanViewModel model = new CommentBanViewModel
                 {
-                    Id = id,
+                    Id = commentId,
+                    ArticleId = articleId,
                     BanReasons = GetSelectListItems()
                 };
-                html = RenderHelper.PartialView(this, "BanPartial", model);
+                html = RenderHelper.PartialView(this, "Ban", model);
             }
 
             return Json(new
@@ -93,9 +94,11 @@ namespace WorldNews.Controllers
         public ActionResult Ban(CommentBanViewModel model)
         {
             bool succeeded = false;
+            model.BanReasons = GetSelectListItems();
 
             if (ModelState.IsValid)
             {
+                model.Id = HttpUtility.UrlDecode(model.Id);
                 CommentBanDTO commentDTO = Mapper.Map<CommentBanViewModel, CommentBanDTO>(model);
                 ServiceMessage serviceMessage = commentService.Ban(commentDTO);
                 if (!serviceMessage.Succeeded)
@@ -106,7 +109,7 @@ namespace WorldNews.Controllers
                 succeeded = serviceMessage.Succeeded;
             }
 
-            return JsonOnFormPost(succeeded, "~/Views/Comment/BanPartial.cshtml", model);
+            return JsonOnFormPost(succeeded, "~/Views/Comment/Ban.cshtml", model);
         }
 
         private IEnumerable<SelectListItem> GetSelectListItems()

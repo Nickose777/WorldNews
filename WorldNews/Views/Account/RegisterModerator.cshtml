@@ -1,7 +1,7 @@
 ﻿@using WorldNews.Helpers
 @model WorldNews.Models.ModeratorRegisterViewModel
 
-@using (Ajax.BeginForm("RegisterModerator", "Account", "/Moderator/List", new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("RegisterModerator", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 
