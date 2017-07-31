@@ -79,6 +79,7 @@ namespace WorldNews.Controllers
                 return View(model);
             }
 
+            ModelState.Clear();
             return View(new ArticleCreateViewModel
             {
                 Categories = ConvertToSelectListItems(categoryNames)

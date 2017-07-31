@@ -30,27 +30,26 @@ namespace WorldNews.Controllers
             return ActionResultDependingOnGetRequest();
         }
 
-        [AjaxOnly]
         [HttpPost]
         [ModeratorAuthorize]
         [ValidateAntiForgeryToken]
         public ActionResult Create(CategoryCreateViewModel model)
         {
-            bool succeeded = false;
-
             if (ModelState.IsValid)
             {
                 CategoryCreateDTO categoryDTO = Mapper.Map<CategoryCreateViewModel, CategoryCreateDTO>(model);
                 ServiceMessage serviceMessage = service.Create(categoryDTO);
-                if (!serviceMessage.Succeeded)
+                if (serviceMessage.Succeeded)
+                {
+                    return RedirectToAction("List");
+                }
+                else
                 {
                     AddModelErrors(serviceMessage.Errors);
                 }
-
-                succeeded = serviceMessage.Succeeded;
             }
 
-            return JsonOnFormPost(succeeded, "~/Views/Category/Create.cshtml", model);
+            return View(model);
         }
 
         [ModeratorAuthorize]
@@ -82,28 +81,27 @@ namespace WorldNews.Controllers
             }
         }
 
-        [AjaxOnly]
         [HttpPost]
         [ModeratorAuthorize]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(CategoryEditViewModel model)
         {
-            bool succeeded = false;
-
             if (ModelState.IsValid)
             {
                 model.Id = HttpUtility.UrlDecode(model.Id);
                 CategoryEditDTO categoryDTO = Mapper.Map<CategoryEditViewModel, CategoryEditDTO>(model);
                 ServiceMessage serviceMessage = service.Edit(categoryDTO);
-                if (!serviceMessage.Succeeded)
+                if (serviceMessage.Succeeded)
+                {
+                    return RedirectToAction("List");
+                }
+                else
                 {
                     AddModelErrors(serviceMessage.Errors);
                 }
-
-                succeeded = serviceMessage.Succeeded;
             }
 
-            return JsonOnFormPost(succeeded, "~/Views/Category/Edit.cshtml", model);
+            return View(model);
         }
     }
 }

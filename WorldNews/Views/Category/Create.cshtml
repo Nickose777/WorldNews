@@ -1,7 +1,7 @@
 ﻿@using WorldNews.Helpers
 @model WorldNews.Models.Category.CategoryCreateViewModel
 
-@using (Ajax.BeginForm("Create", "Category", "/Category/List"))
+@using (Html.BeginForm("Create"))
 {
     @Html.AntiForgeryToken()
     
