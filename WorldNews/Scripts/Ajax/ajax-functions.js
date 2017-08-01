@@ -37,8 +37,7 @@ function onActionPostRequestSuccess(data, url) {
         });
     }
     else {
-        //TODO - error display
-        alert(JSON.stringify(data.errors));
+        displayErrors(data.errors);
     }
 }
 

@@ -45,6 +45,14 @@ namespace WorldNews.Controllers
             return Url.IsLocalUrl(returnUrl) ? Redirect(returnUrl) as ActionResult : RedirectToAction("List", "Article");
         }
 
+        protected ActionResult Error(IEnumerable<string> errors)
+        {
+            string viewName = "~/Views/Shared/Error.cshtml";
+            return Request.IsAjaxRequest()
+                ? PartialView(viewName, errors) as ActionResult
+                : View(viewName, errors);
+        }
+
         protected ActionResult ActionResultDependingOnGetRequest()
         {
             return Request.IsAjaxRequest()
@@ -64,7 +72,7 @@ namespace WorldNews.Controllers
             return Json(new
             {
                 success = success,
-                html = RenderHelper.PartialView(this, partialViewName, model)
+                html = PartialConverter.PartialViewToString(this, partialViewName, model)
             });
         }
 

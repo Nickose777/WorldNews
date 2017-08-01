@@ -14,7 +14,7 @@
 </head>
 <body>
     <div>
-        @{Html.RenderSidebar(User);}
+        @{Html.RenderPartial("~/Views/Shared/Sidebar/Sidebar.cshtml");}
         <div id="content">
             @{Html.RenderPartial("Navigation");}
             <div class="modal fade" id="modalWindow" tabindex="-1" role="dialog" aria-labelledby="title" aria-hidden="true">
@@ -37,6 +37,9 @@
             </div>
 
             <div class="container">
+                <div class="alert alert-danger fade show">
+                    <button type="button" class="close">&times;</button>
+                </div>
                 <div id="main-content">
                     @RenderBody()
                 </div>
@@ -58,6 +61,7 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery.loadingoverlay/latest/loadingoverlay.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery.loadingoverlay/latest/loadingoverlay_progress.min.js"></script>
     <script type="text/javascript" src="~/Scripts/Ajax/ajax-functions.js"></script>
+    <script type="text/javascript" src="~/Scripts/Alert/alert.js"></script>
 
     @RenderSection("scripts", required: false)
 </body>

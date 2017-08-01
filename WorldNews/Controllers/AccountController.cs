@@ -36,8 +36,7 @@ namespace WorldNews.Controllers
             }
             else
             {
-                string message = String.Join(Environment.NewLine, serviceMessage.Errors);
-                return Content(message);
+                return Error(serviceMessage.Errors);
             }
         }
 

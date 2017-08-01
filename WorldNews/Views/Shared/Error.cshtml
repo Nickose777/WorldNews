@@ -1,13 +1,13 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Error</title>
-</head>
-<body>
-    <hgroup>
-        <h1>Error.</h1>
-        <h2>An error occurred while processing your request.</h2>
-    </hgroup>
-</body>
-</html>
+﻿@model IEnumerable<string>
+
+<hgroup>
+    <h1>Error.</h1>
+    <h2>An error(s) occurred while processing your request.</h2>
+</hgroup>
+
+<ul class="list-group my-3">
+    @foreach (string error in Model)
+    {
+        <li class="list-group-item list-group-item-danger">@error</li>
+    }
+</ul>

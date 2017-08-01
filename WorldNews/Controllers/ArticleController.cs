@@ -44,8 +44,7 @@ namespace WorldNews.Controllers
             }
             else
             {
-                //Error page
-                return Content(String.Join(Environment.NewLine, serviceMessage.Errors));
+                return Error(serviceMessage.Errors);
             }
         }
 
@@ -89,23 +88,38 @@ namespace WorldNews.Controllers
         public ActionResult List(int? pageNumber, string categoryName)
         {
             int currentPage = pageNumber ?? 1;
-            IEnumerable<ArticleListViewModel> articles = GetArticles(currentPage, ItemsPerPage, categoryName);
-            ArticleOfCategoryListViewModel model = new ArticleOfCategoryListViewModel
+            DataServiceMessage<IEnumerable<ArticleListDTO>> serviceMessage = GetArticles(currentPage, ItemsPerPage, categoryName);
+            if (serviceMessage.Succeeded)
             {
-                Articles = articles,
-                CategoryName = categoryName,
-                PagesCount = GetPagesCount(ItemsPerPage, categoryName),
-                CurrentPage = currentPage
-            };
+                ArticleOfCategoryListViewModel model = new ArticleOfCategoryListViewModel
+                {
+                    Articles = AutoMapperExtensions.Map<ArticleListDTO, ArticleListViewModel>(serviceMessage.Data),
+                    CategoryName = categoryName,
+                    PagesCount = GetPagesCount(ItemsPerPage, categoryName),
+                    CurrentPage = currentPage
+                };
 
-            return ActionResultDependingOnGetRequest(model);
+                return ActionResultDependingOnGetRequest(model);
+            }
+            else
+            {
+                return Error(serviceMessage.Errors);
+            }
         }
 
         [AdminAuthorize]
         public ActionResult ListAuthors()
         {
-            IEnumerable<ArticleAuthorListViewModel> model = GetArticlesWithAuthors();
-            return ActionResultDependingOnGetRequest(model);
+            DataServiceMessage<IEnumerable<ArticleAuthorListDTO>> serviceMessage = articleService.GetAllWithAuthors();
+            if (serviceMessage.Succeeded)
+            {
+                IEnumerable<ArticleAuthorListViewModel> model = AutoMapperExtensions.Map<ArticleAuthorListDTO, ArticleAuthorListViewModel>(serviceMessage.Data);
+                return ActionResultDependingOnGetRequest(model);
+            }
+            else
+            {
+                return Error(serviceMessage.Errors);
+            }
         }
 
         [HttpGet]
@@ -123,7 +137,7 @@ namespace WorldNews.Controllers
             }
             else
             {
-                return HttpNotFound(String.Join(Environment.NewLine, serviceMessage.Errors));
+                return Error(serviceMessage.Errors);
             }
         }
 
@@ -133,6 +147,9 @@ namespace WorldNews.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(ArticleEditViewModel model)
         {
+            var categoryNames = GetAllCategoryNames();
+            model.Categories = ConvertToSelectListItems(categoryNames);
+
             bool success = false;
 
             if (ModelState.IsValid)
@@ -146,11 +163,6 @@ namespace WorldNews.Controllers
                 }
 
                 success = serviceMessage.Succeeded;
-            }
-            else
-            {
-                var categoryNames = GetAllCategoryNames();
-                model.Categories = ConvertToSelectListItems(categoryNames);
             }
 
             return JsonOnFormPost(success, "~/Views/Article/Edit.cshtml", model);
@@ -167,7 +179,7 @@ namespace WorldNews.Controllers
             }
             else
             {
-                return HttpNotFound(String.Join(Environment.NewLine, serviceMessage.Errors));
+                return Error(serviceMessage.Errors);
             }
         }
 
@@ -178,11 +190,6 @@ namespace WorldNews.Controllers
         {
             id = HttpUtility.UrlDecode(id);
             ServiceMessage serviceMessage = articleService.Delete(id);
-            if (!serviceMessage.Succeeded)
-            {
-                AddModelErrors(serviceMessage.Errors);
-            }
-
             return JsonOnActionPost(serviceMessage);
         }
 
@@ -212,24 +219,11 @@ namespace WorldNews.Controllers
                 : articleService.GetPagesCountByCategory(itemsPerPage, categoryName).Data;
         }
 
-        private IEnumerable<ArticleListViewModel> GetArticles(int pageNumber, int itemsPerPage, string categoryName = null)
+        private DataServiceMessage<IEnumerable<ArticleListDTO>> GetArticles(int pageNumber, int itemsPerPage, string categoryName = null)
         {
-            DataServiceMessage<IEnumerable<ArticleListDTO>> serviceMessage = categoryName == null
+            return categoryName == null
                 ? articleService.GetAllEnabledByPage(pageNumber, itemsPerPage)
                 : articleService.GetAllByCategoryByPage(pageNumber, itemsPerPage, categoryName);
-
-            return serviceMessage.Succeeded
-                ? AutoMapperExtensions.Map<ArticleListDTO, ArticleListViewModel>(serviceMessage.Data)
-                : new List<ArticleListViewModel>();
-        }
-
-        private IEnumerable<ArticleAuthorListViewModel> GetArticlesWithAuthors()
-        {
-            DataServiceMessage<IEnumerable<ArticleAuthorListDTO>> serviceMessage = articleService.GetAllWithAuthors();
-
-            return serviceMessage.Succeeded
-                ? AutoMapperExtensions.Map<ArticleAuthorListDTO, ArticleAuthorListViewModel>(serviceMessage.Data)
-                : new List<ArticleAuthorListViewModel>();
         }
     }
 }

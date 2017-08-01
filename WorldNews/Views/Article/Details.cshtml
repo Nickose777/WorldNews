@@ -1,7 +1,6 @@
 ﻿@using WorldNews.Helpers
 @model WorldNews.Models.Article.ArticleDetailsViewModel
 
-@Ajax.ActionLinkGet("Back to articles", "List", "Article", htmlAttributes: new { @class = "mb-3" })
 <div class="row">
     <div class="col-md-6">
         <div>
@@ -18,14 +17,18 @@
     <h3 class="h3">@Html.DisplayFor(model => model.Header)</h3>
 </div>
 <div>
-    <img src="@Url.Content(Model.PhotoLink)" alt="Image" />
-    <p>@Html.TextToHtml(Model.Text)</p>
+    <img src="@Url.Content(Model.PhotoLink)" alt="Image" class="img-fluid mx-auto d-block" />
+    <p class="my-3">@Html.MultilineText(Model.Text)</p>
 </div>
 
+<p class="text-primary">
+    <i class="fa fa-arrow-left"></i>
+    @Ajax.ActionLinkGet("Back to articles", "List", "Article", htmlAttributes: new { @class = "mb-3" })
+</p>
 <hr />
 <div id="comments">
     @{
         Html.RenderPartial("~/Views/Comment/List.cshtml", Model.Comments);
-        Html.RenderCreateCommentPartial(User, Model.Id);
+        Html.RenderCreateCommentForAuthorized(User, Model.Id);
     }
 </div>

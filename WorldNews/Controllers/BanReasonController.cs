@@ -54,8 +54,18 @@ namespace WorldNews.Controllers
         [AdminAuthorize]
         public ActionResult List()
         {
-            IEnumerable<BanReasonListViewModel> model = GetBanReasons(false);
-            return ActionResultDependingOnGetRequest(model);
+            DataServiceMessage<IEnumerable<BanReasonListDTO>> serviceMessage = GetBanReasons(false);
+            if (serviceMessage.Succeeded)
+            {
+                IEnumerable<BanReasonListViewModel> model = AutoMapperExtensions.Map<BanReasonListDTO, BanReasonListViewModel>(serviceMessage.Data);
+                return ActionResultDependingOnGetRequest(model);
+            }
+            else
+            {
+                return Request.IsAjaxRequest()
+                    ? Error(serviceMessage.Errors)
+                    : Error(serviceMessage.Errors);
+            }
         }
 
         [HttpGet]
@@ -71,7 +81,7 @@ namespace WorldNews.Controllers
             }
             else
             {
-                return RedirectToAction("List");
+                return Error(serviceMessage.Errors);
             }
         }
 
@@ -99,15 +109,11 @@ namespace WorldNews.Controllers
             return JsonOnFormPost(succeeded, "~/Views/BanReason/Edit.cshtml", model);
         }
 
-        private IEnumerable<BanReasonListViewModel> GetBanReasons(bool enabledOnly)
+        private DataServiceMessage<IEnumerable<BanReasonListDTO>> GetBanReasons(bool enabledOnly)
         {
-            DataServiceMessage<IEnumerable<BanReasonListDTO>> serviceMessage = enabledOnly
+            return enabledOnly
                 ? service.GetEnabled()
                 : service.GetAll();
-
-            return serviceMessage.Succeeded
-                ? AutoMapperExtensions.Map<BanReasonListDTO, BanReasonListViewModel>(serviceMessage.Data)
-                : new List<BanReasonListViewModel>();
         }
     }
 }

@@ -60,24 +60,34 @@ namespace WorldNews.Controllers
 
         [HttpGet]
         [ModeratorAuthorize]
-        //TODO
         public ActionResult Ban(string commentId, string articleId)
         {
-            bool success = commentId != null;
+            bool success = true;
             string html = "";
-            if (!success)
+
+            if (commentId != null && articleId != null)
             {
-                html = "Id cannot be null";
+                DataServiceMessage<IEnumerable<BanReasonListDTO>> serviceMessage = banReasonService.GetEnabled();
+
+                string partialViewName = serviceMessage.Succeeded
+                    ? "Ban"
+                    : "~/Views/Shared/Error.cshtml";
+                object model = serviceMessage.Succeeded
+                    ? new CommentBanViewModel
+                        {
+                            Id = commentId,
+                            ArticleId = articleId,
+                            BanReasons = GetSelectListItems(serviceMessage.Data)
+                        } as object
+                    : serviceMessage.Errors;
+
+                success = serviceMessage.Succeeded;
+                html = PartialConverter.PartialViewToString(this, partialViewName, model);
             }
             else
             {
-                CommentBanViewModel model = new CommentBanViewModel
-                {
-                    Id = commentId,
-                    ArticleId = articleId,
-                    BanReasons = GetSelectListItems()
-                };
-                html = RenderHelper.PartialView(this, "Ban", model);
+                success = false;
+                html = "Comment or article were not identified";
             }
 
             return Json(new
@@ -94,7 +104,9 @@ namespace WorldNews.Controllers
         public ActionResult Ban(CommentBanViewModel model)
         {
             bool succeeded = false;
-            model.BanReasons = GetSelectListItems();
+
+            DataServiceMessage<IEnumerable<BanReasonListDTO>> dataServiceMessage = banReasonService.GetEnabled();
+            model.BanReasons = GetSelectListItems(dataServiceMessage.Data);
 
             if (ModelState.IsValid)
             {
@@ -112,10 +124,8 @@ namespace WorldNews.Controllers
             return JsonOnFormPost(succeeded, "~/Views/Comment/Ban.cshtml", model);
         }
 
-        private IEnumerable<SelectListItem> GetSelectListItems()
+        private IEnumerable<SelectListItem> GetSelectListItems(IEnumerable<BanReasonListDTO> banReasons)
         {
-            var banReasons = GetEnablesBanReasons();
-
             return banReasons.Select(banReason =>
                 new SelectListItem
                 {
@@ -123,14 +133,6 @@ namespace WorldNews.Controllers
                     Text = banReason.Name,
                     Value = banReason.Id
                 });
-        }
-
-        private IEnumerable<BanReasonListDTO> GetEnablesBanReasons()
-        {
-            DataServiceMessage<IEnumerable<BanReasonListDTO>> serviceMessage = banReasonService.GetEnabled();
-            return serviceMessage.Succeeded
-                ? serviceMessage.Data 
-                : new List<BanReasonListDTO>();
         }
     }
 }

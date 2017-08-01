@@ -1,8 +1,6 @@
 ﻿@using WorldNews.Helpers
 @model WorldNews.Models.RegisterViewModel
 
-@*TODO - modal display*@
-
 @using (Ajax.BeginForm("RegisterUser", "Account", "/Account/Login"))
 {
     @Html.AntiForgeryToken()

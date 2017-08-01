@@ -56,11 +56,15 @@ namespace WorldNews.Controllers
         public ActionResult List()
         {
             DataServiceMessage<IEnumerable<CategoryListDTO>> serviceMessage = service.GetAll();
-            IEnumerable<CategoryListViewModel> model = serviceMessage.Succeeded 
-                ? AutoMapperExtensions.Map<CategoryListDTO, CategoryListViewModel>(serviceMessage.Data) 
-                : new List<CategoryListViewModel>();
-
-            return ActionResultDependingOnGetRequest(model);
+            if (serviceMessage.Succeeded)
+            {
+                IEnumerable<CategoryListViewModel> model = AutoMapperExtensions.Map<CategoryListDTO, CategoryListViewModel>(serviceMessage.Data);
+                return ActionResultDependingOnGetRequest(model);
+            }
+            else
+            {
+                return Error(serviceMessage.Errors);
+            }
         }
 
         [HttpGet]
@@ -77,7 +81,7 @@ namespace WorldNews.Controllers
             }
             else
             {
-                return RedirectToAction("List");
+                return Error(serviceMessage.Errors);
             }
         }
 

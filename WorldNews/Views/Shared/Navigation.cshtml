@@ -19,7 +19,7 @@
                         @Ajax.ActionLinkGet(categoryName, "List", "Article", new { categoryName = categoryName }, new { @class = "nav-link" })
                     </li>
                 }
-                @{Html.RenderLogin(User);}
+                @{Html.RenderLoginForUnauthorized(User);}
             </ul>
         </div>
     </nav>

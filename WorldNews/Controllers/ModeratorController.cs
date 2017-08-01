@@ -31,8 +31,7 @@ namespace WorldNews.Controllers
             }
             else
             {
-                AddModelErrors(serviceMessage.Errors);
-                return ActionResultDependingOnGetRequest();
+                return Error(serviceMessage.Errors);
             }
         }
 
@@ -47,7 +46,7 @@ namespace WorldNews.Controllers
             }
             else
             {
-                return RedirectToAction("List");
+                return Error(serviceMessage.Errors);
             }
         }
 
@@ -83,8 +82,7 @@ namespace WorldNews.Controllers
             }
             else
             {
-                //TODO RedirectToErrorPage
-                return RedirectToAction("List");
+                return Error(serviceMessage.Errors);
             }
         }
     }

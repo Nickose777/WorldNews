@@ -1,5 +1,4 @@
 ﻿@using WorldNews.Helpers
-@model String
 
 <nav id="sidebar">
     <div id="dismiss-sidebar">
@@ -14,7 +13,7 @@
             <li>
                 <p><span class="fa fa-user-circle-o mr-2"></span>@Html.RenderGreeting(User)</p>
             </li>
-            @{Html.RenderPartial(Model);}
+            @{Html.RenderSidebarMenu(User);}
         </ul>
     </div>
     <div class="components">

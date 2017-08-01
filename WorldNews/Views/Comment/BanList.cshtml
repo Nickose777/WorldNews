@@ -7,7 +7,7 @@
         <li class="list-group-item">
             <blockquote class="blockquote">
                 <p class="mb-0 text-danger">@Html.DisplayFor(model => @comment.BanReason)</p>
-                <p class="mb-0">@Html.TextToHtml(comment.Text)</p>
+                <p class="mb-0">@Html.MultilineText(comment.Text)</p>
                 <footer class="blockquote-footer">
                     @Html.DisplayFor(model => @comment.DateBanned) -
                     <cite>

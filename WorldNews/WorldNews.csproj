@@ -192,12 +192,12 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="App_Start\AutoMapperConfiguration.cs" />
-    <Compile Include="Helpers\ActionLinkHelper.cs" />
+    <Compile Include="Helpers\AjaxRequestHelper.cs" />
     <Compile Include="Helpers\DateTimeHelper.cs" />
     <Compile Include="Helpers\ImageHelper.cs" />
+    <Compile Include="Helpers\PartialConverter.cs" />
     <Compile Include="Helpers\RenderHelper.cs" />
-    <Compile Include="Helpers\RequestHelper.cs" />
-    <Compile Include="Helpers\RoleHelper.cs" />
+    <Compile Include="Helpers\AuthorizeHelper.cs" />
     <Compile Include="Helpers\RouteHelper.cs" />
     <Compile Include="Helpers\TextHelper.cs" />
     <Compile Include="Mappings\AccountProfile.cs" />
@@ -275,6 +275,7 @@
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\Account\accountModal.js" />
     <Content Include="Scripts\Ajax\ajax-functions.js" />
+    <Content Include="Scripts\Alert\alert.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\Comments\commentBan.js" />
@@ -329,8 +330,6 @@
     <Content Include="Views\BanReason\List.cshtml" />
     <Content Include="Views\BanReason\Edit.cshtml" />
     <Content Include="Views\Comment\Ban.cshtml" />
-    <Content Include="Views\Comment\ListWithBanOption.cshtml" />
-    <Content Include="Views\Comment\ListWithoutBanOption.cshtml" />
     <Content Include="Views\Article\ListAuthors.cshtml" />
     <Content Include="Views\Moderator\Details.cshtml" />
     <Content Include="Views\Comment\BanList.cshtml" />

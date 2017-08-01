@@ -20,7 +20,7 @@
                         @Ajax.ActionLinkGet(item.Header, "Details", "Article", new { id = articleId }, new { @class = "heading text-justify" })
                         <p class="text-justify text-article mt-3">@Html.DisplayFor(model => item.Description)</p>
                         <div class="text-right">
-                            @Ajax.EditArticleButtonPartial(User, articleId)
+                            @Ajax.PartialEditArticleForModerator(User, new { id = articleId }, new { @class = "btn btn-warning" })
                         </div>
                     </div>
                     <div class="card-footer text-right">

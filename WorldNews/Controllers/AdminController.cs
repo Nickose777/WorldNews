@@ -30,8 +30,7 @@ namespace WorldNews.Controllers
             }
             else
             {
-                AddModelErrors(serviceMessage.Errors);
-                return ActionResultDependingOnGetRequest();
+                return Error(serviceMessage.Errors);
             }
         }
 

@@ -2,12 +2,12 @@
 @model WorldNews.Models.Article.ArticleEditViewModel
 
 @{string id = Url.Encode(Model.Id);}
-@using (Ajax.BeginForm("Details", "Article", "/Article/Details?id=" + id))
+@using (Ajax.BeginForm("Edit", "Article", "/Article/Details?id=" + id))
 {
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <h4>ArticleEditViewModel</h4>
+        <h4>Edit article</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => id)
@@ -46,10 +46,10 @@
         </div>
 
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+            <div class="btn-group" role="group" aria-label="Manage">
+                <input type="submit" value="Save" class="btn btn-primary" />
+                @Ajax.ActionLinkPost("Delete", "Delete", "Article", "/Article/List", new { id = id }, new { @class = "btn btn-danger" })
             </div>
         </div>
     </div>
 }
-@Ajax.ActionLinkPost("Delete", "Delete", "Article", "/Articles/List", new { id = id }, new { @class = "btn btn-danger" })
